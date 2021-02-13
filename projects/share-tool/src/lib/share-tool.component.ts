@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 
 @Component({
   selector: 'tsnt-share-tool',
-  template: '',
+  templateUrl: './share-tool.component.html',
   styles: ['./share-tool.component.css']
 })
 export class ShareToolComponent implements OnInit {
