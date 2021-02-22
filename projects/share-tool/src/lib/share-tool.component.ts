@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Input } from '@syncfusion/ej2-angular-inputs';
 
 @Component({
   selector: 'tsnt-share-tool',

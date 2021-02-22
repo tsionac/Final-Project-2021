@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 import { ShareToolModule } from 'share-tool';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
