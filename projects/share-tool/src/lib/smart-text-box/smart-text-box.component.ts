@@ -7,6 +7,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 })
 export class SmartTextBoxComponent implements OnInit {
   public msg = "";
+  public input ="";
   public i = 0;
   public s_url = window.location.href;
   constructor() { }
@@ -14,7 +15,7 @@ export class SmartTextBoxComponent implements OnInit {
 
   onClick(event){
     this.i = this.i + 1;
-    console.log(event);
+    console.log(this.input);
     this.msg = "Welcome"+this.i 
   }
   // ngOnChanges(): void {
