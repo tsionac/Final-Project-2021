@@ -1,3 +1,2 @@
 <p>smart-text-box works!</p>
-<input type="text" (click)="onClick($event)" [(ngModel)]="input"> {{msg}}
-<h2>{{s_url}}</h2>
+<input type="text" (focusin)="smartTextBoxtIn()"  (focusout)="smartTextBoxtOut()" [(ngModel)]="input">

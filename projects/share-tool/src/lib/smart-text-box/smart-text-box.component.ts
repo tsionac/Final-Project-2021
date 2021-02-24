@@ -1,4 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { RecordService } from '../services/dbAcess/record.service';
+import { WebRequestService } from '../services/dbAcess/web-request.service';
 
 @Component({
   selector: 'tsnt-smart-text-box',
@@ -6,26 +8,25 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
   styleUrls: ['./smart-text-box.component.css']
 })
 export class SmartTextBoxComponent implements OnInit {
-  public msg = "";
-  public input ="";
-  public i = 0;
-  public s_url = window.location.href;
-  constructor() { }
+
+  input ="";
+
+  userID: String = 'user42';
+  componentID: String = 'component58';
+
+  constructor(private recordService:RecordService) { }
 
 
-  onClick(event){
-    this.i = this.i + 1;
-    console.log(this.input);
-    this.msg = "Welcome"+this.i 
-  }
-  // ngOnChanges(): void {
-  //   this.doSomething(this.input);
-  // }
-  // // private doSomething(input: string) {
-  //   console.log('pipi')
-  // }
 
   ngOnInit(): void {
+  }
+
+  smartTextBoxtIn(){
+    this.recordService.startEdit(this.userID,this.componentID);
+  }
+
+  smartTextBoxtOut(){
+    this.recordService.endEdit(this.userID, this.componentID)?.subscribe( (res) => {console.log(res);});
   }
 
 }
