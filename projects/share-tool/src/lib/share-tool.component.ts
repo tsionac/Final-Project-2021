@@ -7,7 +7,7 @@ import { Input } from '@syncfusion/ej2-angular-inputs';
   styleUrls: ['./share-tool.component.css']
 })
 export class ShareToolComponent implements OnInit {
-
+// @Input() decorator
   ngOnInit(): void {
 
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
