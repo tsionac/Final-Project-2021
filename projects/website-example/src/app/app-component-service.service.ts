@@ -5,5 +5,16 @@ import { Injectable } from '@angular/core';
 })
 export class AppComponentServiceService {
 
+  username:string;
+
+  getUser():string{
+    return this.username;
+  }
+
+  setUser(name:string):void{
+    this.username = name;
+  }
+
+
   constructor() { }
 }

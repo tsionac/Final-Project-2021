@@ -1,4 +1,5 @@
 import { Component,ChangeDetectorRef } from '@angular/core';
+import { AppComponentServiceService } from './app-component-service.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,7 +12,7 @@ export class AppComponent {
   
   index=0;
 
-  constructor(private cdRef:ChangeDetectorRef) {}
+  constructor(private userNameService:AppComponentServiceService) {}
   
   makeid(length): string {
     var result           = '';
@@ -39,7 +40,8 @@ export class AppComponent {
   }
 
 
-  login(){
-    this.currUser = this.username;
+  get_user(){
+    this.currUser = this.userNameService.getUser();
+    return this.currUser;
   }
 }
