@@ -1,2 +1,6 @@
-<p>smart-text-box works!</p>
-<input type="text" (focusin)="smartTextBoxtIn()"  (focusout)="smartTextBoxtOut()" [(ngModel)]="input">
+<form class="example-form">
+    <mat-form-field class="example-full-width">
+        <mat-label>Smart text box</mat-label>
+        <textarea matInput placeholder="Ex. It makes me feel..." (focusin)="smartTextBoxtIn()" (focusout)="smartTextBoxtOut()" [(ngModel)]="input" name="text_of_user"></textarea>
+    </mat-form-field>
+</form>
