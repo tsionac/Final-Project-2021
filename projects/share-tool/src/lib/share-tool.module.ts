@@ -24,3 +24,4 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   exports: [ShareToolComponent]
 })
 export class ShareToolModule { }
+

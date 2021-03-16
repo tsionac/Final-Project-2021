@@ -1,3 +1,20 @@
 <p>This is from app component</p>
-<app-login></app-login>
-<tsnt-share-tool></tsnt-share-tool>
+<h1 class="demo-3-main-h1">Login</h1>
+
+<p class="form-group">
+    <label for="exampleUsername">Username</label>
+    <input type="username" class="form-control" id="exampleUsername" placeholder="Enter username" [(ngModel)]="username">
+</p>
+
+
+<div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+</div>
+<p></p>
+<button mat-raised-button color="primary" (click)="login()">Submit</button>
+<!-- <app-login></app-login> -->
+<!-- <br>
+<button (click)=>change user</button>
+<br> -->
+<tsnt-share-tool [user]="currUser" [comp_id]='34'></tsnt-share-tool>
