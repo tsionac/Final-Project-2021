@@ -18,11 +18,11 @@ export class RecordService {
   };
 
   startEdit(userID:String, componentID:String){
-    return this.wrs.post(this.uri, this.enryCreator.createRecord(userID, componentID,this.drs.getCurrentTime(), undefined) );
+    return this.wrs.post(this.uri, this.enryCreator.createRecord(userID, componentID, -1, this.drs.getCurrentTime(), undefined) );
   };
 
-  endEdit(userID:String, componentID:String){
-    return this.wrs.post(this.uri, this.enryCreator.createRecord(userID, componentID, undefined, this.drs.getCurrentTime()) );
+  endEdit(userID:String, componentID:String, actionID:Number){
+    return this.wrs.post(this.uri, this.enryCreator.createRecord(userID, componentID,actionID, undefined, this.drs.getCurrentTime()) );
   };
 
 

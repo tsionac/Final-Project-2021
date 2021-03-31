@@ -28,6 +28,7 @@ app.use(function(req, res, next) {
 
 // ------------------------------- aplication specific imports -------------------------------
 const {ActiveEdits} = require('./cache');
+const ApiError      = require('./errorHandling/ApiError');
 
 
 
@@ -37,19 +38,40 @@ const editCache = new ActiveEdits();
 
 // ------------------------------- HTTP defenitions -------------------------------
 
-const PORT = 3000;
+const PORT  = 3000;
+const ok    = 200;
 
-app.get('/records', (req, res) => {
+
+
+
+
+//records
+
+// get ALL record.
+// WARNING: extremly dangerous, remove on luanch.
+app.get('/records', (req, res, next) => {
     Record.find({}).then((records) =>{
-        res.send(records);
-    });
+      res.send(records);
+    })
+    .catch(next);
 })
 
-app.post('/records', (req, res) => {
-    let userID = req.body.userID;
+// pots a new record
+// if recived undefinded editEnd  , asume the edit has just began, save info on it to the ram, untl the edit has finished.
+// if recived undefinded editStart, asume the edit has just ended, serch for the start time and save the record to the db.
+app.post('/records', (req, res, next) => {
+    let companyID   = 'figureoutLater';
+    let userID      = req.body.userID;
     let componentID = req.body.componentID;
-    let editStart = req.body.editStart;
-    let editEnd = req.body.editEnd;
+    let actionID    = req.body.actionID;
+    let editStart   = req.body.editStart;
+    let editEnd     = req.body.editEnd;
+
+    // illegal arguments
+    if((companyID === undefined || userID === undefined || componentID === undefined || actionID === undefined) || (editStart === undefined && editEnd === undefined)){
+      next(ApiError.badRequest('not all requred paramaters were given.'));
+      return;
+    }
 
     //user start the edit, end time is unkown yet, keep in cache, not in DB
     if(editEnd === undefined){
@@ -58,12 +80,15 @@ app.post('/records', (req, res) => {
       return;
     }
 
+    // user finished editing, save recird to the db
     if(editStart === undefined){
       editStart = editCache.endEdit(userID, componentID);
 
       let newRecord = new Record({
+        companyID,
         userID,
         componentID,
+        actionID,
         editStart,
         editEnd,
       });
@@ -71,33 +96,42 @@ app.post('/records', (req, res) => {
 
       newRecord.save().then((recordDoc) => {
         res.send(recordDoc);
-      });
+      })
+      .catch(next);
     }
 
 
 });
 
-app.patch('/records/:id', (req, res) => {
+// recive one specofic recird with a given id
+// WARNING: extremly dangerous, remove on luanch.
+app.patch('/records/:id', (req, res, next) => {
     let id = req.params.id;
 
     Record.findOneAndUpdate({_id: id}, { $set: req.body})
-    .then(() => { res.sendStatus(200);}); //ok
+    .then(() => { res.sendStatus(ok);})
+    .catch(() => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?'))});
+
 });
 
 
-app.delete('/records/:id', (req, res) => {
+// delete one specofic recird with a given id
+// WARNING: extremly dangerous, remove on luanch.
+app.delete('/records/:id', (req, res, next) => {
     let id = req.params.id;
 
     Record.findOneAndRemove({_id: id})
-    .then((removed) => { res.send(removed)});
+    .then((removed) => { res.send(removed)})
+    .catch(() => { next(ApiError.internal('error accured while deleting the record. is the id correct?'))});
 });
 
-/**
- * for debugging only- DELETE later
- */
-app.delete('/all', (req, res) => {
+// delete **ALL*** specofic recird with a given id
+// WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
+app.delete('/all', (req, res, next) => {
     Record.deleteMany({})
-    .then(() => { res.sendStatus(200);});
+    .then(() => { res.sendStatus(ok);})
+    .catch(next);
+
 });
 
 
@@ -105,8 +139,38 @@ app.delete('/all', (req, res) => {
 
 
 
-//start the server
+
+
+
+
+
+
+
+
+
+
+
+// ------------------------------- push error handler -------------------------------
+
+const errorHandler = require('./errorHandling/error-handler');
+app.use(errorHandler);
+
+// uncought error handler - very bad if happands
+process.on('uncaughtException', function (err) {
+  //TODO : error loger
+  console.log("FATAL: Uncought error acurred!!!!!\n" + err.stack);
+  console.error();
+});
+
+
+
+
+
+
+
+
+// ------------------------------- start server -------------------------------
+
 app.listen(PORT, () =>{
     console.log(`Server is listening on port ${PORT}`);
 });
-

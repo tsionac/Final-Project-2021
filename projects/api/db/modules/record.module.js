@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 
 const recordSchema = new mongoose.Schema({
+    companyID : {
+        type: String,
+        required: true,
+        minlength: 1,
+        trim: true,
+    },
     userID : {
         type: String,
         required: true,
@@ -13,12 +19,16 @@ const recordSchema = new mongoose.Schema({
         minlength: 1,
         trim: true,
     },
+    actionID : {
+      type:Number,
+      required: true,
+    },
     editStart: {
-        type: Date, 
+        type: Date,
         default: Date.now
     },
     editEnd: {
-        type: Date, 
+        type: Date,
         default: Date.now
     },
 });
