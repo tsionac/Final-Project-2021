@@ -35,7 +35,7 @@ export class SmartTextBoxComponent implements OnInit, OnChanges{
   }
 
   smartTextBoxtIn(){
-    this.recordService.startEdit(this.userID,this.comp_ID);
+    this.recordService.startEdit(this.userID,this.comp_ID)?.subscribe( (res) => {/*console.log(res);*/});;
   }
 
   smartTextBoxtOut(){
