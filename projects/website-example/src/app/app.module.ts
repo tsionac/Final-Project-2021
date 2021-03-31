@@ -7,6 +7,9 @@ import { FormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { AppRoutingModule } from './app-routing.module';
+import { ManagerLoginComponent } from './manager-login/manager-login.component';
+import { ComapnyLoginSimulatorComponent } from './comapny-login-simulator/comapny-login-simulator.component';
 
 
 
@@ -16,6 +19,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   declarations: [
     AppComponent,
     LoginComponent,
+    ManagerLoginComponent,
+    ComapnyLoginSimulatorComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,6 +29,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
