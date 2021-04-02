@@ -36,39 +36,49 @@ app.use(function(req, res, next) {
   });
 
 // verify refresh token middleware (and by that verifing the session)
-/*app.use((req, res, next) => {
+let verifySession = (req, res, next) => {
   //grab the refresh token from the request header
   let refreshToken = req.header(refreshHeader);
 
   //grab the _id token from the request header
   let _id = req.header('_id');
 
-  Manager.findByIdAndToken(_id, refreshToken).then((manager) => {
+  Manager.findByIDAndToken(_id, refreshToken).then((manager) => {
       if(!manager){
         // could not find manager
         return Promise.reject({'error':'manager not found. does the _id and token are valid?'});
       }
 
-      // if the code reached this place, than the manger was found, which means the session is valid
-      //req.manager_id = manager._id;
-      //req.refreshToken = refreshToken;
+      // if the code reached this place, than the manger was found
+      // this means thate tere is a refresh token in the DB, but we still need to check if it has expired or not
 
-      //let isSessionValid = false;
+      req.manager_id = manager._id;
+      req.managerObj = manager;
+      req.refreshToken = refreshToken;
+
+      let isSessionValid = false;
 
       //we will now check if the session as expried
-      //manager.sessions.array.forEach(session => {
-        //if(session.token === refreshToken){
+      manager.sessions.forEach(session => {
+        if(session.token === refreshToken){
           // this is the current session record
 
-          //Manager.hasRefreshTokenExpire(session.expiresAt)
-          //if(true) { // check if the session has expired
+          if(!Manager.hasRefreshTokenExpire(session.expiresAt)) { // check if the session has expired
             //has not expired
-          //  isSessionValid = true;
-          //}
-        //}
-      //});
-  });
-}); */
+            isSessionValid = true;
+          }
+        }
+      });
+
+      if(isSessionValid){
+        //there is an active and valid session for this user
+        next(); // continue to pricess this web request.
+      } else {
+        // session is no valid
+        return Promise.reject({'error':'refresh token has expired or the session is invalid.'});
+      }
+  }).catch((e) => {next(ApiError.unAuthorised(e))});
+}
 
 
 // ------------------------------- aplication specific imports -------------------------------
@@ -155,7 +165,7 @@ app.patch('/records/:id', (req, res, next) => {
 
     Record.findOneAndUpdate({_id: id}, { $set: req.body})
     .then(() => { res.sendStatus(ok);})
-    .catch(() => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?'))});
+    .catch(() => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?'));});
 
 });
 
@@ -260,13 +270,10 @@ app.get('/managers/:userid', (req, res, next) => {
 /**
  * generate and returns an access token
  */
- app.get('/managers/me/access-token', (req, res, next) => {
-  let userid = req.params.userid;
-
-  Manager.findOne({'userID':userid}).then((manager) =>{
-    res.send(manager);
-  })
-  .catch(next);
+ app.get('/managers/me/access-token', verifySession, (req, res, next) => {
+    req.managerObj.generateAccessAuthenticationToken().then((accessToken) => {
+        res.header(accessheader, accessToken).send({accessToken}); // return access tokekn to the user
+    }).catch((e) => next(ApiError.badRequest(e)));
 });
 
 

@@ -86,7 +86,7 @@ const managerSchema = new mongoose.Schema({
 
 
 // -------------------------------------------------- Instance methods --------------------------------------------------
-
+/*
 // overiding the "toJSON" methind, we do not want to expose the passwords ans sessions.
 managerSchema.methods.toJSON = function() {
   const manager = this;
@@ -95,7 +95,7 @@ managerSchema.methods.toJSON = function() {
   // return eveything exept password & sessions
   return _.omit(manageObj, ['password', 'sessions'] );
 };
-
+*/
 
 //create Authentication Token to verify the user
 managerSchema.methods.generateAccessAuthenticationToken = function() {
@@ -158,7 +158,7 @@ managerSchema.methods.createSession = function() {
 // -------------------------------------------------- module (static) methods --------------------------------------------------
 
 // find manager by ID and token.
-managerSchema.statics.findByIdAndToken = function(_id, token) {
+managerSchema.statics.findByIDAndToken = function(_id, token) {
   const Manager = this;
 
   return Manager.findOne({
@@ -186,11 +186,9 @@ managerSchema.statics.findByCredentials = function(userID, password) {
 
 // check if the refresh token is expired
 managerSchema.statics.hasRefreshTokenExpire = (expiresAt) => {
+  let nowUnix =  secondsSinceEpoch();
 
-  // recive the ammount of seconds since the start of the unix timestamps clock (Thu Jan 01 1970 00:00:00 GMT+0000)
-  // deviding by 1000 because Date.now() return the amunt in miliseconds.
-
-  if(expiresAt > secondsSinceEpoch()) {
+  if(expiresAt >nowUnix) {
     // the experation time has not arived yet.
     return false;
   } else{
