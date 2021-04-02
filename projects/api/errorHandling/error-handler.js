@@ -16,7 +16,7 @@ function errorHandler(err, req, res, next){
   // therefore, a generic mesage should be returend insted.
 
   //retun internul server error
-  res.status(500).jason('something went horribly wrong...');
+  res.status(500).json('something went horribly wrong...');
 }
 
 
