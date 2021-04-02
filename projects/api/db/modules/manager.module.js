@@ -86,7 +86,7 @@ const managerSchema = new mongoose.Schema({
 
 
 // -------------------------------------------------- Instance methods --------------------------------------------------
-/*
+
 // overiding the "toJSON" methind, we do not want to expose the passwords ans sessions.
 managerSchema.methods.toJSON = function() {
   const manager = this;
@@ -95,7 +95,7 @@ managerSchema.methods.toJSON = function() {
   // return eveything exept password & sessions
   return _.omit(manageObj, ['password', 'sessions'] );
 };
-*/
+
 
 //create Authentication Token to verify the user
 managerSchema.methods.generateAccessAuthenticationToken = function() {
@@ -245,14 +245,16 @@ let saveSessionToDB = (manager, refreshToken) => {
 // generete a refresh token's expiry time
 let genereteExpiryTime = () => {
   let secondsUntilExpire = refreshTokenExpiryTimeInDays * 24 * 60 * 60;
+  let nowUnix = secondsSinceEpoch();
 
   // return now + the time until the seesion is valid.
-  return (secondsSinceEpoch() + secondsUntilExpire);
+  return nowUnix + secondsUntilExpire;
 };
 
 // recive the ammount of seconds since the start of the unix timestamps clock (Thu Jan 01 1970 00:00:00 GMT+0000)
 let secondsSinceEpoch = () => {
-  return Date.now();
+  // deviding by 1000 since it return time in miliseconds
+  return Date.now() / 1000;
 }
 
 // -------------------------------------------------- export module --------------------------------------------------
