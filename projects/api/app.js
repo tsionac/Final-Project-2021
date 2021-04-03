@@ -12,10 +12,11 @@ const app = express();
 const {mongoose} = require('./db/mongooose');
 const bodyPaeser = require('body-parser');
 
+const jwt = require('jsonwebtoken');
+
+
 //load modules
 const { Record, Manager } = require('./db/modules');
-
-
 
 // ------------------------------- middlewares -------------------------------
 
@@ -32,8 +33,42 @@ app.use(bodyPaeser.json());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Expose-Headers", (refreshHeader + ', ' + accessheader)); // allow for sending back those values in the header
     next();
   });
+
+
+
+// authenticate a user by checking if the request have a valid JWT (access token)
+let authenticate = (req, res, next) => {
+  //grab the acess token from the request header
+  let accessToken = req.header(accessheader);
+
+  //verify the JWT
+  jwt.verify(accessToken, Manager.getJWTsecret(), (err, decoded) => {
+    if(err){
+      // JWT not valid, user is NOT authenticated!
+      next(ApiError.unAuthorised('you have no permitions to do that! access token failed to verifiy or expired!', err));
+    }else {
+      // verified succesfully
+      let _id = decoded._id;
+
+      // get manager's object TODO : findById instead?
+      Manager.findOne({'_id':_id}).then((manager) => {
+        if(!manager){
+          // could not find manager
+          return Promise.reject({'error':'validation succeded, but the id was not found. HOW???'});
+        } else{
+          // save the id and the manager object to the request
+          req.manager_id = _id;
+          req.managerObj = manager;
+          next(); // continue with the request
+        }
+      });
+    }
+  });
+
+};
 
 // verify refresh token middleware (and by that verifing the session)
 let verifySession = (req, res, next) => {
@@ -86,7 +121,6 @@ const {ActiveEdits} = require('./cache');
 const ApiError      = require('./errorHandling/ApiError');
 
 
-
 // ------------------------------- aplication specific objects -------------------------------
 const editCache = new ActiveEdits();
 
@@ -104,12 +138,21 @@ const ok    = 200;
 
 // get ALL record.
 // WARNING: extremly dangerous, remove on luanch.
-app.get('/records', (req, res, next) => {
+app.get('/records/all', (req, res, next) => {
     Record.find({}).then((records) =>{
       res.send(records);
     })
     .catch(next);
 });
+
+// get all records of manager's company.
+app.get('/records', authenticate, (req, res, next) => {
+  Record.find({companyID:req.managerObj.companyID}).then((records) =>{
+    res.send(records);
+  })
+  .catch((e) => next(ApiError.badRequest('could not retrive recordns in the manger\'s companyt',e)));
+});
+
 
 // pots a new record
 // if recived undefinded editEnd  , asume the edit has just began, save info on it to the ram, untl the edit has finished.
@@ -275,7 +318,6 @@ app.get('/managers/:userid', (req, res, next) => {
         res.header(accessheader, accessToken).send({accessToken}); // return access tokekn to the user
     }).catch((e) => next(ApiError.badRequest('could not retrive access token', e)));
 });
-
 
 
 // ------------------------------- push error handler -------------------------------

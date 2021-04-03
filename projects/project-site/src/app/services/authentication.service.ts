@@ -1,3 +1,7 @@
+// many parts of the user authentication in the frontend was havely based on this youtube tutorial :
+// https://www.youtube.com/watch?v=Fa2imVkcdqs&t=13s
+
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { WebRequestService } from './web-request.service';
@@ -43,7 +47,39 @@ export class AuthenticationService {
   }
 
 
+  // -----------------------------------------------------getters & setters -----------------------------------------------------
 
+  /**
+   * get the access token from local storage
+   */
+  getAccessToken(){
+      return localStorage.getItem(this.accessStorage);
+  }
+
+  /**
+   * get the refresh token from local storage
+   */
+   getRefreshToken(){
+    return localStorage.getItem(this.refreshStorage);
+}
+
+
+
+  /**
+   *  set the value of the access token
+   * @param accessToken the value of the access token to set
+   */
+  setAccessToken(accessToken:string){
+    localStorage.setItem(this.accessStorage, accessToken);
+  }
+
+  /**
+   *  set the value of the refresh token
+   * @param refreshToken the value of the refresh token to set
+   */
+   setRefreshToken(refreshToken:string){
+    localStorage.setItem(this.refreshStorage, refreshToken);
+  }
 
 
   // ----------------------------------------------------- private methods -----------------------------------------------------

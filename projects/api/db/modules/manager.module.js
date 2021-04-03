@@ -157,6 +157,9 @@ managerSchema.methods.createSession = function() {
 
 // -------------------------------------------------- module (static) methods --------------------------------------------------
 
+//get the secret
+managerSchema.statics.getJWTsecret = () => {return getSecret(); }
+
 // find manager by ID and token.
 managerSchema.statics.findByIDAndToken = function(_id, token) {
   const Manager = this;

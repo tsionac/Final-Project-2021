@@ -5,11 +5,11 @@ class ApiError {
 
   static badRequestError       = 400;
   static unAuthorisedError     = 401;
-  static pageNotFoundError     = 404;
+  static notFoundError     = 404;
   static internalServerError   = 500; // default error
 
   constructor(code, msg, e){
-    this.code = code; // error code (a.k.a status, like 404 = page not found)
+    this.code = code; // error code (a.k.a status, like 404 = [page] not found)
     this.msg = msg;
     this.e = e;       // optional exeption parameter, will not returned to the user, but will be written to the logger.
   };
@@ -28,9 +28,9 @@ class ApiError {
     return new ApiError(this.unAuthorisedError, msg, e);
   };
 
-  // return a pageNotFound ApiError
-  static pageNotFound(msg, e){
-    return new ApiError(this.pageNotFoundError, msg, e);
+  // return a notFound ApiError
+  static notFound(msg, e){
+    return new ApiError(this.notFoundError, msg, e);
   }
 }
 
