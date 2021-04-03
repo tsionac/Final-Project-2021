@@ -1,3 +1,4 @@
+const { of } = require("rxjs");
 const ApiError = require("./ApiError");
 
 function errorHandler(err, req, res, next){
@@ -8,6 +9,11 @@ function errorHandler(err, req, res, next){
 
   if(err instanceof ApiError){
     res.status(err.code).json(err.msg);
+
+    //if(err.e !== undefined){
+    //  console.log(err.e);  //TODO: replace to an error loger (check requremets doc for prefered one to use)
+    //}
+
     return;
   }
 

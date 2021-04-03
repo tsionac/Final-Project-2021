@@ -77,7 +77,7 @@ let verifySession = (req, res, next) => {
         // session is no valid
         return Promise.reject({'error':'refresh token has expired or the session is invalid.'});
       }
-  }).catch((e) => {next(ApiError.unAuthorised(e))});
+  }).catch((e) => {next(ApiError.unAuthorised('the ssesion could not be verified', e))});
 }
 
 
@@ -165,7 +165,7 @@ app.patch('/records/:id', (req, res, next) => {
 
     Record.findOneAndUpdate({_id: id}, { $set: req.body})
     .then(() => { res.sendStatus(ok);})
-    .catch(() => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?'));});
+    .catch((e) => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?', e));});
 
 });
 
@@ -177,7 +177,7 @@ app.delete('/records/:id', (req, res, next) => {
 
     Record.findOneAndRemove({_id: id})
     .then((removed) => { res.send(removed)})
-    .catch(() => { next(ApiError.internal('error accured while deleting the record. is the id correct?'))});
+    .catch((e) => { next(ApiError.internal('error accured while deleting the record. is the id correct?', e))});
 });
 
 // delete **ALL*** records
@@ -219,7 +219,7 @@ app.post('/managers', (req, res, next) => {
       .header(refreshHeader, authentocationTokens.refreshToken)
       .header(accessheader, authentocationTokens.accessToken)
       .send(newManager);
-  }).catch((e) =>  { next(ApiError.internal('failed to create new user.\n' + e));});
+  }).catch((e) =>  { next(ApiError.internal('failed to create new user.', e));});
 
 });
 
@@ -245,8 +245,8 @@ app.post('/managers/login', (req, res, next) => {
         .header(refreshHeader, authentocationTokens.refreshToken)
         .header(accessheader, authentocationTokens.accessToken)
         .send(manager);
-    }).catch((e) =>  { next(ApiError.internal('failed to login.\n' + e));});
-  });
+    }).catch((e) =>  { next(ApiError.internal('failed to login.', e));});
+  }).catch((e) =>  { next(ApiError.unAuthorised('failed to login. are the userID and password correct?', e));});
 });
 
 // delete **ALL*** managers
@@ -273,7 +273,7 @@ app.get('/managers/:userid', (req, res, next) => {
  app.get('/managers/me/access-token', verifySession, (req, res, next) => {
     req.managerObj.generateAccessAuthenticationToken().then((accessToken) => {
         res.header(accessheader, accessToken).send({accessToken}); // return access tokekn to the user
-    }).catch((e) => next(ApiError.badRequest(e)));
+    }).catch((e) => next(ApiError.badRequest('could not retrive access token', e)));
 });
 
 
@@ -284,11 +284,11 @@ const errorHandler = require('./errorHandling/error-handler');
 app.use(errorHandler);
 
 // uncought error handler - very bad if happands
-process.on('uncaughtException', function (err) {
+//process.on('uncaughtException', function (err) {
   //TODO : error loger
-  console.log("FATAL: Uncought error acurred!!!!!\n" + err.stack);
-  console.error();
-});
+//  console.log("FATAL: Uncought error acurred!!!!!\n" + err.stack);
+//  console.error();
+//});
 
 
 
