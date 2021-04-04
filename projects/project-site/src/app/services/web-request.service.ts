@@ -14,8 +14,16 @@ export class WebRequestService {
     return `${this.ROOT_URL}${uri}`;
   }
 
+
+
+
+
   get(uri:String){
     return this.http.get(this.getAdress(uri));
+  }
+
+  get2(uri:String, options:Object){
+    return this.http.get(this.getAdress(uri), options);
   }
 
   delete(uri:String){

@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 export class EntryGeneretor {
 
   createRecord(userID:String, componentID:String, actionID:Number, editStart:Date | undefined, editEnd:Date | undefined){
-    return {userID, componentID,'actionID':actionID, editStart, editEnd,};
+    return {userID, componentID,actionID, editStart, editEnd,};
   }
 
 }

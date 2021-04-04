@@ -38,7 +38,7 @@ const refreshSecretLength = 64;
 // too short, the user wil have to login mre frequently.
 // too long, the database wil keep storing them, and it might be too much. also coud become a security problem, though user can revoke access if the user choode too (explained above).
 // see method genereteExpiryTime() if a more percis time than days is requre.
-const refreshTokenExpiryTimeInDays = '10';
+const refreshTokenExpiryTimeInDays = 10;
 
 
 // amunt of rounds that a passwors is hashe in.
@@ -247,7 +247,7 @@ let saveSessionToDB = (manager, refreshToken) => {
 
 // generete a refresh token's expiry time
 let genereteExpiryTime = () => {
-  let secondsUntilExpire = refreshTokenExpiryTimeInDays * 24 * 60 * 60;
+  let secondsUntilExpire = refreshTokenExpiryTimeInDays * 24 * 60 * 60; //HERE
   let nowUnix = secondsSinceEpoch();
 
   // return now + the time until the seesion is valid.

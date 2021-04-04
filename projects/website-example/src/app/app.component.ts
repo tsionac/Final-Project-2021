@@ -6,4 +6,5 @@ import { AppComponentServiceService } from './app-component-service.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  title = 'website-example'
 }

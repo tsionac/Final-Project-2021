@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { WebRequestService } from './web-request.service';
 import { shareReplay, tap } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,9 @@ export class AuthenticationService {
   private readonly _idStorage:string  = 'user-id' ;
   private readonly accessStorage:string = 'access-token';
   private readonly refreshStorage:string = 'refresh-token';
+
+
+
 
   constructor(private webService:WebRequestService, private router:Router) { }
 
@@ -36,7 +40,7 @@ export class AuthenticationService {
         //save session info
         this.setSession(_id, accessTolken, refreshTolken);
 
-        console.log('loged in');  // TODO : DELETE
+        console.log('logged in');  // TODO : DELETE
       })
     );
   };
@@ -44,6 +48,27 @@ export class AuthenticationService {
   // logout of the system
   logout(){
     this.removeSession();
+    this.router.navigate(['/Login']);
+  }
+
+  /**
+   * refresh the access token with the refresh token
+   */
+  getNewAccessToken() {
+    if(this.getRefreshToken() === null || this.getID() === null){
+      return throwError('could not refresh aceess token - no values for refresh token or _id');
+    }
+
+    return this.webService.get2('/managers/me/access-token', {
+      headers:{
+        'x-refresh-token': this.getRefreshToken(),
+        '_id': this.getID()
+      },
+      observe: 'response'
+    }).pipe(tap((res: HttpResponse<any>) => {
+      // save new acccess token to local storage
+      this.setAccessToken(res.headers.get(this.accessHeader));
+    }));
   }
 
 
@@ -59,9 +84,16 @@ export class AuthenticationService {
   /**
    * get the refresh token from local storage
    */
-   getRefreshToken(){
+  getRefreshToken(){
     return localStorage.getItem(this.refreshStorage);
-}
+  }
+
+  /**
+   * get the _id from local storage
+   */
+   getID(){
+    return localStorage.getItem(this._idStorage);
+  }
 
 
 
@@ -81,14 +113,22 @@ export class AuthenticationService {
     localStorage.setItem(this.refreshStorage, refreshToken);
   }
 
+  /**
+   *  set the value of the _id
+   * @param _id the value of the _id to set
+   */
+   setID(_id:string){
+    localStorage.setItem(this._idStorage, _id);
+  }
+
 
   // ----------------------------------------------------- private methods -----------------------------------------------------
 
   // save authentication token of a user to the local storage
   private setSession(user_id:string, accessToken:string, refreshToken:string){
-      localStorage.setItem(this._idStorage, user_id);
-      localStorage.setItem(this.accessStorage, accessToken);
-      localStorage.setItem(this.refreshStorage, refreshToken);
+    this.setID(user_id);
+    this.setAccessToken(accessToken);
+    this.setRefreshToken(refreshToken);
   }
 
   // remove info on the session from the local storage
