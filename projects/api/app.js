@@ -209,7 +209,7 @@ app.patch('/records/:id', (req, res, next) => {
     let id = req.params.id;
 
     Record.findOneAndUpdate({_id: id}, { $set: req.body})
-    .then(() => { res.sendStatus(ok);})
+    .then(() => { res.status(ok).send({'message': 'edited successfully'});})
     .catch((e) => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?', e));});
 
 });
@@ -229,7 +229,7 @@ app.delete('/records/:id', (req, res, next) => {
 // WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
 app.delete('/records', (req, res, next) => {
     Record.deleteMany({})
-    .then(() => { res.sendStatus(ok);})
+    .then(() => { res.status(ok).send({'message': 'deleted successfully'});})
     .catch(next);
 });
 
@@ -298,7 +298,7 @@ app.post('/managers/login', (req, res, next) => {
 // WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
 app.delete('/managers', (req, res, next) => {
   Manager.deleteMany({})
-  .then(() => { res.sendStatus(ok);})
+  .then(() => { res.status(ok).send({'message': 'deleted successfully'});})
   .catch(next);
 });
 

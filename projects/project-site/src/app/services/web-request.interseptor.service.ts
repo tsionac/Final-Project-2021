@@ -3,7 +3,7 @@
 
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { empty, Observable, throwError } from 'rxjs';
+import { empty, Observable, Subject, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthenticationService } from './authentication.service';
 
@@ -16,10 +16,15 @@ export class WebRequestInterseptor implements HttpInterceptor {
   private readonly refreshHeader:string = 'x-refresh-token';
 
   /**
-   * evry tome there is a 401 error, we will try to refresh.
+   * evry time there is a 401 error, we will try to refresh.
    * if faled, it wil also result in 401 so this fiels is here to avoid infinite loop.
    */
   private refreshingAccessToken:boolean = false;
+
+  /**
+   * if the acess tiken has expire the next request wiull be ignured, si we beed to di it later
+   */
+  private accessTokenRefreshed:Subject<any> = new Subject();
 
   constructor(private authService:AuthenticationService) { }
 
@@ -36,7 +41,7 @@ export class WebRequestInterseptor implements HttpInterceptor {
         // TODO : do something with the error
         console.log(err);
 
-        if(err.status === 401 && !this.refreshingAccessToken){
+        if(err.status === 401){
           // user is unautorised and this rror was not resulted form a failed refresh
           // this could be because the access token has expired. so we will try to refresh it
           // if this faled, perhaps refresh token has expired, ir was revoked. so we need to kogout so the user wi be forced to login again.
@@ -95,14 +100,24 @@ export class WebRequestInterseptor implements HttpInterceptor {
   private refreshAccessToken(){
     // we need to send a request to the DB's api in order to refresh the accesstoken
 
-    this.refreshingAccessToken = true; // refresh proccess started.
-    return this.authService.getNewAccessToken().pipe(
-      tap(() => {
-        this.refreshingAccessToken = false; // refresh proccess ended successfully.
-        console.log('Access token was refreshed!');
-      })
-    );
-
+    if( this.refreshingAccessToken) {
+        return new Observable(observer => {
+          this.accessTokenRefreshed.subscribe(() => {
+            // this code will be runed after the access token was refreshed
+            observer.next();
+            observer.complete();
+          });
+        });
+    } else {
+      this.refreshingAccessToken = true; // refresh proccess started.
+      return this.authService.getNewAccessToken().pipe(
+        tap(() => {
+          this.refreshingAccessToken = false; // refresh proccess ended successfully.
+          this.accessTokenRefreshed.next();
+          console.log('Access token was refreshed!');
+        })
+      );
+    }
   };
 
 }

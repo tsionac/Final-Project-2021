@@ -1,5 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -10,7 +11,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService:AuthenticationService) { }
+  constructor(private authService:AuthenticationService, private router:Router) { }
   //constructor() { }
 
   ngOnInit(): void {
@@ -22,7 +23,10 @@ export class LoginComponent implements OnInit {
    login(username:string, password:string){
     if(username !== '' && password !== ''){
       this.authService.login(username,password).subscribe((res:HttpResponse<any>) => {
-        //console.log(res); //TODO : remove
+        if(res.status === 200){
+          // login was succesfull, redirecting to the activity view
+          this.router.navigate(['/Activities']);
+        }
       });
     }
   };
