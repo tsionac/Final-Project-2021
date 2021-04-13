@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActiveEdits } from '../helpers/activeEdits.module';
+import { DateRequestService } from '../helpers/date-request.service';
+import { EntryGeneretor } from '../helpers/enrtyGenerqator.module';
 import { WebRequestService } from './web-request.service';
 
 @Injectable({
@@ -7,26 +8,21 @@ import { WebRequestService } from './web-request.service';
 })
 export class RecordService {
 
-  constructor(private wrs:WebRequestService, private userEdits:ActiveEdits) {
+  private uri:String = '/records';
+
+  constructor(private wrs:WebRequestService, private drs:DateRequestService, private enryCreator:EntryGeneretor) {
    };
 
   getRecords(){
-    return this.wrs.get('/records');
+    return this.wrs.get(this.uri);
   };
 
   startEdit(userID:String, componentID:String){
-    this.userEdits.startEdit(userID,componentID);
+    return this.wrs.post(this.uri, this.enryCreator.createRecord(userID, componentID, -1, this.drs.getCurrentTime(), undefined) );
   };
 
-  endEdit(userID:String, componentID:String){
-    let editStart = this.userEdits.endEdit(userID,componentID);
-
-    if(editStart !== undefined){
-      return this.wrs.post('/records', {userID, componentID, editStart,});
-    }
-    else {
-      return null;
-    }
+  endEdit(userID:String, componentID:String, actionID:Number){
+    return this.wrs.post(this.uri, this.enryCreator.createRecord(userID, componentID,actionID, undefined, this.drs.getCurrentTime()) );
   };
 
 

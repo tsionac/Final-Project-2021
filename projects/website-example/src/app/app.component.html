@@ -1,4 +1,6 @@
-<p>This is from app component</p>
+<nav>
+  <a routerLink='managerLogin' routerLinkActive='active'>Manager Login</a>
+  <a routerLink='companySite'  routerLinkActive='active'>company's site</a>
+</nav>
 
-<app-login></app-login>
-<tsnt-share-tool [user]="get_user()" [comp_id]='34'></tsnt-share-tool>
+<router-outlet></router-outlet>
