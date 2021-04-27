@@ -178,6 +178,7 @@
                             "projects/project-site/src/assets"
                         ],
                         "styles": [
+                            "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "projects/project-site/src/styles.css"
                         ],
                         "scripts": []
@@ -241,6 +242,7 @@
                             "projects/project-site/src/assets"
                         ],
                         "styles": [
+                            "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "projects/project-site/src/styles.css"
                         ],
                         "scripts": []

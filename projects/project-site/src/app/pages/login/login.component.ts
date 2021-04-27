@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(username,password).subscribe((res:HttpResponse<any>) => {
         if(res.status === 200){
           // login was succesfull, redirecting to the activity view
-          this.router.navigate(['/Activities']);
+          this.router.navigate(['/Home']);
         }
       });
     }
