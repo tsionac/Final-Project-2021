@@ -1,16 +1,19 @@
-<div class="login-des">
-    <h1 class="demo-3-main-h1">Login</h1>
+<mat-card class="dashboard-card">
+    <mat-card-header>
 
-    <p class="form-group">
-        <label for="exampleUsername">Username</label>
-        <input #usernameInput type="username" class="form-control" id="exampleUsername" placeholder="Enter username">
-    </p>
+    </mat-card-header>
+    <mat-card-content class="dashboard-card-content">
+        <div class="login-des">
+            <h1 class="demo-3-main-h1">Login</h1>
 
-
-    <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input #passwordInput type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <p></p>
-    <button mat-raised-button color="primary" (click)="login(usernameInput.value, passwordInput.value)">Login</button>
-</div>
+            <p class="form-group">
+                <input #usernameInput type="username" class="form-control" id="exampleUsername" placeholder="Enter username">
+            </p>
+            <div class="form-group">
+                <input #passwordInput type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <p></p>
+            <button input type="submit" mat-raised-button color="primary" (click)="login(usernameInput.value, passwordInput.value)">Login</button>
+        </div>
+    </mat-card-content>
+</mat-card>

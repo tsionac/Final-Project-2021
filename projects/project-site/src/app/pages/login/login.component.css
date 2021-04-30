@@ -1,3 +1,14 @@
+.dashboard-card {
+    /* margin-block-end: 15%; */
+    margin-right: 25%;
+    margin-left: 25%;
+    margin-top: 10%;
+}
+
+.dashboard-card-content {
+    text-align: center;
+}
+
 .example-form {
     min-width: 150px;
     max-width: 500px;
@@ -8,12 +19,7 @@
     width: 100%;
 }
 
-.login-des {
-    zoom: 250%;
-    /* margin-left: auto;
-    margin-right: auto;
-    width: 8em */
-}
+.login-des {}
 
 label {
     display: flex;
@@ -27,26 +33,6 @@ input {
     height: 20px;
     flex: 0 0 200px;
 }
-
-
-/*
-.demo-3 .main h2:after,
-.demo-3 .main h3:after,
-.demo-3 .main h4:after {
-  position: absolute;
-  content: "";
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 5px;
-  border-radius: 2px;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.3);
-} */
-
-
-/* .demo-3 .main h2:after {
-  background: #0AF;
-} */
 
 .demo-3-main-h1 {
     font-size: 36px;
