@@ -42,6 +42,7 @@ app.use(function(req, res, next) {
 
 
 // authenticate a user by checking if the request have a valid JWT (access token)
+// get manager object
 let authenticate = (req, res, next) => {
   //grab the acess token from the request header
   let accessToken = req.header(accessheader);
@@ -55,7 +56,6 @@ let authenticate = (req, res, next) => {
       // verified succesfully
       let _id = decoded._id;
 
-      // get manager's object TODO : findById instead?
       Manager.findOne({'_id':_id}).then((manager) => {
         if(!manager){
           // could not find manager
@@ -67,6 +67,29 @@ let authenticate = (req, res, next) => {
           next(); // continue with the request
         }
       });
+    }
+  });
+
+};
+
+
+// authenticate a user by checking if the request have a valid JWT (access token)
+// dont querry for manager obj
+let authenticateNoObj = (req, res, next) => {
+  //grab the acess token from the request header
+  let accessToken = req.header(accessheader);
+
+  //verify the JWT
+  jwt.verify(accessToken, Manager.getJWTsecret(), (err, decoded) => {
+    if(err){
+      // JWT not valid, user is NOT authenticated!
+      next(ApiError.unAuthorised('you have no permitions to do that! access token failed to verifiy or expired!', err));
+    }else {
+      // verified succesfully
+      let _id = decoded._id;
+      req.manager_id = _id;
+
+      next(); // continue with the request
     }
   });
 
@@ -243,28 +266,20 @@ app.delete('/records', (req, res, next) => {
  * post a new manager
  * i.e. signup
  */
-app.post('/managers', (req, res, next) => {
+app.post('/managers', authenticate, (req, res, next) => {
   let body = req.body;
+
+  if(req.managerObj.userID != 'Admin'){
+    next(ApiError.badRequest('Only the user \'Admin\' can add new users!'));
+    return;
+  }
 
   let newManager = new Manager(body);
 
-  //TODO : this sign in also do login, not relevent for our project. change later when I undrstand it better.
-
   newManager.save().then( (managerDoc) => {
-    return newManager.createSession();
-  }).then((refreshToken) => {
-    // session created succesfully, and the refresh token was returned, so niw we need to generet JWT fo the manager.
-    return newManager.generateAccessAuthenticationToken().then((accessToken) => {
-      // the access token was crerated succesfully, returning an object containig the two tokens.
-      return {accessToken, refreshToken};
-    });
-  }).then((authentocationTokens) => {
-    // retun a response to the user
-    res
-      .header(refreshHeader, authentocationTokens.refreshToken)
-      .header(accessheader, authentocationTokens.accessToken)
-      .send(newManager);
+    res.send(managerDoc);
   }).catch((e) =>  { next(ApiError.internal('failed to create new user.', e));});
+
 
 });
 
@@ -275,6 +290,8 @@ app.post('/managers', (req, res, next) => {
 app.post('/managers/login', (req, res, next) => {
   let userID = req.body.userID;
   let password = req.body.password;
+
+  Manager.deleteExpiredSessions(userID).then(() => {
 
   Manager.findByCredentials(userID, password).then((manager) => {
     return manager.createSession().then((refreshToken) => {
@@ -292,6 +309,8 @@ app.post('/managers/login', (req, res, next) => {
         .send(manager);
     }).catch((e) =>  { next(ApiError.internal('failed to login.', e));});
   }).catch((e) =>  { next(ApiError.unAuthorised('failed to login. are the userID and password correct?', e));});
+})
+
 });
 
 // delete **ALL*** managers
@@ -303,6 +322,7 @@ app.delete('/managers', (req, res, next) => {
 });
 
 //get info on specific manager
+// WARNING: extremly dangerous, remove on luanch.
 app.get('/managers/:userid', (req, res, next) => {
   let userid = req.params.userid;
 
@@ -320,6 +340,21 @@ app.get('/managers/:userid', (req, res, next) => {
         res.header(accessheader, accessToken).send({accessToken}); // return access tokekn to the user
     }).catch((e) => next(ApiError.badRequest('could not retrive access token', e)));
 });
+
+
+
+/**
+ * revoke access to an active session
+ */
+ app.patch('/managers/:managerid/revoke/:token', (req, res, next) => {
+  let managerid = req.params.managerid;
+  let rtoken = req.params.token;
+
+  Manager.revokeRefreshToken(managerid, rtoken)
+  .then(() => { res.status(ok).send({'message': 'revoked successfully'});})
+  .catch((e) => { next(ApiError.internal('error accured while revoking session.', e));});
+});
+
 
 
 // ------------------------------- push error handler -------------------------------
@@ -344,6 +379,26 @@ app.use(errorHandler);
 // ------------------------------- start server -------------------------------
 
 app.listen(PORT, () =>{
-    console.log(`Server is listening on port ${PORT}`);
+  console.log(`Server is listening on port ${PORT}`);
+
+  //make usre there is an admin to the system
+  let userID = 'Admin';
+  let companyID = 'Admin';
+  let password = '12345678';
+
+  let newManager = new Manager( {
+    companyID,
+    userID,
+    password
+  });
+
+  Manager.findOneAndRemove({userID})
+  .then((removed) => {
+    newManager.save().then( (adminDoc) => {
+      console.log(`The admin has beed successfully set :  ${adminDoc}`);
+    }).catch((e) =>  { console.log(`FATAL : Admin was not set!`);});
+  })
+  .catch((e) => {});
+
 });
 

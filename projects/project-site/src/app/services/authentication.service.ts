@@ -45,6 +45,10 @@ export class AuthenticationService {
     );
   };
 
+  signup(userID:string, companyID:string, password:string) {
+    return this.webService.post('/managers', { userID, companyID, password });
+  }
+
   // logout of the system
   logout(){
     this.removeSession();

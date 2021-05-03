@@ -7,11 +7,13 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { WebRequestInterseptor } from './services/web-request.interseptor.service';
 import { ViewActivitiesComponent } from './pages/view-activities/view-activities.component';
+import { CreateManagerComponent } from './pages/create-manager/create-manager.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ViewActivitiesComponent,
+    CreateManagerComponent,
   ],
   imports: [
     BrowserModule,

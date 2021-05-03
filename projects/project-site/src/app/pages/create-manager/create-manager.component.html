@@ -1,0 +1,17 @@
+<h1 class="demo-3-main-h1">create Manager</h1>
+
+<p class="form-group">
+    <label for="exampleUsername">Username</label>
+    <input #usernameInput type="username" class="form-control" id="exampleUsername" placeholder="Enter username">
+</p>
+
+
+<div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input #passwordInput type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+</div>
+
+
+<p></p>
+<button mat-raised-button color="primary" (click)="createManamager(usernameInput.value, 'figureoutLater', passwordInput.value)">create</button>
+

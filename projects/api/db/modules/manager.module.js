@@ -200,6 +200,22 @@ managerSchema.statics.hasRefreshTokenExpire = (expiresAt) => {
   }
 };
 
+// delete expired session records
+managerSchema.statics.deleteExpiredSessions = function(userID) {
+  const Manager = this;
+
+  return Manager.findOneAndUpdate({userID}, { $pull: { "sessions": { 'expiresAt': { $lt: secondsSinceEpoch() } } } }, { safe: true, upsert: true });
+};
+
+
+
+// revoke a refresh token
+managerSchema.statics.revokeRefreshToken = function(userID, refreshToken) {
+  const Manager = this;
+
+  return Manager.findOneAndUpdate({userID}, { $pull: { "sessions": { 'token': refreshToken } } }, { safe: true, upsert: true });
+};
+
 // -------------------------------------------------- Midlewares --------------------------------------------------
 
 // before a manager documents is saved, this code runs
