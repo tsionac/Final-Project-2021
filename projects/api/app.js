@@ -9,7 +9,7 @@
 const express = require('express');
 const app = express();
 
-const {mongoose} = require('./db/mongooose');
+const conn = require('./db/index');
 const bodyPaeser = require('body-parser');
 
 const jwt = require('jsonwebtoken');
@@ -152,7 +152,6 @@ const editCache = new ActiveEdits();
 
 // ------------------------------- HTTP defenitions -------------------------------
 
-const PORT  = 3000;
 const ok    = 200;
 
 
@@ -374,31 +373,33 @@ app.use(errorHandler);
 
 
 
+module.exports = app;
 
 
-// ------------------------------- start server -------------------------------
+/*
+conn.connect().then(() => {
+  app.listen(PORT, () =>{
+    console.log(`Server is listening on port ${PORT}`);
 
-app.listen(PORT, () =>{
-  console.log(`Server is listening on port ${PORT}`);
+    //make usre there is an admin to the system
+    let userID = 'Admin';
+    let companyID = 'Admin';
+    let password = '12345678';
 
-  //make usre there is an admin to the system
-  let userID = 'Admin';
-  let companyID = 'Admin';
-  let password = '12345678';
+    let newManager = new Manager( {
+      companyID,
+      userID,
+      password
+    });
 
-  let newManager = new Manager( {
-    companyID,
-    userID,
-    password
+    Manager.findOneAndRemove({userID})
+    .then((removed) => {
+      newManager.save().then( (adminDoc) => {
+        console.log(`The admin has beed successfully set :  ${adminDoc}`);
+      }).catch((e) =>  { console.log(`FATAL : Admin was not set!`);});
+    })
+    .catch((e) => {});
+
   });
-
-  Manager.findOneAndRemove({userID})
-  .then((removed) => {
-    newManager.save().then( (adminDoc) => {
-      console.log(`The admin has beed successfully set :  ${adminDoc}`);
-    }).catch((e) =>  { console.log(`FATAL : Admin was not set!`);});
-  })
-  .catch((e) => {});
-
-});
-
+})
+*/

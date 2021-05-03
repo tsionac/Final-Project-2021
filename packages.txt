@@ -4,3 +4,4 @@ npm i body-parser --save
 npm i lodash --save
 npm i jsonwebtoken --save
 npm i bcryptjs --save
+npm i --save mocha chai supertest mockgoose
