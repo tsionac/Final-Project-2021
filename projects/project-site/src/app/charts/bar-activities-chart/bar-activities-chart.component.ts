@@ -16,21 +16,33 @@ export class BarActivitiesChartComponent implements OnInit {
   public barChartOptions: ChartOptions = {
     responsive: true,
   };
-  public barChartLabels: Label[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels: Label[] = Array(31).fill(0).map((_, i) => (i+1).toString());
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
 
   public barChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Sessions' }
   ];
 
   constructor(private recordService:RecordService) { }
+  public iter_activities(){
+    // for (const activity in this.activities){
+    //   console.log(activity.toString());
+    //   // var num_of_day = activity.editStart.getDate();
 
+      
+
+    // }
+    
+    
+
+  }
   ngOnInit() {
     this.recordService.getRecords().subscribe((activities: Activity[]) => {
       this.activities = activities;
+      this.iter_activities()
+      
     })
   
   }
