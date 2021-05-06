@@ -4,10 +4,10 @@
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './pages/login/login.component';
-import { ViewActivitiesComponent } from './pages/view-activities/view-activities.component';
+import { LoginComponent } from './activities/login/login.component';
+import { ViewActivitiesComponent } from './activities/view-activities/view-activities.component';
 import {NavComponent} from './nav/nav.component'
-import { DashComponent} from './dash/dash.component'
+import { DashComponent} from './activities/Home/dash/dash.component'
 
 const routes: Routes = [
   {path: ''            , redirectTo: '/Login', pathMatch: 'full'},
