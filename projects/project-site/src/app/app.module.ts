@@ -20,6 +20,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { DashActivitiesComponent} from './activities/dash-activities/dash-activities.component';
+import { ActivityChartComponent } from './charts/activity-chart/activity-chart.component';
+import { BarActivitiesChartComponent } from './charts/bar-activities-chart/bar-activities-chart.component';
+import { CardComponent } from './card/card.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +31,9 @@ import { DashActivitiesComponent} from './activities/dash-activities/dash-activi
     NavComponent,
     DashComponent,
     DashActivitiesComponent,
+    ActivityChartComponent,
+    BarActivitiesChartComponent,
+    CardComponent,
   ],
   imports: [
     BrowserModule,
