@@ -180,8 +180,8 @@ managerSchema.statics.findByCredentials = function(userID, password) {
     return new Promise( (resolve, reject) => {
       // compare the hashed password to the hashed password stored in the DB
       bcrypt.compare(password, manager.password, (err, res) => {
-        if (res)  resolve(manager);
-        else      reject();
+        if (res) { resolve(manager);}
+        else       {reject();}
       });
     });
   });

@@ -156,18 +156,68 @@ const ok    = 200;
 
 
 
-
-
-// ------------ records ------------
+// ------------ delete later ------------
 
 // get ALL record.
 // WARNING: extremly dangerous, remove on luanch.
 app.get('/records/all', (req, res, next) => {
-    Record.find({}).then((records) =>{
-      res.send(records);
-    })
-    .catch(next);
+  Record.find({}).then((records) =>{
+    res.send(records);
+  })
+  .catch(next);
 });
+
+// recive one specofic recird with a given id
+// WARNING: extremly dangerous, remove on luanch.
+app.patch('/records/:id', (req, res, next) => {
+  let id = req.params.id;
+
+  Record.findOneAndUpdate({_id: id}, { $set: req.body})
+  .then(() => { res.status(ok).send({'message': 'edited successfully'});})
+  .catch((e) => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?', e));});
+});
+
+// delete one specofic recird with a given id
+// WARNING: extremly dangerous, remove on luanch.
+app.delete('/records/:id', (req, res, next) => {
+  let id = req.params.id;
+
+  Record.findOneAndRemove({_id: id})
+  .then((removed) => { res.send(removed)})
+  .catch((e) => { next(ApiError.internal('error accured while deleting the record. is the id correct?', e))});
+});
+
+// delete **ALL*** records
+// WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
+app.delete('/records', (req, res, next) => {
+  Record.deleteMany({})
+  .then(() => { res.status(ok).send({'message': 'deleted successfully'});})
+  .catch(next);
+});
+
+// delete **ALL*** managers
+// WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
+app.delete('/managers', (req, res, next) => {
+  Manager.deleteMany({})
+  .then(() => { res.status(ok).send({'message': 'deleted successfully'});})
+  .catch(next);
+});
+
+//get info on specific manager
+// WARNING: extremly dangerous, remove on luanch.
+app.get('/managers/:userid', (req, res, next) => {
+  let userid = req.params.userid;
+
+  Manager.findOne({'userID':userid}).then((manager) =>{
+    res.send(manager);
+  })
+  .catch(next);
+});
+
+
+
+
+// ------------ records ------------
 
 // get all records of manager's company.
 app.get('/records', authenticate, (req, res, next) => {
@@ -221,42 +271,7 @@ app.post('/records', (req, res, next) => {
       })
       .catch(next);
     }
-
-
 });
-
-// recive one specofic recird with a given id
-// WARNING: extremly dangerous, remove on luanch.
-app.patch('/records/:id', (req, res, next) => {
-    let id = req.params.id;
-
-    Record.findOneAndUpdate({_id: id}, { $set: req.body})
-    .then(() => { res.status(ok).send({'message': 'edited successfully'});})
-    .catch((e) => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?', e));});
-
-});
-
-
-// delete one specofic recird with a given id
-// WARNING: extremly dangerous, remove on luanch.
-app.delete('/records/:id', (req, res, next) => {
-    let id = req.params.id;
-
-    Record.findOneAndRemove({_id: id})
-    .then((removed) => { res.send(removed)})
-    .catch((e) => { next(ApiError.internal('error accured while deleting the record. is the id correct?', e))});
-});
-
-// delete **ALL*** records
-// WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
-app.delete('/records', (req, res, next) => {
-    Record.deleteMany({})
-    .then(() => { res.status(ok).send({'message': 'deleted successfully'});})
-    .catch(next);
-});
-
-
-
 
 
 // ------------ managers ------------
@@ -312,25 +327,6 @@ app.post('/managers/login', (req, res, next) => {
 
 });
 
-// delete **ALL*** managers
-// WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
-app.delete('/managers', (req, res, next) => {
-  Manager.deleteMany({})
-  .then(() => { res.status(ok).send({'message': 'deleted successfully'});})
-  .catch(next);
-});
-
-//get info on specific manager
-// WARNING: extremly dangerous, remove on luanch.
-app.get('/managers/:userid', (req, res, next) => {
-  let userid = req.params.userid;
-
-  Manager.findOne({'userID':userid}).then((manager) =>{
-    res.send(manager);
-  })
-  .catch(next);
-});
-
 /**
  * generate and returns an access token
  */
@@ -374,32 +370,3 @@ app.use(errorHandler);
 
 
 module.exports = app;
-
-
-/*
-conn.connect().then(() => {
-  app.listen(PORT, () =>{
-    console.log(`Server is listening on port ${PORT}`);
-
-    //make usre there is an admin to the system
-    let userID = 'Admin';
-    let companyID = 'Admin';
-    let password = '12345678';
-
-    let newManager = new Manager( {
-      companyID,
-      userID,
-      password
-    });
-
-    Manager.findOneAndRemove({userID})
-    .then((removed) => {
-      newManager.save().then( (adminDoc) => {
-        console.log(`The admin has beed successfully set :  ${adminDoc}`);
-      }).catch((e) =>  { console.log(`FATAL : Admin was not set!`);});
-    })
-    .catch((e) => {});
-
-  });
-})
-*/

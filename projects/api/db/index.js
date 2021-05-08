@@ -7,6 +7,8 @@ const host = 'localhost';
 const hostPort = 27017;
 const DB_URI = `mongodb://${host}:${hostPort}`;
 
+const { Manager } = require('../db/modules');
+
 function connect() {
   return new Promise((resolve, reject) => {
 
@@ -41,9 +43,36 @@ function doConnect(resolve, reject) {
   .then((res, err) =>{
     if (err) return reject(err);
 
-    console.log('connected succesfully to mongoDB');
-    resolve();
+    console.log('connected succesfully to mongoDB!');
 
+
+    //make usre there is an admin to the system
+    let userID = 'Admin';
+    let companyID = 'Admin';
+    let password = '12345678';
+
+    let newManager = new Manager( {
+      companyID,
+      userID,
+      password
+    });
+
+
+    Manager.findOneAndRemove({userID})
+    .then((removed) => {
+
+      newManager.save().then( (adminDoc) => {
+        console.log(`The admin has beed successfully set :  ${adminDoc}`);
+        resolve();
+      }).catch((e) => { console.log(`FATAL 1 : Admin was not set!`, e);  reject(e);})
+
+    }).catch((e) => {
+      newManager.save().then( (adminDoc) => {
+        console.log(`The admin has beed successfully set :  ${adminDoc}`);
+        resolve();
+      }).catch((e) => { console.log(`FATAL 2 : Admin was not set!`, e);  reject(e);})
+
+    });
   }).catch((e) => {
     console.log('ERROR while connecting to mongoDB : ' + e);
     reject(err)
