@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { Component, OnInit, Input } from '@angular/core';
+import {ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Label, SingleDataSet} from 'ng2-charts';
 import {RecordService} from '../../services/record.service';
 import { Activity } from '../../modules/Activity.module';
+
 
 
 @Component({
@@ -10,8 +11,16 @@ import { Activity } from '../../modules/Activity.module';
   templateUrl: './bar-activities-chart.component.html',
   styleUrls: ['./bar-activities-chart.component.css']
 })
+
 export class BarActivitiesChartComponent implements OnInit {
-  activities: Activity[];
+  
+  
+  
+  constructor(private recordService:RecordService) {}
+
+  public activities_date = []
+  // public day_per_month;
+
 
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -20,31 +29,33 @@ export class BarActivitiesChartComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
+  public barChartData: ChartDataSets[] = [ { data: Array(31).fill(0), label:'sessions' } ];
 
-  public barChartData: ChartDataSets[] = [
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Sessions' }
-  ];
 
-  constructor(private recordService:RecordService) { }
-  public iter_activities(){
-    // for (const activity in this.activities){
-    //   console.log(activity.toString());
-    //   // var num_of_day = activity.editStart.getDate();
-
-      
-
-    // }
-    
-    
-
-  }
-  ngOnInit() {
-    this.recordService.getRecords().subscribe((activities: Activity[]) => {
-      this.activities = activities;
-      this.iter_activities()
-      
-    })
   
-  }
+   ngOnInit() {
+    this.activities_date = this.recordService.getRecordByDayOfMonth()
+    for (let i = 0; i<this.barChartData[0].data.length;i++){
+      for(let j = 0; j<this.activities_date.length;j++){
+        if (this.activities_date[j] == i){
+            this.barChartData[0].data[i] = (<number>(this.barChartData[0].data[i]))++;  
+        }
+      }
+      
+    }
+
+
+    // .subscribe(
+    //  (startEdit_array) => {
+    //    startEdit_array.forEach((date:Date)=>{
+    //     this.activities_date.push(date);
+    //    });
+    //   console.log(this.activities_date)
+    //   })
+    // console.log(this.activities_date)
+          // this.barChartData[0].data = [...this.barChartData[0].data]
+   }
+
+
 
 }
