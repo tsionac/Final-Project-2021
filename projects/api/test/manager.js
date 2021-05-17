@@ -29,7 +29,8 @@ let AdminaccessToken = '';
 let useraccessToken = '';
 
 
-
+// 2.6
+// 3.1
 describe('manager retrive edits', () => {
 
 
@@ -145,6 +146,9 @@ describe('manager retrive edits', () => {
   });
 
 
+
+
+  //2.6
   it('Ok, retrive edits in manager\'s company.', (done) => {
     request(app)
     .get('/records')
@@ -173,6 +177,13 @@ describe('manager retrive edits', () => {
     }).catch((err) => done(err))
   });
 
+
+
+
+
+
+
+  //3.1
   it('Ok, login in to the manager.', (done) => {
 
     request(app).post('/managers/login').send({
@@ -194,6 +205,7 @@ describe('manager retrive edits', () => {
     }).catch((err) => done(err))
   });
 
+  //3.1
   it('Fail, login in to the manager with bad passoword.', (done) => {
 
     request(app).post('/managers/login').send({
@@ -205,6 +217,7 @@ describe('manager retrive edits', () => {
     }).catch((err) => done(err))
   });
 
+  //3.1
   it('Fail, login in to a bad user name and password.', (done) => {
 
     request(app).post('/managers/login').send({

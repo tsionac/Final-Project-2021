@@ -15,6 +15,9 @@ let companyID = 'Admin';
 let password = '12345678';
 
 
+// 1.2
+// 2.1
+// 2.3
 describe('admin login', () => {
 
 
@@ -30,6 +33,8 @@ describe('admin login', () => {
     .catch((err) => done(err))
   });
 
+
+  //1.2 + 2.1
   it('OK, login to admim.', (done) => {
 
     request(app).post('/managers/login').send({
@@ -49,6 +54,7 @@ describe('admin login', () => {
   });
 
 
+  //2.1
   it('Fail, login to with bad admin password.', (done) => {
     request(app).post('/managers/login').send({
 
@@ -62,7 +68,6 @@ describe('admin login', () => {
 
 
 });
-
 
 
 
@@ -87,6 +92,7 @@ describe('admin create a new manager', () => {
   });
 
 
+  // 2.3
   it('OK, add new user.', (done) => {
 
     //login to admin

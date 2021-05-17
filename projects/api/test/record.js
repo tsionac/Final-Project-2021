@@ -10,6 +10,7 @@ const app = require('../app.js');
 const conn = require('../db/index.js');
 
 
+//4.1
 describe('POST /records', () => {
 
   before((done) => {
@@ -34,6 +35,9 @@ describe('POST /records', () => {
 
     editEnd.setSeconds(editEnd.getSeconds() + 10); // adding 10 second to simulate an edit
 
+
+
+    //4.1
     it('OK, posting a new record to /records (edit start).', (done) => {
       request(app).post('/records').send({
 
@@ -81,6 +85,7 @@ describe('POST /records', () => {
       }).catch((err) => done(err))
     });
 
+    //4.1
     it('Fail, posting a new record to /records with missing userID.', (done) => {
       request(app).post('/records').send({
 
@@ -97,6 +102,7 @@ describe('POST /records', () => {
       }).catch((err) => done(err))
     });
 
+    // 4.1
     it('Fail, posting a new record to /records with missing componentID.', (done) => {
       request(app).post('/records').send({
 
@@ -113,6 +119,7 @@ describe('POST /records', () => {
       }).catch((err) => done(err))
     });
 
+    // 4.1
     it('Fail, posting a new record to /records with no dates (not start AND no end).', (done) => {
       request(app).post('/records').send({
 
