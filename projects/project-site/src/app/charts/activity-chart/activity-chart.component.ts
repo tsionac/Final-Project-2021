@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartOptions, ChartType,ChartDataSets } from 'chart.js';
-import { Label, SingleDataSet, Color } from 'ng2-charts';
+import { ChartOptions } from 'chart.js';
+
 import {RecordService} from '../../services/record.service';
 import { Activity } from '../../modules/Activity.module';
 
@@ -25,8 +25,6 @@ export class ActivityChartComponent implements OnInit {
   public pieChartPlugins = [];
   public chartColors: any[] = [{ backgroundColor: [] }];
 
- 
-
   constructor(private recordService:RecordService) { 
     this.mapOccUsers = new Map<string, number>();
     recordService.getRecords().subscribe((act:Activity[])=>{
@@ -41,8 +39,6 @@ export class ActivityChartComponent implements OnInit {
   ngOnInit() {
     this.recordService.getRecords().subscribe((act:Activity[])=>{
       var colors = ['rgb(127, 255, 212)', 'rgb(255,127,80)', 'rgb(100,149,237)', 'rgb(0,191,255)', 'rgb(255,192,203)'];
-      
-      
       // console.log(act[0].userID)
       for(let i = 0; i<this.lenUsers;i++){
         if (!(this.pieChartLabels.includes(act[i].userID))){
@@ -56,10 +52,7 @@ export class ActivityChartComponent implements OnInit {
       this.mapOccUsers.forEach((value, key) => {
         this.pieChartData.push(<number>value);
         
-      });
-      console.log(this.pieChartData)
-     console.log(this.pieChartLabels)
-      
+      });      
     })
 
   }

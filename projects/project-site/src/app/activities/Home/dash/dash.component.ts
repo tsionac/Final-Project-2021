@@ -2,6 +2,7 @@ import { Component,OnDestroy, Directive, OnInit} from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { LoginComponent } from '../../login/login.component';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 
 
@@ -39,12 +40,12 @@ export class DashComponent implements OnInit {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver, public loginComponent: LoginComponent) {
+  constructor(private breakpointObserver: BreakpointObserver, public authServics: AuthenticationService) {
 
   }
 
   ngOnInit(): void {
-    this.username = this.loginComponent.getUserName();
+    this.username = this.authServics.getUserID();
     console.log(this.username)
 
    

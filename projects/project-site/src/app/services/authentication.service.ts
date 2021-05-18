@@ -20,6 +20,7 @@ export class AuthenticationService {
   private readonly _idStorage:string  = 'user-id' ;
   private readonly accessStorage:string = 'access-token';
   private readonly refreshStorage:string = 'refresh-token';
+  private userName = '';
 
 
 
@@ -32,7 +33,7 @@ export class AuthenticationService {
       shareReplay(), // this wil prevernt running the login methid several time or something. I'll be honenst, I didn't untrstood it...
       tap((res:HttpResponse<any>) => {
         // authentication tokens are in the header of this response, we need to store them.
-
+        this.userName = res.body.userID;
         let _id           = res.body._id;
         let accessTolken  = res.headers.get(this.accessHeader);
         let refreshTolken = res.headers.get(this.refreshHeader);
@@ -94,6 +95,10 @@ export class AuthenticationService {
    getID(){
     return localStorage.getItem(this._idStorage);
   }
+  
+  public getUserID(){
+     return this.userName;
+   }
 
 
 

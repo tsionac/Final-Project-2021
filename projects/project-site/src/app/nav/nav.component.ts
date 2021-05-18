@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from 'node_modules/@angular/router';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent {
-  menuItems = ['View activities', 'Change password', 'Logout', 'Contact Us'];
+  menuItems = ['Home','View activities', 'Change password', 'Contact Us'];
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -21,5 +21,9 @@ export class NavComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver, public route:ActivatedRoute,public router:Router) {}
-
+  public logout(){
+    console.log(this.router)
+    this.router.navigate(['/Login']);
+    // router.navigate(['/Home'])
+  }
 }
