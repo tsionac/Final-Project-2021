@@ -12,9 +12,9 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class RecordService {
-
-  private activities: Observable<Activity[]>;
+  
   private uri:String = '/records';
+
 
   constructor(private wrs:WebRequestService, private drs:DateRequestService, private enryCreator:EntryGeneretor) {
    };
@@ -24,9 +24,7 @@ export class RecordService {
   }
 
 
-  getRecordByDayOfMonth(){
-    let activity_date = [];
-    (this.wrs.get(this.uri)).forEach((li:Activity)=>activity_date.push(new Date(li.editStart).getDate()))
-    return activity_date;
-  }
+//  getUserId(){
+//    return (this.wrs.get(this.uri)).
+//  }
 }

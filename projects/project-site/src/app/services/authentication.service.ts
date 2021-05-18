@@ -40,7 +40,7 @@ export class AuthenticationService {
         //save session info
         this.setSession(_id, accessTolken, refreshTolken);
 
-        console.log('logged in');  // TODO : DELETE
+        // console.log('logged in');  // TODO : DELETE
       })
     );
   };

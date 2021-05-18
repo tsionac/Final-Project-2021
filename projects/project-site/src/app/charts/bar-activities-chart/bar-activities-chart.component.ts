@@ -18,7 +18,7 @@ export class BarActivitiesChartComponent implements OnInit {
   
   constructor(private recordService:RecordService) {}
 
-  public activities_date = []
+  public activities_date:number[] = []
   // public day_per_month;
 
 
@@ -34,28 +34,12 @@ export class BarActivitiesChartComponent implements OnInit {
 
   
    ngOnInit() {
-    this.activities_date = this.recordService.getRecordByDayOfMonth()
-    for (let i = 0; i<this.barChartData[0].data.length;i++){
-      for(let j = 0; j<this.activities_date.length;j++){
-        if (this.activities_date[j] == i){
-            this.barChartData[0].data[i] = (<number>(this.barChartData[0].data[i]))++;  
-        }
+    this.recordService.getRecords().subscribe((act:Activity[])=>{
+      // console.log(act)
+      for(let i = 0; i<act.length;i++){
+        (<number>this.barChartData[0].data[(new Date(act[i].editStart).getDate())-1])++;
       }
-      
-    }
-
-
-    // .subscribe(
-    //  (startEdit_array) => {
-    //    startEdit_array.forEach((date:Date)=>{
-    //     this.activities_date.push(date);
-    //    });
-    //   console.log(this.activities_date)
-    //   })
-    // console.log(this.activities_date)
-          // this.barChartData[0].data = [...this.barChartData[0].data]
-   }
-
-
+    })   
+  }
 
 }

@@ -1,33 +1,33 @@
 <div class="grid-container">
-    <h1 class="mat-h1">Welcome [(username)]</h1>
+    <h1 class="mat-h1">Welcome {{this.username}}</h1>
     <mat-grid-list cols="{{ ( cardLayout | async )?.columns }}" rowHeight="200px">
         <!--Mini Cards-->
-        <mat-grid-tile *ngFor="let i of [1, 2, 3, 4]" [colspan]="( cardLayout | async )?.miniCard.cols" [rowspan]="( cardLayout | async )?.miniCard.rows">
+        <!-- <mat-grid-tile *ngFor="let i of [1, 2, 3, 4]" [colspan]="( cardLayout | async )?.miniCard.cols" [rowspan]="( cardLayout | async )?.miniCard.rows">
             <app-card title="Card {{i}}">
                 <div>Mini Card Content Here</div>
             </app-card>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
         <!--Charts-->
         <mat-grid-tile [colspan]="( cardLayout | async )?.chart.cols" [rowspan]="( cardLayout | async )?.chart.rows">
-            <app-card title="Session by day of week">
+            <app-card title="Frequency of Users">
                 <app-activity-chart></app-activity-chart>
             </app-card>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="( cardLayout | async )?.chart.cols" [rowspan]="( cardLayout | async )?.chart.rows">
-            <app-card title="Product Sales">
+            <app-card title="Session per Day of Month">
                 <app-bar-activities-chart></app-bar-activities-chart>
             </app-card>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="( cardLayout | async )?.chart.cols" [rowspan]="( cardLayout | async )?.chart.rows">
+        <!-- <mat-grid-tile [colspan]="( cardLayout | async )?.chart.cols" [rowspan]="( cardLayout | async )?.chart.rows">
             <app-card title="Sales by Traffic Source">
                 <app-bar-activities-chart></app-bar-activities-chart>
             </app-card>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="( cardLayout | async )?.chart.cols" [rowspan]="( cardLayout | async )?.chart.rows">
+        </mat-grid-tile> -->
+        <!-- <mat-grid-tile [colspan]="( cardLayout | async )?.chart.cols" [rowspan]="( cardLayout | async )?.chart.rows">
             <app-card title="Online Store Sessions by Traffic Source">
                 <app-activity-chart></app-activity-chart>
             </app-card>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
         <!--Table-->
         <mat-grid-tile [colspan]="( cardLayout | async )?.table.cols" [rowspan]="( cardLayout | async )?.table.rows">
             <app-card title="Card 9">

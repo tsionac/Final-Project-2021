@@ -11,11 +11,15 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
 
-  public user_n = "str2";
+  public user_n:string;
 
   constructor(private authService:AuthenticationService, private router:Router) { }
   //constructor() { }
 
+
+  public getUserName(){
+    return this.user_n;
+  }
   ngOnInit(): void {
   }
 
@@ -26,11 +30,9 @@ export class LoginComponent implements OnInit {
     if(username !== '' && password !== ''){
       this.authService.login(username,password).subscribe((res:HttpResponse<any>) => {
         if(res.status === 200){
-          
+          console.log(res.body.userID)
           // login was succesfull, redirecting to the activity view
-          this.user_n = username;
-          console.log(username);
-          console.log(this.user_n);
+          this.user_n = res.body.userID;
           this.router.navigate(['/Home']);
         }
       });
