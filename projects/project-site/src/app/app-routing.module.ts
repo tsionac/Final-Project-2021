@@ -9,7 +9,7 @@ import { ViewActivitiesComponent } from './activities/view-activities/view-activ
 import {NavComponent} from './nav/nav.component'
 import { DashComponent} from './activities/Home/dash/dash.component'
 import { ChangePasswordComponent } from './activities/change-password/change-password.component';
-import { CreateManagerComponent } from './pages/create-manager/create-manager.component';
+import { CreateManagerComponent } from './activities/create-manager/create-manager.component';
 
 
 const routes: Routes = [

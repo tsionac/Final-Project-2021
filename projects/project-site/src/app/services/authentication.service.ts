@@ -44,8 +44,11 @@ export class AuthenticationService {
         // console.log('logged in');  // TODO : DELETE
       })
     );
-  };
+  }
 
+  changePassword(oldPassword:string, newPassword:string){
+    return this.webService.post3('/managers/changePassword', {oldPassword, newPassword}, {observe:'response'});
+  }
   signup(userID:string, companyID:string, password:string) {
     return this.webService.post('/managers', { userID, companyID, password });
   }

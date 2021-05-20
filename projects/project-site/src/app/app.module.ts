@@ -24,7 +24,7 @@ import { ActivityChartComponent } from './charts/activity-chart/activity-chart.c
 import { BarActivitiesChartComponent } from './charts/bar-activities-chart/bar-activities-chart.component';
 import { CardComponent } from './card/card.component';
 import { ChangePasswordComponent } from './activities/change-password/change-password.component';
-import { CreateManagerComponent } from './pages/create-manager/create-manager.component';
+import { CreateManagerComponent } from './activities/create-manager/create-manager.component';
 @NgModule({
   declarations: [
     AppComponent,
