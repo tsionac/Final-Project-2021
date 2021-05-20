@@ -47,7 +47,7 @@ export class AuthenticationService {
   }
 
   changePassword(oldPassword:string, newPassword:string){
-    return this.webService.post3('/managers/changePassword', {oldPassword, newPassword}, {observe:'response'});
+    return this.webService.patch3('/managers/changePassword', {oldPassword, newPassword}, {observe:'response'});
   }
   signup(userID:string, companyID:string, password:string) {
     return this.webService.post('/managers', { userID, companyID, password });
