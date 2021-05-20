@@ -41,7 +41,4 @@ export class WebRequestService {
   patch(uri:String, payload:Object){
     return this.http.patch(this.getAdress(uri), payload);
   }
-  patch3(uri:String, payload:Object, options:Object){
-    return this.http.patch(this.getAdress(uri), payload, options);
-  }
 }

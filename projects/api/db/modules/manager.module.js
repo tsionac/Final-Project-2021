@@ -153,26 +153,6 @@ managerSchema.methods.createSession = function() {
 
 
 
-managerSchema.methods.changePassword = function(oldPass,newPass) {
-  let manager = this;
-
-  return new Promise( (resolve, reject) => {
-    // compare the hashed password to the hashed password stored in the DB
-    bcrypt.compare(oldPass, manager.password, (err, res) => {
-      if (res) {
-        // old password is correct, so we can update the password to the new one
-        manager.password = newPass;
-
-        manager.save().then(() => {
-          return resolve(manager);
-        }).catch ( (e) => {
-          reject(e);
-        });
-      }
-      else       {reject();}
-    });
-  })
-};
 
 
 // -------------------------------------------------- module (static) methods --------------------------------------------------
@@ -200,8 +180,8 @@ managerSchema.statics.findByCredentials = function(userID, password) {
     return new Promise( (resolve, reject) => {
       // compare the hashed password to the hashed password stored in the DB
       bcrypt.compare(password, manager.password, (err, res) => {
-        if (res) { resolve(manager);}
-        else       {reject();}
+        if (res)  resolve(manager);
+        else      reject();
       });
     });
   });
@@ -218,22 +198,6 @@ managerSchema.statics.hasRefreshTokenExpire = (expiresAt) => {
     // curent time is after the experation time.
     return true;
   }
-};
-
-// delete expired session records
-managerSchema.statics.deleteExpiredSessions = function(userID) {
-  const Manager = this;
-
-  return Manager.findOneAndUpdate({userID}, { $pull: { "sessions": { 'expiresAt': { $lt: secondsSinceEpoch() } } } }, { safe: true, upsert: true });
-};
-
-
-
-// revoke a refresh token
-managerSchema.statics.revokeRefreshToken = function(userID, refreshToken) {
-  const Manager = this;
-
-  return Manager.findOneAndUpdate({userID}, { $pull: { "sessions": { 'token': refreshToken } } }, { safe: true, upsert: true });
 };
 
 // -------------------------------------------------- Midlewares --------------------------------------------------
