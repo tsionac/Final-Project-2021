@@ -22,9 +22,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { DashActivitiesComponent} from './activities/dash-activities/dash-activities.component';
 import { ActivityChartComponent } from './charts/activity-chart/activity-chart.component';
 import { BarActivitiesChartComponent } from './charts/bar-activities-chart/bar-activities-chart.component';
-
 import { CardComponent } from './card/card.component';
 import { ChangePasswordComponent } from './activities/change-password/change-password.component';
+import { CreateManagerComponent } from './pages/create-manager/create-manager.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +37,7 @@ import { ChangePasswordComponent } from './activities/change-password/change-pas
     BarActivitiesChartComponent,
     CardComponent,
     ChangePasswordComponent,
+    CreateManagerComponent,
   ],
   imports: [
     BrowserModule,

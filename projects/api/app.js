@@ -9,7 +9,7 @@
 const express = require('express');
 const app = express();
 
-const {mongoose} = require('./db/mongooose');
+const conn = require('./db/index');
 const bodyPaeser = require('body-parser');
 
 const jwt = require('jsonwebtoken');
@@ -42,6 +42,7 @@ app.use(function(req, res, next) {
 
 
 // authenticate a user by checking if the request have a valid JWT (access token)
+// get manager object
 let authenticate = (req, res, next) => {
   //grab the acess token from the request header
   let accessToken = req.header(accessheader);
@@ -55,7 +56,6 @@ let authenticate = (req, res, next) => {
       // verified succesfully
       let _id = decoded._id;
 
-      // get manager's object TODO : findById instead?
       Manager.findOne({'_id':_id}).then((manager) => {
         if(!manager){
           // could not find manager
@@ -67,6 +67,29 @@ let authenticate = (req, res, next) => {
           next(); // continue with the request
         }
       });
+    }
+  });
+
+};
+
+
+// authenticate a user by checking if the request have a valid JWT (access token)
+// dont querry for manager obj
+let authenticateNoObj = (req, res, next) => {
+  //grab the acess token from the request header
+  let accessToken = req.header(accessheader);
+
+  //verify the JWT
+  jwt.verify(accessToken, Manager.getJWTsecret(), (err, decoded) => {
+    if(err){
+      // JWT not valid, user is NOT authenticated!
+      next(ApiError.unAuthorised('you have no permitions to do that! access token failed to verifiy or expired!', err));
+    }else {
+      // verified succesfully
+      let _id = decoded._id;
+      req.manager_id = _id;
+
+      next(); // continue with the request
     }
   });
 
@@ -129,23 +152,11 @@ const editCache = new ActiveEdits();
 
 // ------------------------------- HTTP defenitions -------------------------------
 
-const PORT  = 3000;
 const ok    = 200;
 
 
 
-
-
 // ------------ records ------------
-
-// get ALL record.
-// WARNING: extremly dangerous, remove on luanch.
-app.get('/records/all', (req, res, next) => {
-    Record.find({}).then((records) =>{
-      res.send(records);
-    })
-    .catch(next);
-});
 
 // get all records of manager's company.
 app.get('/records', authenticate, (req, res, next) => {
@@ -199,42 +210,7 @@ app.post('/records', (req, res, next) => {
       })
       .catch(next);
     }
-
-
 });
-
-// recive one specofic recird with a given id
-// WARNING: extremly dangerous, remove on luanch.
-app.patch('/records/:id', (req, res, next) => {
-    let id = req.params.id;
-
-    Record.findOneAndUpdate({_id: id}, { $set: req.body})
-    .then(() => { res.status(ok).send({'message': 'edited successfully'});})
-    .catch((e) => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?', e));});
-
-});
-
-
-// delete one specofic recird with a given id
-// WARNING: extremly dangerous, remove on luanch.
-app.delete('/records/:id', (req, res, next) => {
-    let id = req.params.id;
-
-    Record.findOneAndRemove({_id: id})
-    .then((removed) => { res.send(removed)})
-    .catch((e) => { next(ApiError.internal('error accured while deleting the record. is the id correct?', e))});
-});
-
-// delete **ALL*** records
-// WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
-app.delete('/records', (req, res, next) => {
-    Record.deleteMany({})
-    .then(() => { res.status(ok).send({'message': 'deleted successfully'});})
-    .catch(next);
-});
-
-
-
 
 
 // ------------ managers ------------
@@ -243,28 +219,20 @@ app.delete('/records', (req, res, next) => {
  * post a new manager
  * i.e. signup
  */
-app.post('/managers', (req, res, next) => {
+app.post('/managers', authenticate, (req, res, next) => {
   let body = req.body;
+
+  if(req.managerObj.userID != 'Admin'){
+    next(ApiError.badRequest('Only the user \'Admin\' can add new users!'));
+    return;
+  }
 
   let newManager = new Manager(body);
 
-  //TODO : this sign in also do login, not relevent for our project. change later when I undrstand it better.
-
   newManager.save().then( (managerDoc) => {
-    return newManager.createSession();
-  }).then((refreshToken) => {
-    // session created succesfully, and the refresh token was returned, so niw we need to generet JWT fo the manager.
-    return newManager.generateAccessAuthenticationToken().then((accessToken) => {
-      // the access token was crerated succesfully, returning an object containig the two tokens.
-      return {accessToken, refreshToken};
-    });
-  }).then((authentocationTokens) => {
-    // retun a response to the user
-    res
-      .header(refreshHeader, authentocationTokens.refreshToken)
-      .header(accessheader, authentocationTokens.accessToken)
-      .send(newManager);
+    res.send(managerDoc);
   }).catch((e) =>  { next(ApiError.internal('failed to create new user.', e));});
+
 
 });
 
@@ -275,6 +243,8 @@ app.post('/managers', (req, res, next) => {
 app.post('/managers/login', (req, res, next) => {
   let userID = req.body.userID;
   let password = req.body.password;
+
+  Manager.deleteExpiredSessions(userID).then(() => {
 
   Manager.findByCredentials(userID, password).then((manager) => {
     return manager.createSession().then((refreshToken) => {
@@ -292,6 +262,96 @@ app.post('/managers/login', (req, res, next) => {
         .send(manager);
     }).catch((e) =>  { next(ApiError.internal('failed to login.', e));});
   }).catch((e) =>  { next(ApiError.unAuthorised('failed to login. are the userID and password correct?', e));});
+})
+
+});
+
+/**
+ * change password
+ */
+app.patch('/managers/changePassword', authenticateNoObj, (req, res, next) => {
+  let _id     = req.manager_id;
+  let oldPass = req.body.oldPassword;
+  let newPass = req.body.newPassword;
+
+  Manager.findOne({_id: _id}).then((manager) => { manager.changePassword(oldPass,newPass)
+    .then(() => { res.status(ok).send({'message': 'password changed successfully'});})
+    .catch((e) => { next(ApiError.internal('falied to change the password. is the old passwod provided corect?', e));});
+  })
+});
+
+/**
+ * generate and returns an access token
+ */
+ app.get('/managers/me/access-token', verifySession, (req, res, next) => {
+    req.managerObj.generateAccessAuthenticationToken().then((accessToken) => {
+        res.header(accessheader, accessToken).send({accessToken}); // return access tokekn to the user
+    }).catch((e) => next(ApiError.badRequest('could not retrive access token', e)));
+});
+
+
+
+/**
+ * revoke access to an active session
+ */
+ app.patch('/managers/:managerid/revoke/:token', (req, res, next) => {
+  let managerid = req.params.managerid;
+  let rtoken = req.params.token;
+
+  Manager.revokeRefreshToken(managerid, rtoken)
+  .then(() => { res.status(ok).send({'message': 'revoked successfully'});})
+  .catch((e) => { next(ApiError.internal('error accured while revoking session.', e));});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------------ delete later ------------
+
+// get ALL record.
+// WARNING: extremly dangerous, remove on luanch.
+app.get('/records/all', (req, res, next) => {
+  Record.find({}).then((records) =>{
+    res.send(records);
+  })
+  .catch(next);
+});
+
+// recive one specofic recird with a given id
+// WARNING: extremly dangerous, remove on luanch.
+app.patch('/records/:id', (req, res, next) => {
+  let id = req.params.id;
+
+  Record.findOneAndUpdate({_id: id}, { $set: req.body})
+  .then(() => { res.status(ok).send({'message': 'edited successfully'});})
+  .catch((e) => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?', e));});
+});
+
+// delete one specofic recird with a given id
+// WARNING: extremly dangerous, remove on luanch.
+app.delete('/records/:id', (req, res, next) => {
+  let id = req.params.id;
+
+  Record.findOneAndRemove({_id: id})
+  .then((removed) => { res.send(removed)})
+  .catch((e) => { next(ApiError.internal('error accured while deleting the record. is the id correct?', e))});
+});
+
+// delete **ALL*** records
+// WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
+app.delete('/records', (req, res, next) => {
+  Record.deleteMany({})
+  .then(() => { res.status(ok).send({'message': 'deleted successfully'});})
+  .catch(next);
 });
 
 // delete **ALL*** managers
@@ -303,6 +363,7 @@ app.delete('/managers', (req, res, next) => {
 });
 
 //get info on specific manager
+// WARNING: extremly dangerous, remove on luanch.
 app.get('/managers/:userid', (req, res, next) => {
   let userid = req.params.userid;
 
@@ -312,14 +373,7 @@ app.get('/managers/:userid', (req, res, next) => {
   .catch(next);
 });
 
-/**
- * generate and returns an access token
- */
- app.get('/managers/me/access-token', verifySession, (req, res, next) => {
-    req.managerObj.generateAccessAuthenticationToken().then((accessToken) => {
-        res.header(accessheader, accessToken).send({accessToken}); // return access tokekn to the user
-    }).catch((e) => next(ApiError.badRequest('could not retrive access token', e)));
-});
+
 
 
 // ------------------------------- push error handler -------------------------------
@@ -339,11 +393,4 @@ app.use(errorHandler);
 
 
 
-
-
-// ------------------------------- start server -------------------------------
-
-app.listen(PORT, () =>{
-    console.log(`Server is listening on port ${PORT}`);
-});
-
+module.exports = app;

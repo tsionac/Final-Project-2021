@@ -9,13 +9,16 @@ import { ViewActivitiesComponent } from './activities/view-activities/view-activ
 import {NavComponent} from './nav/nav.component'
 import { DashComponent} from './activities/Home/dash/dash.component'
 import { ChangePasswordComponent } from './activities/change-password/change-password.component';
+import { CreateManagerComponent } from './pages/create-manager/create-manager.component';
+
 
 const routes: Routes = [
   {path: ''            , redirectTo: '/Login', pathMatch: 'full'},
   {path: 'Login', component: LoginComponent},
   {path: 'View activities', component: ViewActivitiesComponent},
   {path: 'Home', component: DashComponent},
-  {path:'Change password', component: ChangePasswordComponent}
+  {path:'Change password', component: ChangePasswordComponent},
+  {path: 'createManager', component: CreateManagerComponent}
 ];
 
 @NgModule({
