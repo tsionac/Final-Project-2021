@@ -24,7 +24,7 @@ export class ChangePasswordComponent implements OnInit {
           console.log("success change password");
         }
         else{
-          console.log(res.body);
+          console.log(res.body); 
         }
       }
       
