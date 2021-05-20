@@ -2,6 +2,7 @@ class ActiveEdits {
 
   //Save a list of curently active edits (ent time was not recived yet)
   // for each component, store a list of active users and thier start edit time
+
   //userEdits =  new Map<String, {"userID":String, "time":any}[]>([]);
   userEdits =  new Map([]);
 
