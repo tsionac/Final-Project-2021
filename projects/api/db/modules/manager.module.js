@@ -88,13 +88,13 @@ const managerSchema = new mongoose.Schema({
 // -------------------------------------------------- Instance methods --------------------------------------------------
 
 // overiding the "toJSON" methind, we do not want to expose the passwords ans sessions.
-/*managerSchema.methods.toJSON = function() {
+managerSchema.methods.toJSON = function() {
   const manager = this;
   const manageObj = manager.toObject();
 
   // return eveything exept password & sessions
   return _.omit(manageObj, ['password', 'sessions'] );
-}; */
+};
 
 
 //create Authentication Token to verify the user

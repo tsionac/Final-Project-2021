@@ -186,14 +186,14 @@ app.post('/records', (req, res, next) => {
 
     //user start the edit, end time is unkown yet, keep in cache, not in DB
     if (editEnd === undefined) {
-        editCache.startEdit(userID, componentID, editStart);
+        editCache.startEdit(companyID, componentID, userID, editStart);
         res.send({ userID, componentID, editStart });
         return;
     }
 
     // user finished editing, save recird to the db
     if (editStart === undefined) {
-        editStart = editCache.endEdit(userID, componentID);
+        editStart = editCache.endEdit(companyID, componentID, userID);
 
         let newRecord = new Record({
             companyID,
