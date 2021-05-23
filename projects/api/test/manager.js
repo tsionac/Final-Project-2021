@@ -28,10 +28,21 @@ editEnd.setSeconds(editEnd.getSeconds() + 10); // adding 10 second to simulate a
 let AdminaccessToken = '';
 let useraccessToken = '';
 
+let user__ID = '';
+let userRefreshToken = '';
 
+
+//sleep the ammunt of given milesecond
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+
+// 2.2
 // 2.6
 // 3.1
-describe('manager retrive edits', () => {
+// 3.2
+describe('manager tests', () => {
 
 
   before((done) => {
@@ -77,12 +88,17 @@ describe('manager retrive edits', () => {
           const body = res.body;
           const header = res.headers;
 
-          let pre = useraccessToken
-          useraccessToken =  header['x-access-token'];
-
           expect(res.status).to.equals(200);
           expect(header).to.contain.property('x-refresh-token');
           expect(header).to.contain.property('x-access-token');
+          expect(body).to.contain.property('_id');
+
+
+          let pre = useraccessToken
+          useraccessToken =  header['x-access-token'];
+          userRefreshToken =  header['x-refresh-token'];
+          user__ID = body._id;
+
           expect(AdminaccessToken).to.not.equals(pre);
 
 
@@ -147,6 +163,17 @@ describe('manager retrive edits', () => {
 
 
 
+   //2.6
+   it('Fail, retrive edits in manager\'s company with bas access token.', (done) => {
+    request(app)
+    .get('/records')
+    .set('x-access-token','bad-token-fhreuihf48uie')
+    .send({})
+    .then((res) => {
+      expect(res.status).to.equals(401);
+      done();
+    }).catch((err) => done(err))
+  });
 
   //2.6
   it('Ok, retrive edits in manager\'s company.', (done) => {
@@ -157,6 +184,7 @@ describe('manager retrive edits', () => {
     .then((res) => {
       const body = res.body;
 
+      expect(res.status).to.equals(200);
       expect(body.length > 0).to.equals(true) // there is a record.
 
       let wasFound = false;
@@ -205,6 +233,9 @@ describe('manager retrive edits', () => {
     }).catch((err) => done(err))
   });
 
+
+
+
   //3.1
   it('Fail, login in to the manager with bad passoword.', (done) => {
 
@@ -216,6 +247,9 @@ describe('manager retrive edits', () => {
       done();
     }).catch((err) => done(err))
   });
+
+
+
 
   //3.1
   it('Fail, login in to a bad user name and password.', (done) => {
@@ -230,4 +264,143 @@ describe('manager retrive edits', () => {
   });
 
 
+  //3.1
+  it('Fail, refreshing access token with bad refresh token.', (done) => {
+    request(app)
+      .get('/managers/me/access-token')
+      .set({'x-refresh-token': 'bady-token', '_id':user__ID})
+      .send({})
+      .then((res) => {
+        expect(res.status).to.equals(401);
+        done();
+      });
+  });
+
+  //3.1
+  it('Fail, refreshing access token with bad _id.', (done) => {
+    request(app)
+      .get('/managers/me/access-token')
+      .set({'x-refresh-token': userRefreshToken, '_id':'bad-id-oi3jd3oi'})
+      .send({})
+      .then((res) => {
+        expect(res.status).to.equals(401);
+        done();
+      });
+  });
+
+
+  //3.1
+  it('Ok, refreshing acess token.', (done) => {
+
+    // slee; 1.5 sec so time will pass, otherwise creating a new acess token will result in the same token
+    sleep(1500).then(() => {
+      request(app)
+      .get('/managers/me/access-token')
+      .set({'x-refresh-token': userRefreshToken, '_id':user__ID})
+      .send({})
+      .then((res) => {
+        const body = res.body;
+        const header = res.headers;
+
+        expect(res.status).to.equals(200);
+        expect(header).to.contain.property('x-access-token');
+        old = useraccessToken
+        useraccessToken =  header['x-access-token'];
+
+        expect(useraccessToken).to.not.equals(old); //shuld not be the same token
+
+        //try to use new acess token
+        request(app)
+        .get('/records')
+        .set('x-access-token',useraccessToken)
+        .send({})
+        .then((res) => {
+          expect(res.status).to.equals(200); //authentication was sucessfull
+          done();
+        }).catch((err) => done(err));
+      }).catch((err) => done(err))
+    });
+  });
+
+
+
+
+
+
+
+  // 2.2 - admin
+  // 3.2 - manager
+  it('Fail, manager\\Admin changing password with wrong acess token', (done) => {
+    let newPass = 'manager-new-pass1234';
+
+    request(app)
+    .patch('/managers/changePassword')
+    .set('x-access-token','bad-token')
+    .send({'oldPassword':userPass, 'newPassword':newPass})
+    .then((res) => {
+      expect(res.status).to.equals(401);
+      done();
+    }).catch((err) => done(err))
+  });
+
+
+
+
+  // 2.2 - admin
+  // 3.2 - manager
+  it('Fail, manager\\Admin changing password with bad password', (done) => {
+    let newPass = 'manager-new-pass1234';
+
+    request(app)
+    .patch('/managers/changePassword')
+    .set('x-access-token',useraccessToken)
+    .send({'oldPassword':'bady-passwordy-0r45ujitu453hg', 'newPassword':newPass})
+    .then((res) => {
+      expect(res.status).to.not.equals(200);
+      done();
+    }).catch((err) => done(err))
+  });
+
+
+
+
+
+  // 2.2 - admin
+  // 3.2 - manager
+  it('Ok, manager\\Admin changing password', (done) => {
+    let newPass = 'manager-new-pass1234';
+
+    request(app)
+    .patch('/managers/changePassword')
+    .set('x-access-token',useraccessToken)
+    .send({'oldPassword':userPass, 'newPassword':newPass})
+    .then((res) => {
+      const body = res.body;
+      const header = res.headers;
+
+      expect(res.status).to.equals(200);
+      userPass = newPass
+
+      //try to login with new password
+      request(app).post('/managers/login').send({
+        userID: username,
+        password: userPass,
+      }).then((res) => {
+        const body = res.body;
+        const header = res.headers;
+
+        expect(res.status).to.equals(200);
+
+        useraccessToken =  header['x-access-token'];
+
+        expect(header).to.contain.property('x-refresh-token');
+        expect(header).to.contain.property('x-access-token');
+        done();
+
+      }).catch((err) => done(err))
+    }).catch((err) => done(err))
+  });
+
+
 });
+

@@ -57,27 +57,22 @@ function doConnect(resolve, reject) {
       password
     });
 
-
-    Manager.findOneAndRemove({userID})
-    .then((removed) => {
-
-      newManager.save().then( (adminDoc) => {
-        console.log(`The admin has beed successfully set :  ${adminDoc}`);
+    // create new admin if does not already exsist
+    Manager.exists({userID}).then(exists => {
+      if (exists){
+        console.log(`Admin already exsists.... doing nothing.`);
         resolve();
-      }).catch((e) => { console.log(`FATAL 1 : Admin was not set!`, e);  reject(e);})
-
-    }).catch((e) => {
-      newManager.save().then( (adminDoc) => {
-        console.log(`The admin has beed successfully set :  ${adminDoc}`);
-        resolve();
-      }).catch((e) => { console.log(`FATAL 2 : Admin was not set!`, e);  reject(e);})
-
+      } else {
+          //ther in no admin, creating one
+        newManager.save().then( (adminDoc) => {
+          console.log(`The admin has beed successfully set :  ${adminDoc}`);
+          resolve();
+        }).catch((e) => { console.log(`FATAL 1 : Admin was not set!`, e);  reject(e);})
+      }
     });
-  }).catch((e) => {
-    console.log('ERROR while connecting to mongoDB : ' + e);
-    reject(err)
   });
-}
+
+};
 
 //this is here to prevent depection warnings
 mongoose.set('useCreateIndex', true);

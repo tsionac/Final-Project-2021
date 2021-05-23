@@ -245,8 +245,8 @@ app.post('/managers/login', (req, res, next) => {
     let password = req.body.password;
 
     Manager.deleteExpiredSessions(userID).then(() => {
-
         Manager.findByCredentials(userID, password).then((manager) => {
+
             return manager.createSession().then((refreshToken) => {
                 // session was created succesfully, recived refresh token, now need to generate access token
 
