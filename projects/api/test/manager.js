@@ -400,7 +400,187 @@ describe('manager tests', () => {
       }).catch((err) => done(err))
     }).catch((err) => done(err))
   });
-
-
 });
 
+
+
+
+
+
+describe('GET /records/:componentID/currentlyEditing', () => {
+
+  let editor1 = 'mr. melada';
+  let editor2 = 'mr. banana';
+  let editor3 = 'mr. incredible';
+  let editor4 = 'mr. fantastic';
+
+  let time1 =  new Date();
+  let time2 =  new Date();
+  let time3 =  new Date();
+  let time4 =  new Date();
+
+  time2.setSeconds(time2.getSeconds() + 10);
+  time3.setSeconds(time3.getSeconds() + 40);
+  time4.setSeconds(time4.getSeconds() + 80);
+
+  let editors = [editor4, editor2, editor1, editor3];
+
+  before((done) => {
+      conn.connect()
+      .then(() => {
+        //add records on the manager's company
+        request(app).post('/records').send({
+          userID:editor1,
+          componentID:editor_componentID,
+          actionID,
+          editStart:time1,
+          //editEnd
+        }).then((res) => {
+
+          expect(res.status).to.equals(200);
+          request(app).post('/records').send({
+            userID:editor2,
+            componentID:editor_componentID,
+            actionID,
+            editStart:time2,
+            //editEnd
+          }).then((res) => {
+
+            expect(res.status).to.equals(200);
+            request(app).post('/records').send({
+              userID:editor3,
+              componentID:editor_componentID,
+              actionID,
+              editStart:time3,
+              //editEnd
+            }).then((res) => {
+
+              expect(res.status).to.equals(200);
+              request(app).post('/records').send({
+                userID:editor4,
+                componentID:editor_componentID,
+                actionID,
+                editStart:time4,
+                //editEnd
+              }).then((res) => {
+                expect(res.status).to.equals(200);
+                done();
+              }).catch((err) => done(err))
+            }).catch((err) => done(err))
+          }).catch((err) => done(err))
+        }).catch((err) => done(err))
+      }).catch((err) => done(err))
+    });
+
+    after((done) => {
+      conn.close()
+      .then(() => done())
+      .catch((err) => done(err))
+    });
+
+    it('OK, retriving curentlly editing list of component.', (done) => {
+      request(app).get(`/records/${editor_componentID}/currentlyEditing`)
+      .set('x-access-token',useraccessToken)
+      .send({})
+      .then((res) => {
+        const body = res.body;
+
+        expect(res.status).to.equals(200);
+        expect(body.length).to.equals(editors.length)
+        expect(body).to.have.same.members(editors); // all editors was retirned, and only them.
+
+        done();
+      }).catch((err) => done(err))
+    });
+
+
+    it('OK, retriving curentlly editing list of component, after few finished the edits.', (done) => {
+
+      request(app).post('/records').send({
+        userID:editor1,
+        componentID:editor_componentID,
+        actionID,
+        //editStart,
+        editEnd:time2,
+      }).then((res) => {
+
+        expect(res.status).to.equals(200);
+        editors = editors.filter(item => item !== editor1);
+
+        request(app).get(`/records/${editor_componentID}/currentlyEditing`)
+        .set('x-access-token',useraccessToken)
+        .send({})
+        .then((res) => {
+          const body = res.body;
+
+          expect(res.status).to.equals(200);
+          expect(body.length).to.equals(editors.length)
+          expect(body).to.have.same.members(editors); // all editors was retirned, and only them.
+
+
+          request(app).post('/records').send({
+            userID:editor3,
+            componentID:editor_componentID,
+            actionID,
+            //editStart,
+            editEnd:time4,
+          }).then((res) => {
+
+            expect(res.status).to.equals(200);
+            editors = editors.filter(item => item !== editor3);
+
+            request(app).get(`/records/${editor_componentID}/currentlyEditing`)
+            .set('x-access-token',useraccessToken)
+            .send({})
+            .then((res) => {
+              const body = res.body;
+
+              expect(res.status).to.equals(200);
+              expect(body.length).to.equals(editors.length)
+              expect(body).to.have.same.members(editors); // all editors was retirned, and only them.
+
+              request(app).post('/records').send({
+                userID:editor4,
+                componentID:editor_componentID,
+                actionID,
+                //editStart,
+                editEnd:time4,
+              }).then((res) => {
+
+                expect(res.status).to.equals(200);
+                editors = editors.filter(item => item !== editor4);
+
+                request(app).post('/records').send({
+                  userID:editor2,
+                  componentID:editor_componentID,
+                  actionID,
+                  //editStart,
+                  editEnd:time3,
+                }).then((res) => {
+
+                  expect(res.status).to.equals(200);
+                  editors = editors.filter(item => item !== editor2);
+
+                  request(app).get(`/records/${editor_componentID}/currentlyEditing`)
+                    .set('x-access-token',useraccessToken)
+                    .send({})
+                    .then((res) => {
+                      const body = res.body;
+
+                      expect(res.status).to.equals(200);
+                      expect(body.length).to.equals(editors.length)
+                      expect(body).to.have.same.members(editors); // all editors was retirned, and only them.
+                      done();
+
+                  }).catch((err) => done(err))
+                }).catch((err) => done(err))
+              }).catch((err) => done(err))
+            }).catch((err) => done(err))
+          }).catch((err) => done(err))
+        }).catch((err) => done(err))
+      }).catch((err) => done(err))
+
+
+
+    });
+});

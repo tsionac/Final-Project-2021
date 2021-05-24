@@ -166,6 +166,13 @@ app.get('/records', authenticate, (req, res, next) => {
         .catch((e) => next(ApiError.badRequest('could not retrive recordns in the manger\'s companyt', e)));
 });
 
+app.get('/records/:componentID/currentlyEditing', authenticateNoObj, (req, res, next) => {
+  let companyID = 'figureoutLater'; // TODO
+  let componentID = req.params.componentID;
+
+  res.status(ok).send(editCache.getCurrentEditorsList(companyID, componentID));
+});
+
 
 // pots a new record
 // if recived undefinded editEnd  , asume the edit has just began, save info on it to the ram, untl the edit has finished.

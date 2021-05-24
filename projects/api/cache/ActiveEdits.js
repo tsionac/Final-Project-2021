@@ -64,11 +64,11 @@ class ActiveEdits {
     componentID = componentID .toString().replace('\t', '');
     userID      = userID      .toString().replace('\t', '');
 
-    return (companyID.concat(componentID)).concat(userID)
+    return [companyID, componentID, userID].join(this.seperator);
   }
 
   getPropertyOfKey(key, property) {
-    let splited = key.split(seperator);
+    let splited = key.split(this.seperator);
 
     if (property === 'companyID'){
       return splited[0]
