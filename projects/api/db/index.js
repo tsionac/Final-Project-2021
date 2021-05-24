@@ -58,20 +58,19 @@ function doConnect(resolve, reject) {
     });
 
     // create new admin if does not already exsist
-    Manager.exists({userID}).then(exists => {
-      if (exists){
-        console.log(`Admin already exsists.... doing nothing.`);
-        resolve();
-      } else {
-          //ther in no admin, creating one
+    Manager.findOne( {userID}, function (err, result) {
+      if (err) {  console.log(`FATAL 1 : Admin was not set!`, e);  reject(e); }
+      if (!result) {
         newManager.save().then( (adminDoc) => {
           console.log(`The admin has beed successfully set :  ${adminDoc}`);
           resolve();
-        }).catch((e) => { console.log(`FATAL 1 : Admin was not set!`, e);  reject(e);})
+        }).catch((e) => { console.log(`FATAL 2 : Admin was not set!`, e);  reject(e);})
+      } else{
+        console.log(`Admin already exsists.... doing nothing.`);
+        resolve();
       }
     });
   });
-
 };
 
 //this is here to prevent depection warnings
