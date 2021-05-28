@@ -10,6 +10,15 @@ const app = require('../app.js');
 const conn = require('../db/index.js');
 
 
+
+let userID = 'test-user-42';
+let componentID = 'test-component-42';
+let actionID = 1;
+let editStart = new Date();
+let editEnd =  new Date();
+editEnd.setSeconds(editEnd.getSeconds() + 10); // adding 10 second to simulate an edit
+
+
 //4.1
 describe('POST /records', () => {
 
@@ -24,18 +33,6 @@ describe('POST /records', () => {
       .then(() => done())
       .catch((err) => done(err))
     });
-
-    // Tests of recods
-
-    let userID = 'test-user-42';
-    let componentID = 'test-component-42';
-    let actionID = 1;
-    let editStart = new Date();
-    let editEnd =  new Date();
-
-    editEnd.setSeconds(editEnd.getSeconds() + 10); // adding 10 second to simulate an edit
-
-
 
     //4.1
     it('OK, posting a new record to /records (edit start).', (done) => {
@@ -137,4 +134,3 @@ describe('POST /records', () => {
     });
 
 });
-

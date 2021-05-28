@@ -148,6 +148,7 @@ const ApiError = require('./errorHandling/ApiError');
 
 // ------------------------------- aplication specific objects -------------------------------
 const editCache = new ActiveEdits();
+adminID = '';
 
 
 // ------------------------------- HTTP defenitions -------------------------------
@@ -159,11 +160,20 @@ const ok = 200;
 // ------------ records ------------
 
 // get all records of manager's company.
-app.get('/records', authenticate, (req, res, next) => {
-    Record.find({ companyID: req.managerObj.companyID }).then((records) => {
-            res.send(records);
-        })
-        .catch((e) => next(ApiError.badRequest('could not retrive recordns in the manger\'s companyt', e)));
+app.get('/records', authenticateNoObj, (req, res, next) => {
+  let companyID = 'figureoutLater'; // TODO
+
+  Record.find({ companyID }).then((records) => {
+    res.send(records);
+  }).catch((e) => next(ApiError.badRequest('could not retrive recordns in the manger\'s companyt', e)));
+
+});
+
+app.get('/records/:componentID/currentlyEditing', authenticateNoObj, (req, res, next) => {
+  let companyID = 'figureoutLater'; // TODO
+  let componentID = req.params.componentID;
+
+  res.status(ok).send(editCache.getCurrentEditorsList(companyID, componentID));
 });
 
 
@@ -186,14 +196,14 @@ app.post('/records', (req, res, next) => {
 
     //user start the edit, end time is unkown yet, keep in cache, not in DB
     if (editEnd === undefined) {
-        editCache.startEdit(userID, componentID, editStart);
+        editCache.startEdit(companyID, componentID, userID, editStart);
         res.send({ userID, componentID, editStart });
         return;
     }
 
     // user finished editing, save recird to the db
     if (editStart === undefined) {
-        editStart = editCache.endEdit(userID, componentID);
+        editStart = editCache.endEdit(companyID, componentID, userID);
 
         let newRecord = new Record({
             companyID,
@@ -219,10 +229,10 @@ app.post('/records', (req, res, next) => {
  * post a new manager
  * i.e. signup
  */
-app.post('/managers', authenticate, (req, res, next) => {
+app.post('/managers', authenticateNoObj, (req, res, next) => {
     let body = req.body;
 
-    if (req.managerObj.userID != 'Admin') {
+    if (req.manager_id != adminID) {
         next(ApiError.badRequest('Only the user \'Admin\' can add new users!'));
         return;
     }
@@ -245,8 +255,13 @@ app.post('/managers/login', (req, res, next) => {
     let password = req.body.password;
 
     Manager.deleteExpiredSessions(userID).then(() => {
-
         Manager.findByCredentials(userID, password).then((manager) => {
+
+            // save admin's ID for easy admin authentication later on if this is the admin
+            if ((adminID === '') && (userID === 'Admin')){
+              adminID = manager._id;
+            }
+
             return manager.createSession().then((refreshToken) => {
                 // session was created succesfully, recived refresh token, now need to generate access token
 
@@ -312,71 +327,6 @@ app.patch('/managers/:managerid/revoke/:token', (req, res, next) => {
 
 
 
-
-
-
-
-// ------------ delete later ------------
-
-// get ALL record.
-// WARNING: extremly dangerous, remove on luanch.
-app.get('/records/all', (req, res, next) => {
-    Record.find({}).then((records) => {
-            res.send(records);
-        })
-        .catch(next);
-});
-
-// recive one specofic recird with a given id
-// WARNING: extremly dangerous, remove on luanch.
-app.patch('/records/:id', (req, res, next) => {
-    let id = req.params.id;
-
-    Record.findOneAndUpdate({ _id: id }, { $set: req.body })
-        .then(() => { res.status(ok).send({ 'message': 'edited successfully' }); })
-        .catch((e) => { next(ApiError.internal('error accured while updating record. is the id correct? was all paramaters given?', e)); });
-});
-
-// delete one specofic recird with a given id
-// WARNING: extremly dangerous, remove on luanch.
-app.delete('/records/:id', (req, res, next) => {
-    let id = req.params.id;
-
-    Record.findOneAndRemove({ _id: id })
-        .then((removed) => { res.send(removed) })
-        .catch((e) => { next(ApiError.internal('error accured while deleting the record. is the id correct?', e)) });
-});
-
-// delete **ALL*** records
-// WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
-app.delete('/records', (req, res, next) => {
-    Record.deleteMany({})
-        .then(() => { res.status(ok).send({ 'message': 'deleted successfully' }); })
-        .catch(next);
-});
-
-// delete **ALL*** managers
-// WARNING: super-extremly-mega-ultra dangerous, used for debug only, remove on luanch.
-app.delete('/managers', (req, res, next) => {
-    Manager.deleteMany({})
-        .then(() => { res.status(ok).send({ 'message': 'deleted successfully' }); })
-        .catch(next);
-});
-
-//get info on specific manager
-// WARNING: extremly dangerous, remove on luanch.
-app.get('/managers/:userid', (req, res, next) => {
-    let userid = req.params.userid;
-
-    Manager.findOne({ 'userID': userid }).then((manager) => {
-            res.send(manager);
-        })
-        .catch(next);
-});
-
-
-
-
 // ------------------------------- push error handler -------------------------------
 
 const errorHandler = require('./errorHandling/error-handler');
@@ -392,6 +342,7 @@ app.use(errorHandler);
 
 
 
+// ------------------------------- export app -------------------------------
 
 
 module.exports = app;

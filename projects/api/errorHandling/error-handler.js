@@ -2,8 +2,11 @@ const { of } = require("rxjs");
 const ApiError = require("./ApiError");
 
 function errorHandler(err, req, res, next){
-  //TODO: replace to an error loger (check requremets doc for prefered one to use)
-  console.log(err);
+
+  if(process.env.NODE_ENV !== 'test') {
+    // this in NOT a TEST that can delibertly try to create error, so this error needs to be recorded.
+    console.log(err); //TODO: replace to an error loger (check requremets doc for prefered one to use)
+  }
 
   //return error status to the user, so the user will know something went wrong
 
