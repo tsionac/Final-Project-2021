@@ -17,6 +17,11 @@ export class RecordService {
     return this.wrs.get(this.uri);
   };
 
+  getEditors(componetID:String){
+    return this.wrs.get(`${this.uri}/${componetID}/currentlyEditing`);
+  };
+
+
   startEdit(userID:String, componentID:String){
     return this.wrs.post(this.uri, this.enryCreator.createRecord(userID, componentID, -1, this.drs.getCurrentTime(), undefined) );
   };

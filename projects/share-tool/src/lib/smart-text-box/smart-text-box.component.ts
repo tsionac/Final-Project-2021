@@ -3,7 +3,7 @@ import { RecordService } from '../services/dbAcess/record.service';
 import { WebRequestService } from '../services/dbAcess/web-request.service';
 
 @Component({
-  selector: 'tsnt-smart-text-box',
+  selector: 'smart-text-box',
   templateUrl: './smart-text-box.component.html',
   styleUrls: ['./smart-text-box.component.css']
 })

@@ -9,10 +9,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EditShareComponent } from './edit-share/edit-share.component';
+import { SmartButtonComponent } from './smart-button/smart-button.component';
 
 
 @NgModule({
-  declarations: [ShareToolComponent, SmartTextBoxComponent],
+  declarations: [ShareToolComponent, SmartTextBoxComponent, EditShareComponent, SmartButtonComponent],
   imports: [
     BrowserAnimationsModule,
     FormsModule,
@@ -23,7 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatInputModule,
     MatFormFieldModule,
   ],
-  exports: [ShareToolComponent, SmartTextBoxComponent]
+  exports: [ShareToolComponent, SmartTextBoxComponent, EditShareComponent, SmartButtonComponent]
 })
 export class ShareToolModule { }
 
