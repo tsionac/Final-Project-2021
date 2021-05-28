@@ -6,5 +6,3 @@ npm i jsonwebtoken --save
 npm i bcryptjs --save
 npm i --save mocha chai supertest mockgoose
 npm install --save-dev ng2-charts-schematics
-ng generate ng2-charts-schematics:pie charts/activity-chart
-ng generate ng2-charts-schematics:bar charts/bar-activity-chart
