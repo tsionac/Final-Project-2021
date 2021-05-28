@@ -23,7 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatInputModule,
     MatFormFieldModule,
   ],
-  exports: [ShareToolComponent]
+  exports: [ShareToolComponent, SmartTextBoxComponent]
 })
 export class ShareToolModule { }
 
