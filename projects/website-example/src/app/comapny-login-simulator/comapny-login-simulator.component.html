@@ -1,4 +1,21 @@
 <app-login></app-login>
-<tsnt-share-tool [user]="get_user()" [comp_id]='34'></tsnt-share-tool>
-<tsnt-share-tool [user]="get_user()" [comp_id]='23'></tsnt-share-tool>
+<br>
+<br>
+<br>
+<br>
+<smart-button [isStartButton]="true" [userID]="get_user()" [companyID]='31'></smart-button>
+<br>
+<smart-button [isStartButton]="false" [userID]="get_user()" [companyID]='31'></smart-button>
+<br>
+<br>
+<smart-button [isStartButton]="true" [userID]="get_user()" [isEditingVisable]='false' [text]="'edit Strat'" [companyID]='78'></smart-button>
+<br>
+<smart-button [isStartButton]="false" [userID]="get_user()" [text]="'edit end'" [companyID]='78'></smart-button>
+<br>
+<br>
+<smart-text-box [userID]="get_user()" [companyID]='23'></smart-text-box>
+<smart-text-box [userID]="get_user()" [companyID]='34'></smart-text-box>
+<br>
+<br>
+<edit-share></edit-share>
 

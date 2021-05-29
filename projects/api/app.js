@@ -169,7 +169,7 @@ app.get('/records', authenticateNoObj, (req, res, next) => {
 
 });
 
-app.get('/records/:componentID/currentlyEditing', authenticateNoObj, (req, res, next) => {
+app.get('/records/:componentID/currentlyEditing', (req, res, next) => {
   let companyID = 'figureoutLater'; // TODO
   let componentID = req.params.componentID;
 
