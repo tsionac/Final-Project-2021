@@ -2,6 +2,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ChartsModule } from 'ng2-charts';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './activities/login/login.component';
@@ -19,6 +20,7 @@ import { DashComponent } from './activities/Home/dash/dash.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+
 import { DashActivitiesComponent} from './activities/dash-activities/dash-activities.component';
 import { ActivityChartComponent } from './charts/activity-chart/activity-chart.component';
 import { BarActivitiesChartComponent } from './charts/bar-activities-chart/bar-activities-chart.component';
@@ -54,6 +56,7 @@ import { CreateManagerComponent } from './activities/create-manager/create-manag
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
+    FormsModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: WebRequestInterseptor, multi:true}
