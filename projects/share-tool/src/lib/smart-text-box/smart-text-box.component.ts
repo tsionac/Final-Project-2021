@@ -12,6 +12,11 @@ export class SmartTextBoxComponent implements OnInit, OnChanges{
   @Input() userID: string;
   @Input() companyID: string;
 
+   /**
+  * shoud this component shows who edits it?
+  */
+    @Input() isEditingVisable: boolean = true;
+
   input ="";
 
   // userID: String;

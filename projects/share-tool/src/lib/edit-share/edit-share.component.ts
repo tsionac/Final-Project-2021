@@ -16,6 +16,11 @@ export class EditShareComponent implements OnInit,OnDestroy {
    */
   @Input() companyID: string;
 
+  /**
+   * shoud this component be visable?
+   */
+  @Input() isVisable: boolean = true;
+
 
   /**
    * A list of all the activities in the company
@@ -50,7 +55,7 @@ export class EditShareComponent implements OnInit,OnDestroy {
   getEditors() {
     const curentlyEditng = this.getCurrentComponent();
 
-    if((this.companyID != undefined) && (curentlyEditng != this.companyID)){
+    if((!this.isVisable) || ((this.companyID != undefined) && (curentlyEditng != this.companyID))){
       this.editors = [];
       return;
     }

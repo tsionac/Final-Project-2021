@@ -13,6 +13,11 @@ export class SmartButtonComponent implements OnInit {
   @Input() userID: string;
   @Input() companyID: string;
 
+  /**
+  * shoud this component shows who edits it?
+  */
+  @Input() isEditingVisable: boolean  = true;
+
   @Input() text:string;
 
   constructor(private recordService:RecordService, private curent:CurrentEntityService) { }
