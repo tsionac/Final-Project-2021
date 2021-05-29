@@ -1,7 +1,22 @@
 <div>
+  <br>
+  <textarea placeholder="userID" #userFilter></textarea>
+  <br>
+  <textarea placeholder="componentID" #componentFilter></textarea>
+  <br>
+  <textarea placeholder="actionID" #actionFilter></textarea>
+  <br>
+  <input type="datetime-local" placeholder="from date" [ngModel] ="filterDateFrom" (ngModelChange)="filterDateFrom = $event">
+  <br>
+  <input type="datetime-local" placeholder="up to date" [ngModel] ="filterDateTo" (ngModelChange)="filterDateTo = $event">
+  <br>
+  <button (click)="filter(userFilter.value, componentFilter.value, actionFilter.value)">Filter</button>
+  <br>
+  <br>
+  <br>
 
-  <a *ngFor="let activity of activities">
-    <pre class="tab">{{ activity.userID }}, {{ activity.componentID }},  {{ activity.actionID }},  {{ activity.editStart }}, {{ activity.editEnd }}</pre>
+  <a *ngFor="let activity of filteredActivities">
+    <pre class="tab">{{ activity.userID }} ---- {{ activity.componentID }} ---- {{ activity.actionID }} ----  {{ activity.editStart.toLocaleString('en-GB') }} ---- {{ activity.editEnd.toLocaleString('en-GB') }}</pre>
   </a>
 
 
