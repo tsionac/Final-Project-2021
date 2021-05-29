@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RecordService } from '../services/dbAcess/record.service';
+import { CurrentEntityService } from '../services/helpers/current-entity.service';
 
 @Component({
   selector: 'smart-button',
@@ -14,7 +15,7 @@ export class SmartButtonComponent implements OnInit {
 
   txt:string = 'start!';
 
-  constructor(private recordService:RecordService) { }
+  constructor(private recordService:RecordService, private curent:CurrentEntityService) { }
 
   ngOnInit(): void {
     if (!this.isStartButton) {
@@ -31,10 +32,12 @@ export class SmartButtonComponent implements OnInit {
   }
 
   onClick_editStart(){
+    this.curent.setCurrentEntity(this.comp_ID);
     this.recordService.startEdit(this.userID,this.comp_ID)?.subscribe( (res) => {/*console.log(res);*/});;
   }
 
   onClick_editSEnd(){
+    this.curent.clear();
     this.recordService.endEdit(this.userID, this.comp_ID, 1)?.subscribe( (res) => { /*console.log(res);*/});
   }
 

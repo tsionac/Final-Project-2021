@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { RecordService } from '../services/dbAcess/record.service';
 import 'rxjs/add/observable/interval';
 import { Observable } from 'rxjs';
+import { CurrentEntityService } from '../services/helpers/current-entity.service';
 
 @Component({
   selector: 'edit-share',
@@ -9,6 +10,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./edit-share.component.css']
 })
 export class EditShareComponent implements OnInit,OnDestroy {
+
 
   /**
    * A list of all the activities in the company
@@ -20,11 +22,14 @@ export class EditShareComponent implements OnInit,OnDestroy {
     */
    readonly Retrive_timer:number = 5000;
 
+   /**
+    * the observable that act as a timer
+    */
    sub;
 
 
 
-  constructor(private recordService:RecordService) { }
+  constructor(private recordService:RecordService, private current:CurrentEntityService) { }
 
   ngOnDestroy(): void {
     this.stopTimer();
@@ -49,7 +54,7 @@ export class EditShareComponent implements OnInit,OnDestroy {
   }
 
   getCurrentComponent() {
-    return '23';
+    return this.current.getCurrentEntity();
   }
 
 }
