@@ -11,18 +11,20 @@ export class SmartButtonComponent implements OnInit {
 
   @Input() isStartButton: boolean;
   @Input() userID: string;
-  @Input() comp_ID: string;
+  @Input() companyID: string;
 
-  txt:string = 'start!';
+  @Input() text:string;
 
   constructor(private recordService:RecordService, private curent:CurrentEntityService) { }
 
   ngOnInit(): void {
-    if (!this.isStartButton) {
-      this.txt = 'end!';
+    if(this.text === undefined) {
+      if (this.isStartButton) {
+        this.text = 'start!';
+      }else {
+        this.text = 'end!';
+      }
     }
-
-
   }
 
   onClick() {
@@ -34,13 +36,13 @@ export class SmartButtonComponent implements OnInit {
   }
 
   onClick_editStart(){
-    this.curent.setCurrentEntity(this.comp_ID);
-    this.recordService.startEdit(this.userID,this.comp_ID)?.subscribe( (res) => {/*console.log(res);*/});;
+    this.curent.setCurrentEntity(this.companyID);
+    this.recordService.startEdit(this.userID,this.companyID)?.subscribe( (res) => {/*console.log(res);*/});;
   }
 
   onClick_editSEnd(){
     this.curent.clear();
-    this.recordService.endEdit(this.userID, this.comp_ID, 1)?.subscribe( (res) => { /*console.log(res);*/});
+    this.recordService.endEdit(this.userID, this.companyID, 1)?.subscribe( (res) => { /*console.log(res);*/});
   }
 
 }

@@ -8,7 +8,7 @@ import { Input } from '@angular/core';
 })
 export class ShareToolComponent implements OnInit, OnChanges {
   @Input() user: String;
-  @Input() comp_id: String;
+  @Input() companyID: String;
   curr_user;
   curr_id;
   ngOnChanges(changes: SimpleChanges): void {
@@ -18,7 +18,7 @@ export class ShareToolComponent implements OnInit, OnChanges {
         // const cur  = JSON.stringify(chng.currentValue);
         this.curr_user = chng.currentValue;
       }
-      if (propName === 'comp_id'){
+      if (propName === 'companyID'){
         const chng = changes[propName];
         // const cur  = JSON.stringify(chng.currentValue);
         this.curr_id = chng.currentValue;
@@ -34,7 +34,7 @@ export class ShareToolComponent implements OnInit, OnChanges {
     // this.id =
 
     this.curr_user = this.user;
-    this.curr_id = this.comp_id;
+    this.curr_id = this.companyID;
 
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.

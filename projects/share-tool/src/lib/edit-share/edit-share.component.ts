@@ -14,7 +14,7 @@ export class EditShareComponent implements OnInit,OnDestroy {
   /**
    * whitch component this edit share component belongs too
    */
-  @Input() comp_ID: string;
+  @Input() companyID: string;
 
 
   /**
@@ -50,7 +50,7 @@ export class EditShareComponent implements OnInit,OnDestroy {
   getEditors() {
     const curentlyEditng = this.getCurrentComponent();
 
-    if((this.comp_ID != undefined) && (curentlyEditng != this.comp_ID)){
+    if((this.companyID != undefined) && (curentlyEditng != this.companyID)){
       this.editors = [];
       return;
     }
