@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnChanges, OnInit, SimpleChanges,
 import { Input } from '@angular/core';
 
 @Component({
-  selector: 'tsnt-share-tool',
+  selector: 'share-tool',
   templateUrl: './share-tool.component.html',
   styleUrls: ['./share-tool.component.css']
 })
@@ -23,12 +23,12 @@ export class ShareToolComponent implements OnInit, OnChanges {
         // const cur  = JSON.stringify(chng.currentValue);
         this.curr_id = chng.currentValue;
       }
-       
+
     }
   }
- 
-  
-  
+
+
+
   // curr_user = this.user;//?????????????????
   ngOnInit(): void {
     // this.id =

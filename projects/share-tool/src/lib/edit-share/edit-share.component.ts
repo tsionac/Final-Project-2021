@@ -11,6 +11,11 @@ import { CurrentEntityService } from '../services/helpers/current-entity.service
 })
 export class EditShareComponent implements OnInit,OnDestroy {
 
+  /**
+   * whitch component this edit share component belongs too
+   */
+  @Input() comp_ID: string;
+
 
   /**
    * A list of all the activities in the company
@@ -36,7 +41,6 @@ export class EditShareComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.sub = Observable.interval(this.Retrive_timer)
     .subscribe((val) => { this.getEditors(); });
 
@@ -44,7 +48,14 @@ export class EditShareComponent implements OnInit,OnDestroy {
   }
 
   getEditors() {
-    this.recordService.getEditors(this.getCurrentComponent()).subscribe((editors: String[]) => {
+    const curentlyEditng = this.getCurrentComponent();
+
+    if((this.comp_ID != undefined) && (curentlyEditng != this.comp_ID)){
+      this.editors = [];
+      return;
+    }
+
+    this.recordService.getEditors(curentlyEditng).subscribe((editors: String[]) => {
       this.editors = editors;
     });
   }

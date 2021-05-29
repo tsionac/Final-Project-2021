@@ -21,6 +21,8 @@ export class SmartButtonComponent implements OnInit {
     if (!this.isStartButton) {
       this.txt = 'end!';
     }
+
+
   }
 
   onClick() {
