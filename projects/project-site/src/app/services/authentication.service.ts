@@ -8,6 +8,7 @@ import { WebRequestService } from './web-request.service';
 import { shareReplay, tap } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class AuthenticationService {
 
 
 
-  constructor(private webService:WebRequestService, private router:Router) { }
+  constructor(private webService:WebRequestService, private router:Router, private alert:AlertService) { }
 
   // perform a login to the site with manager ID + password
   login(userID:string, password:string){
@@ -40,8 +41,6 @@ export class AuthenticationService {
 
         //save session info
         this.setSession(_id, accessTolken, refreshTolken);
-
-        // console.log('logged in');  // TODO : DELETE
       })
     );
   }
@@ -55,8 +54,8 @@ export class AuthenticationService {
 
   // logout of the system
   logout(){
+    this.alert.success('Loged out!');
     this.removeSession();
-    this.router.navigate(['/Login']);
   }
 
   /**
@@ -102,7 +101,7 @@ export class AuthenticationService {
    getID(){
     return localStorage.getItem(this._idStorage);
   }
-  
+
   public getUserID(){
      return this.userName;
    }

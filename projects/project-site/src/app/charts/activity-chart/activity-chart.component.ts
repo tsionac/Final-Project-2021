@@ -11,10 +11,10 @@ import { Activity } from '../../modules/Activity.module';
   styleUrls: ['./activity-chart.component.css']
 })
 export class ActivityChartComponent implements OnInit {
-  
+
   public mapOccUsers: Map<string, number>;//map of occurence of users
   public lenUsers:number = 0;
-  
+
   public pieChartOptions: ChartOptions = {
     responsive: true,
   };
@@ -25,7 +25,7 @@ export class ActivityChartComponent implements OnInit {
   public pieChartPlugins = [];
   public chartColors: any[] = [{ backgroundColor: [] }];
 
-  constructor(private recordService:RecordService) { 
+  constructor(private recordService:RecordService) {
     this.mapOccUsers = new Map<string, number>();
     recordService.getRecords().subscribe((act:Activity[])=>{
       this.lenUsers = act.length;
@@ -39,7 +39,7 @@ export class ActivityChartComponent implements OnInit {
   ngOnInit() {
     this.recordService.getRecords().subscribe((act:Activity[])=>{
       var colors = ['rgb(127, 255, 212)', 'rgb(255,127,80)', 'rgb(100,149,237)', 'rgb(0,191,255)', 'rgb(255,192,203)'];
-      // console.log(act[0].userID)
+
       for(let i = 0; i<this.lenUsers;i++){
         if (!(this.pieChartLabels.includes(act[i].userID))){
           this.pieChartLabels.push(act[i].userID.toString());
@@ -47,12 +47,12 @@ export class ActivityChartComponent implements OnInit {
         }
         else{
           this.mapOccUsers.set(act[i].userID, this.mapOccUsers.get(act[i].userID)+1);
-        } 
+        }
       }
       this.mapOccUsers.forEach((value, key) => {
         this.pieChartData.push(<number>value);
-        
-      });      
+
+      });
     })
 
   }

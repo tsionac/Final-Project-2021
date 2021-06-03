@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertService } from '../../services/alert.service';
 import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
@@ -8,15 +9,14 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class CreateManagerComponent implements OnInit {
 
-  constructor(private authService:AuthenticationService) { }
+  constructor(private authService:AuthenticationService,  private alert:AlertService) { }
 
   ngOnInit(): void {
   }
 
   createManamager(userID:string, companyID:string, password:string) {
     return this.authService.signup(userID, companyID, password).subscribe((user) => {
-     console.log(`created user :`);
-     console.log(user);
+      this.alert.success('manager created successfully!');
     })
   }
 

@@ -47,7 +47,7 @@ export class SmartTextBoxComponent implements OnInit, OnChanges{
 
   smartTextBoxtOut(){
     this.curent.clear();
-    this.recordService.endEdit(this.userID, this.companyID, this.getAction())?.subscribe( (res) => {console.log(res);});
+    this.recordService.endEdit(this.userID, this.companyID, this.getAction())?.subscribe( (res) => {/*console.log(res);*/});
   }
 
   getAction(){

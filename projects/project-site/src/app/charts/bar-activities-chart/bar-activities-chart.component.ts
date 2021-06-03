@@ -13,9 +13,9 @@ import { Activity } from '../../modules/Activity.module';
 })
 
 export class BarActivitiesChartComponent implements OnInit {
-  
-  
-  
+
+
+
   constructor(private recordService:RecordService) {}
 
   public activities_date:number[] = []
@@ -32,14 +32,14 @@ export class BarActivitiesChartComponent implements OnInit {
   public barChartData: ChartDataSets[] = [ { data: Array(31).fill(0), label:'sessions' } ];
 
 
-  
+
    ngOnInit() {
     this.recordService.getRecords().subscribe((act:Activity[])=>{
-      // console.log(act)
+
       for(let i = 0; i<act.length;i++){
         (<number>this.barChartData[0].data[(new Date(act[i].editStart).getDate())-1])++;
       }
-    })   
+    })
   }
 
 }

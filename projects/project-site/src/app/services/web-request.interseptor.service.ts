@@ -53,16 +53,16 @@ export class WebRequestInterseptor implements HttpInterceptor {
             }),
             catchError((err:HttpErrorResponse) => {
               console.log('permition denied by the server!');
-              this.authService.logout();
+              //this.authService.logout();
 
-              return empty();
+              return throwError(err);
             })
           );
         }
 
         // any other error
         console.log('permition denied by the server! (2)');
-        this.authService.logout();
+        //this.authService.logout();
         return throwError(err);
       })
     );

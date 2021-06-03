@@ -14,7 +14,6 @@ public username;
   }
 
   login(){
-    //console.log(this.username)
     this.userNameService.setUser(this.username);
   }
 }

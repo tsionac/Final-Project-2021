@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Activity } from '../../modules/Activity.module';
+import { AlertService } from '../../services/alert.service';
 import { RecordService } from '../../services/record.service';
 
 @Component({
@@ -22,10 +23,12 @@ export class ViewActivitiesComponent implements OnInit {
     filterDateFrom;
     filterDateTo;
 
-  constructor(private recordService:RecordService) { }
+  constructor(private recordService:RecordService, private alert:AlertService) { }
 
   ngOnInit(): void {
     this.getEdits();
+
+    this.alert.info("leave 'to' date empty field to view activites until now!");
   }
 
   /**
@@ -83,7 +86,6 @@ export class ViewActivitiesComponent implements OnInit {
       if (this.filterDateFrom !== undefined && this.filterDateFrom != ''){
         //tere is a requested filter for actionID
         ans = ans && (new Date(this.filterDateFrom).getTime() <= activity.editStart.getTime())
-        console.log(this.filterDateFrom)
       }
 
       if (this.filterDateTo !== undefined && this.filterDateTo != ''){

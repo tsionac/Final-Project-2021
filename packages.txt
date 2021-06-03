@@ -10,3 +10,4 @@ npm i --save mocha chai supertest mockgoose
 npm install --save-dev ng2-charts-schematics
 npm install chart.js@2.9.3 --save
 npm install ng2-charts@2.2.3 --save
+npm install --save angular2-notifications

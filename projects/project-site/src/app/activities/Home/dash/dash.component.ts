@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { LoginComponent } from '../../login/login.component';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { AlertService } from '../../../services/alert.service';
 
 
 
@@ -13,10 +14,10 @@ import { AuthenticationService } from '../../../services/authentication.service'
   providers: [LoginComponent]
 })
 export class DashComponent implements OnInit {
- 
+
   //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
   //Add 'implements OnInit' to the class.
-  
+
 
   public username:string = '';
   /** Based on the screen size, switch from standard to one column per row */
@@ -30,7 +31,7 @@ export class DashComponent implements OnInit {
           table: { cols: 1, rows: 4 },
         };
       }
- 
+
      return {
         columns: 4,
         // miniCard: { cols: 1, rows: 1 },
@@ -40,15 +41,12 @@ export class DashComponent implements OnInit {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver, public authServics: AuthenticationService) {
+  constructor(private breakpointObserver: BreakpointObserver, public authServics: AuthenticationService,  private alert:AlertService) {
 
   }
 
   ngOnInit(): void {
     this.username = this.authServics.getUserID();
-    console.log(this.username)
-
-   
   }
 
 
