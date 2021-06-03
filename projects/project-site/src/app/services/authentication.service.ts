@@ -15,18 +15,16 @@ import { AlertService } from './alert.service';
 })
 export class AuthenticationService {
 
-  private readonly accessHeader:string  = 'x-access-token' ;
-  private readonly refreshHeader:string = 'x-refresh-token';
 
   private readonly _idStorage:string  = 'user-id' ;
-  private readonly accessStorage:string = 'access-token';
-  private readonly refreshStorage:string = 'refresh-token';
-  private userName = '';
+  private readonly accessStorage:string = 'x-access-token';
+  private readonly refreshStorage:string = 'x-refresh-token';
+  private readonly userIdStorage:string = 'user-name';
 
 
 
 
-  constructor(private webService:WebRequestService, private router:Router, private alert:AlertService) { }
+  constructor(private webService:WebRequestService, private router:Router, private alert:AlertService) {}
 
   // perform a login to the site with manager ID + password
   login(userID:string, password:string){
@@ -34,13 +32,13 @@ export class AuthenticationService {
       shareReplay(), // this wil prevernt running the login methid several time or something. I'll be honenst, I didn't untrstood it...
       tap((res:HttpResponse<any>) => {
         // authentication tokens are in the header of this response, we need to store them.
-        this.userName = res.body.userID;
+        let userName      = res.body.userID;
         let _id           = res.body._id;
-        let accessTolken  = res.headers.get(this.accessHeader);
-        let refreshTolken = res.headers.get(this.refreshHeader);
+        let accessTolken  = res.headers.get(this.accessStorage);
+        let refreshTolken = res.headers.get(this.refreshStorage);
 
         //save session info
-        this.setSession(_id, accessTolken, refreshTolken);
+        this.setSession(userName, _id, accessTolken, refreshTolken);
       })
     );
   }
@@ -52,9 +50,16 @@ export class AuthenticationService {
     return this.webService.post('/managers', { userID, companyID, password });
   }
 
+  validatePassword(password:string) {
+    if (password.length < 8){
+      return 'password is too short! use 8 characters or more!';
+    }
+
+    return ''; //OK
+  }
+
   // logout of the system
   logout(){
-    this.alert.success('Loged out!');
     this.removeSession();
   }
 
@@ -74,7 +79,7 @@ export class AuthenticationService {
       observe: 'response'
     }).pipe(tap((res: HttpResponse<any>) => {
       // save new acccess token to local storage
-      this.setAccessToken(res.headers.get(this.accessHeader));
+      this.setAccessToken(res.headers.get(this.accessStorage));
     }));
   }
 
@@ -103,10 +108,11 @@ export class AuthenticationService {
   }
 
   public getUserID(){
-     return this.userName;
-   }
+     return localStorage.getItem(this.userIdStorage);
+  }
 
 
+  // -----------------------
 
   /**
    *  set the value of the access token
@@ -132,11 +138,20 @@ export class AuthenticationService {
     localStorage.setItem(this._idStorage, _id);
   }
 
+  /**
+   *  set the value of the userID
+   * @param username the value of the userID to set
+   */
+   setUserID(username:string){
+    localStorage.setItem(this.userIdStorage, username);
+  }
+
 
   // ----------------------------------------------------- private methods -----------------------------------------------------
 
   // save authentication token of a user to the local storage
-  private setSession(user_id:string, accessToken:string, refreshToken:string){
+  private setSession(userNamer:string, user_id:string, accessToken:string, refreshToken:string){
+    this.setUserID(userNamer);
     this.setID(user_id);
     this.setAccessToken(accessToken);
     this.setRefreshToken(refreshToken);
@@ -144,6 +159,7 @@ export class AuthenticationService {
 
   // remove info on the session from the local storage
   private removeSession(){
+    localStorage.removeItem(this.userIdStorage);
     localStorage.removeItem(this._idStorage);
     localStorage.removeItem(this.accessStorage);
     localStorage.removeItem(this.refreshStorage);

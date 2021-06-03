@@ -241,7 +241,7 @@ app.post('/managers', authenticateNoObj, (req, res, next) => {
 
     newManager.save().then((managerDoc) => {
         res.send(managerDoc);
-    }).catch((e) => { next(ApiError.internal('failed to create new user.', e)); });
+    }).catch((e) => { next(ApiError.internal('Manager already exists!', e)); });
 
 
 });

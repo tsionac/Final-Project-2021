@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from './services/authentication.service';
 import {NotificationsService} from 'angular2-notifications';
+import { AlertService } from './services/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,10 @@ import {NotificationsService} from 'angular2-notifications';
 export class AppComponent {
   title = 'project-site';
 
-  constructor(private authService:AuthenticationService) {}
+  constructor(private authService:AuthenticationService, private alert:AlertService) {}
 
   logoutClick() {
+    this.alert.success('Loged out!');
     this.authService.logout();
   }
 

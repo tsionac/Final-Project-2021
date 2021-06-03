@@ -19,11 +19,11 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit(): void {
   }
   changePassword(currPass:string, newPassword:string, repPass:string){
+    let err = '';
 
-    const passLen = 8;
-
-    if (newPassword.length < passLen || repPass.length < passLen){
-      this.alert.error('new passwors is too short! use 8 characters atleast!');
+    err = this.authService.validatePassword(newPassword);
+    if(err != ''){
+      this.alert.error(err);
       return;
     }
 
