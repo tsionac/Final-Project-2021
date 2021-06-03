@@ -28,7 +28,7 @@ export class ViewActivitiesComponent implements OnInit {
   ngOnInit(): void {
     this.getEdits();
 
-    this.alert.info("leave 'to' date empty field to view activites until now!");
+    this.alert.info("leave 'to' date empty field to view activites until now!", undefined, undefined, 8000);
   }
 
   /**
