@@ -3,18 +3,22 @@
 <br>
 <br>
 <br>
-<smart-button [isStartButton]="true" [userID]="get_user()" [companyID]='31'></smart-button>
+<smart-button [isStartButton]="true" [userID]="get_user()" [componentID]='31'></smart-button>
 <br>
-<smart-button [isStartButton]="false" [userID]="get_user()" [companyID]='31'></smart-button>
-<br>
-<br>
-<smart-button [isStartButton]="true" [userID]="get_user()" [isEditingVisable]='false' [text]="'edit Strat'" [companyID]='78'></smart-button>
-<br>
-<smart-button [isStartButton]="false" [userID]="get_user()" [text]="'edit end'" [companyID]='78'></smart-button>
+<smart-button [isStartButton]="false" [userID]="get_user()" [componentID]='31'></smart-button>
 <br>
 <br>
-<smart-text-box [userID]="get_user()" [companyID]='23'></smart-text-box>
-<smart-text-box [userID]="get_user()" [companyID]='34'></smart-text-box>
+<smart-button [isStartButton]="true" [userID]="get_user()" [isEditingVisable]='false' [text]="'edit Strat'" [componentID]='78'></smart-button>
+<br>
+<smart-button [isStartButton]="false" [userID]="get_user()" [text]="'edit end'" [componentID]='78'></smart-button>
+<br>
+<br>
+<smart-text-box [userID]="get_user()" [componentID]='23'></smart-text-box>
+<smart-text-box [userID]="get_user()" [componentID]='34'></smart-text-box>
+<br>
+<br>
+<br>
+<smart-text-box [userID]="get_user()" [componentID]="'hello!IanText!'"></smart-text-box>
 <br>
 <br>
 <edit-share></edit-share>

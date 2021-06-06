@@ -14,7 +14,7 @@ export class EditShareComponent implements OnInit,OnDestroy {
   /**
    * whitch component this edit share component belongs too
    */
-  @Input() companyID: string;
+  @Input() componentID: string;
 
   /**
    * shoud this component be visable?
@@ -55,7 +55,7 @@ export class EditShareComponent implements OnInit,OnDestroy {
   getEditors() {
     const curentlyEditng = this.getCurrentComponent();
 
-    if((!this.isVisable) || ((this.companyID != undefined) && (curentlyEditng != this.companyID))){
+    if((!this.isVisable) || ((this.componentID != undefined) && (curentlyEditng != this.componentID))){
       this.editors = [];
       return;
     }

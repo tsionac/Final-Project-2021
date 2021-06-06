@@ -10,7 +10,7 @@ import { CurrentEntityService } from '../services/helpers/current-entity.service
 })
 export class SmartTextBoxComponent implements OnInit, OnChanges{
   @Input() userID: string;
-  @Input() companyID: string;
+  @Input() componentID: string;
 
    /**
   * shoud this component shows who edits it?
@@ -27,10 +27,10 @@ export class SmartTextBoxComponent implements OnInit, OnChanges{
         // const cur  = JSON.stringify(chng.currentValue);
         this.userID = chng.currentValue;
       }
-      if (propName === 'companyID'){
+      if (propName === 'componentID'){
         const chng = changes[propName];
         // const cur  = JSON.stringify(chng.currentValue);
-        this.companyID = chng.currentValue;
+        this.componentID = chng.currentValue;
       }
     }
   }
@@ -41,13 +41,13 @@ export class SmartTextBoxComponent implements OnInit, OnChanges{
   }
 
   smartTextBoxtIn(){
-    this.curent.setCurrentEntity(this.companyID);
-    this.recordService.startEdit(this.userID,this.companyID)?.subscribe( (res) => {/*console.log(res);*/});;
+    this.curent.setCurrentEntity(this.componentID);
+    this.recordService.startEdit(this.userID,this.componentID)?.subscribe( (res) => {/*console.log(res);*/});;
   }
 
   smartTextBoxtOut(){
     this.curent.clear();
-    this.recordService.endEdit(this.userID, this.companyID, this.getAction())?.subscribe( (res) => {/*console.log(res);*/});
+    this.recordService.endEdit(this.userID, this.componentID, this.getAction())?.subscribe( (res) => {/*console.log(res);*/});
   }
 
   getAction(){
