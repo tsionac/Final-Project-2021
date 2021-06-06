@@ -36,14 +36,23 @@ export class ActivityChartComponent implements OnInit {
     });
   }
 
+  nextNum(){
+    return Math.floor(Math.random() * 150 + 100)
+  }
+
+  nextRgb(){
+    return 'rgb(' + this.nextNum() + ',' + this.nextNum() + ',' + this.nextNum() + ')'
+  }
+
   ngOnInit() {
     this.recordService.getRecords().subscribe((act:Activity[])=>{
-      var colors = ['rgb(127, 255, 212)', 'rgb(255,127,80)', 'rgb(100,149,237)', 'rgb(0,191,255)', 'rgb(255,192,203)'];
+      // var colors = ['rgb(127, 255, 212)', 'rgb(255,127,80)', 'rgb(100,149,237)', 'rgb(0,191,255)', 'rgb(255,192,203)'];
 
       for(let i = 0; i<this.lenUsers;i++){
         if (!(this.pieChartLabels.includes(act[i].userID))){
           this.pieChartLabels.push(act[i].userID.toString());
-          this.chartColors[0].backgroundColor.push(colors[Math.floor(Math.random() * colors.length)]);
+          // this.chartColors[0].backgroundColor.push(colors[i% colors.length]);
+          this.chartColors[0].backgroundColor.push(this.nextRgb());
         }
         else{
           this.mapOccUsers.set(act[i].userID, this.mapOccUsers.get(act[i].userID)+1);
