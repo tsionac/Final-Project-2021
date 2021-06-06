@@ -31,7 +31,9 @@ export class CreateManagerComponent implements OnInit {
     }
 
     return this.authService.signup(userID, companyID, password).subscribe((res:HttpResponse<any>) => {
-      this.alert.success('manager created successfully!');
+      this.alert.success('Manager created successfully!');
+      this.router.navigate(['/Home']);
+      // this.router.navigate(['/createManager']);
     }, (err:HttpErrorResponse) => {
       this.alert.error(err.error);
     });

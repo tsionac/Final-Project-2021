@@ -28,13 +28,13 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     if (newPassword != repPass){
-      this.alert.error('the passwords do not  mutch!');
+      this.alert.error('The passwords do not match!');
       return;
     }
 
     this.authService.changePassword(currPass, newPassword).subscribe((res:HttpResponse<any>)=>{
       if(res.status == 200){
-        this.alert.success('successed to change password!');
+        this.alert.success('Password changed successfully!');
       }
       else{
         this.alert.error(res.body);

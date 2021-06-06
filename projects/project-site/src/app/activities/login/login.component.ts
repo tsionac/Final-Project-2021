@@ -32,12 +32,12 @@ export class LoginComponent implements OnInit {
       this.authService.login(username,password).subscribe((res:HttpResponse<any>) => {
         if(res.status === 200){
 
-          this.alert.success('loggenin successfuly to ' + res.body.userID);
+          this.alert.success('Logged in successfully to ' + res.body.userID);
           // login was succesfull, redirecting to the activity view
           this.user_n = res.body.userID;
           this.router.navigate(['/Home']);
         } else {
-          this.alert.error('could not login!');
+          this.alert.error('Could not login! error code:' + res.status);
         }
       }, (err:HttpErrorResponse) => {
         this.alert.error(err.error);
