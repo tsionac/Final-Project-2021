@@ -12,8 +12,10 @@ import { AuthenticationService } from '../services/authentication.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit{
-  menuItems = ['Home','View Activities', 'Create Manager', 'Change Password', 'Contact Us'];
+  menuItemsOrg = ['Home','View Activities', 'Create Manager', 'Change Password', 'Contact Us'];
+  menuItems = []
   public username:string = '';
+  isHidden: boolean = true;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -28,7 +30,16 @@ export class NavComponent implements OnInit{
     this.router.navigate(['/Login']);
     // router.navigate(['/Home'])
   }
+
+  public isAdmin(){
+    // this.username != 'Admin'  item != 'Create Manager'
+    if(this.username != 'Admin'){
+      this.menuItems = this.menuItemsOrg.filter(word => word != 'Create Manager')
+    }
+  }
+
   ngOnInit(): void {
+    this.menuItems = this.menuItemsOrg;
     this.username = this.authService.getUserID();
   }
 }

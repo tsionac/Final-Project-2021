@@ -5,7 +5,11 @@
             <mat-toolbar>Menu</mat-toolbar>
 
             <mat-nav-list>
-                <a *ngFor="let item of menuItems" mat-list-item [routerLink]="'/'+item"> {{item | titlecase}} </a>
+                <a *ngFor="let item of menuItems" mat-list-item [routerLink]="'/'+item">
+                    <div *ngIf="isAdmin()">
+                    </div>
+                    {{item | titlecase}}
+                </a>
             </mat-nav-list>
         </ng-container>
     </mat-sidenav>
