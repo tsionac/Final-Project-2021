@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -11,9 +11,9 @@ import { AuthenticationService } from '../services/authentication.service';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent {
-  menuItems = ['Home','View activities', 'Change password', 'Contact Us'];
-
+export class NavComponent implements OnInit{
+  menuItems = ['Home','View Activities', 'Create Manager', 'Change Password', 'Contact Us'];
+  public username:string = '';
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -27,5 +27,8 @@ export class NavComponent {
     this.authService.logout();
     this.router.navigate(['/Login']);
     // router.navigate(['/Home'])
+  }
+  ngOnInit(): void {
+    this.username = this.authService.getUserID();
   }
 }

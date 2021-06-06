@@ -15,10 +15,10 @@ import { CreateManagerComponent } from './activities/create-manager/create-manag
 const routes: Routes = [
   {path: ''            , redirectTo: '/Login', pathMatch: 'full'},
   {path: 'Login', component: LoginComponent},
-  {path: 'View activities', component: ViewActivitiesComponent},
+  {path: 'View Activities', component: ViewActivitiesComponent},
   {path: 'Home', component: DashComponent},
-  {path:'Change password', component: ChangePasswordComponent},
-  {path: 'createManager', component: CreateManagerComponent}
+  {path:'Change Password', component: ChangePasswordComponent},
+  {path: 'Create Manager', component: CreateManagerComponent}
 ];
 
 @NgModule({

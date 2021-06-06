@@ -16,10 +16,11 @@
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
-            <button type="button" mat-icon-button (click)="this.logout()" *ngIf="!this.router.url.includes('/Login')">
-                Logout
+            <span class="ex2">{{this.username}}</span>
+            <button class="ex1" type="button" mat-icon-button (click)="this.logout()" *ngIf="!this.router.url.includes('/Login')">
+              Logout 
             </button>
-            <span></span>
+
             <!--this is the title for the blue nav-->
         </mat-toolbar>
         <!-- <app-dash></app-dash> -->
