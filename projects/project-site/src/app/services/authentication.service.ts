@@ -21,6 +21,8 @@ export class AuthenticationService {
   private readonly refreshStorage:string = 'x-refresh-token';
   private readonly userIdStorage:string = 'user-name';
 
+  private readonly storage = sessionStorage; //localStorage;
+
 
 
 
@@ -90,25 +92,25 @@ export class AuthenticationService {
    * get the access token from local storage
    */
   getAccessToken(){
-      return localStorage.getItem(this.accessStorage);
+      return this.storage.getItem(this.accessStorage);
   }
 
   /**
    * get the refresh token from local storage
    */
   getRefreshToken(){
-    return localStorage.getItem(this.refreshStorage);
+    return this.storage.getItem(this.refreshStorage);
   }
 
   /**
    * get the _id from local storage
    */
    getID(){
-    return localStorage.getItem(this._idStorage);
+    return this.storage.getItem(this._idStorage);
   }
 
   public getUserID(){
-     return localStorage.getItem(this.userIdStorage);
+     return this.storage.getItem(this.userIdStorage);
   }
 
 
@@ -119,7 +121,7 @@ export class AuthenticationService {
    * @param accessToken the value of the access token to set
    */
   setAccessToken(accessToken:string){
-    localStorage.setItem(this.accessStorage, accessToken);
+    this.storage.setItem(this.accessStorage, accessToken);
   }
 
   /**
@@ -127,7 +129,7 @@ export class AuthenticationService {
    * @param refreshToken the value of the refresh token to set
    */
    setRefreshToken(refreshToken:string){
-    localStorage.setItem(this.refreshStorage, refreshToken);
+    this.storage.setItem(this.refreshStorage, refreshToken);
   }
 
   /**
@@ -135,7 +137,7 @@ export class AuthenticationService {
    * @param _id the value of the _id to set
    */
    setID(_id:string){
-    localStorage.setItem(this._idStorage, _id);
+    this.storage.setItem(this._idStorage, _id);
   }
 
   /**
@@ -143,7 +145,7 @@ export class AuthenticationService {
    * @param username the value of the userID to set
    */
    setUserID(username:string){
-    localStorage.setItem(this.userIdStorage, username);
+    this.storage.setItem(this.userIdStorage, username);
   }
 
 
@@ -159,9 +161,9 @@ export class AuthenticationService {
 
   // remove info on the session from the local storage
   private removeSession(){
-    localStorage.removeItem(this.userIdStorage);
-    localStorage.removeItem(this._idStorage);
-    localStorage.removeItem(this.accessStorage);
-    localStorage.removeItem(this.refreshStorage);
+    this.storage.removeItem(this.userIdStorage);
+    this.storage.removeItem(this._idStorage);
+    this.storage.removeItem(this.accessStorage);
+    this.storage.removeItem(this.refreshStorage);
 }
 }
