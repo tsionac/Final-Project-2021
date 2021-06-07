@@ -55,8 +55,16 @@ export class ViewActivitiesComponent implements OnInit {
     this.activities.forEach(activity => this.filteredActivities.push(activity));
   }
 
+  checkFilter(filter){
+    if (filter !== undefined && filter != ''){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /**
-   * filter the recods
+   * filter the records
    * @param userID an optional user name
    */
   filter(userID:string, componentID:String, actionID:string) {
@@ -69,27 +77,27 @@ export class ViewActivitiesComponent implements OnInit {
       let ans:Boolean = true;
 
       if (userID !== undefined && userID != ''){
-        //tere is a requested filter for user
+        //there is a requested filter for user
         ans = ans && (activity.userID == userID)
       }
 
       if (componentID !== undefined && componentID != ''){
-        //tere is a requested filter for componentID
+        //there is a requested filter for componentID
         ans = ans && (activity.componentID == componentID)
       }
 
       if (actionID !== undefined && actionID != ''){
-        //tere is a requested filter for actionID
+        //there is a requested filter for actionID
         ans = ans && (activity.actionID.toString() == actionID)
       }
 
       if (this.filterDateFrom !== undefined && this.filterDateFrom != ''){
-        //tere is a requested filter for actionID
+        //there is a requested filter for actionID
         ans = ans && (new Date(this.filterDateFrom).getTime() <= activity.editStart.getTime())
       }
 
       if (this.filterDateTo !== undefined && this.filterDateTo != ''){
-        //tere is a requested filter for actionID
+        //there is a requested filter for actionID
         ans = ans && (new Date(this.filterDateTo).getTime() >= activity.editEnd.getTime())
       }
 
