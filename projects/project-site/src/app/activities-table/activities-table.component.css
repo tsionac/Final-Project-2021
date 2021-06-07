@@ -5,6 +5,46 @@
 
 /* Structure */
 
+.dashboard-card {
+    /* margin-block-end: 15%; */
+    margin-right: 30%;
+    margin-left: 30%;
+}
+
+.dashboard-card-content {
+    text-align: center;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+label {
+    display: flex;
+    flex-direction: row;
+    text-align: right;
+    width: 400px;
+    color: rgba(22, 57, 75, 0.787)
+}
+
+input {
+    height: 20px;
+    flex: 0 0 200px;
+}
+
+
+/* .container {
+    width: 500px;
+    height: 500px;
+    background: blue;
+} */
+
 table {
     width: 100%;
     overflow-x: scroll !important;
@@ -13,4 +53,8 @@ table {
 .mat-form-field {
     font-size: 14px;
     width: 100%;
+}
+
+.activities-Filter {
+    text-align: center;
 }
