@@ -23,7 +23,7 @@ export class NavComponent implements OnInit{
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, public route:ActivatedRoute,public router:Router, private authService:AuthenticationService) {}
+  constructor(private breakpointObserver: BreakpointObserver, public route:ActivatedRoute,public router:Router, public authService:AuthenticationService) {}
 
   public logout(){
     this.authService.logout();
@@ -32,8 +32,9 @@ export class NavComponent implements OnInit{
   }
 
   public isAdmin(){
+    this.menuItems = this.menuItemsOrg;
     // this.username != 'Admin'  item != 'Create Manager'
-    if(this.username != 'Admin'){
+    if(this.authService.getUserID() != 'Admin'){
       this.menuItems = this.menuItemsOrg.filter(word => word != 'Create Manager')
     }
   }
