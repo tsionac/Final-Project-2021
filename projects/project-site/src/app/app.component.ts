@@ -14,8 +14,9 @@ export class AppComponent {
   constructor(private authService:AuthenticationService, private alert:AlertService) {}
 
   logoutClick() {
-    this.alert.success('Logged out!');
+    var username:string = this.authService.getUserID();
     this.authService.logout();
+    this.alert.success(username + ' logged out!');
   }
 
 }

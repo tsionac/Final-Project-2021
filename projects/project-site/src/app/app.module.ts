@@ -36,6 +36,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { ActivitiesTableComponent } from './activities-table/activities-table.component';
 
+import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
+// import { HttpClientModule } from "@angular/common/http";
+
 
 @NgModule({
   declarations: [
@@ -72,6 +75,7 @@ import { ActivitiesTableComponent } from './activities-table/activities-table.co
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: WebRequestInterseptor, multi:true}

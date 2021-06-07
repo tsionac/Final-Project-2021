@@ -55,8 +55,16 @@ export class ViewActivitiesComponent implements OnInit {
     this.activities.forEach(activity => this.filteredActivities.push(activity));
   }
 
+  checkFilter(filter){
+    if (filter !== undefined && filter != ''){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /**
-   * filter the recods
+   * filter the records
    * @param userID an optional user name
    */
   filter(userID:string, componentID:String, actionID:string) {
@@ -68,28 +76,28 @@ export class ViewActivitiesComponent implements OnInit {
     this.filteredActivities = this.filteredActivities.filter((activity:Activity) => {
       let ans:Boolean = true;
 
-      if (userID !== undefined && userID != ''){
-        //tere is a requested filter for user
+      if (this.checkFilter(userID)){
+        //there is a requested filter for user
         ans = ans && (activity.userID == userID)
       }
 
-      if (componentID !== undefined && componentID != ''){
-        //tere is a requested filter for componentID
+      if (this.checkFilter(componentID)){
+        //there is a requested filter for componentID
         ans = ans && (activity.componentID == componentID)
       }
 
-      if (actionID !== undefined && actionID != ''){
-        //tere is a requested filter for actionID
+      if (this.checkFilter(actionID)){
+        //there is a requested filter for actionID
         ans = ans && (activity.actionID.toString() == actionID)
       }
 
-      if (this.filterDateFrom !== undefined && this.filterDateFrom != ''){
-        //tere is a requested filter for actionID
+      if (this.checkFilter(this.filterDateFrom)){
+        //there is a requested filter for actionID
         ans = ans && (new Date(this.filterDateFrom).getTime() <= activity.editStart.getTime())
       }
 
-      if (this.filterDateTo !== undefined && this.filterDateTo != ''){
-        //tere is a requested filter for actionID
+      if (this.checkFilter(this.filterDateTo)){
+        //there is a requested filter for actionID
         ans = ans && (new Date(this.filterDateTo).getTime() >= activity.editEnd.getTime())
       }
 
