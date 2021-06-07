@@ -51,7 +51,7 @@ export class WebRequestInterseptor implements HttpInterceptor {
               req = this.addAuthenticationHeader(req);
               return next.handle(req);
             }),
-            catchError((err:HttpErrorResponse) => {
+            catchError((err2:HttpErrorResponse) => {
               console.log('permition denied by the server!');
               //this.authService.logout();
 
