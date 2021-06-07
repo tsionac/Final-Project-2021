@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {NotificationsService} from 'angular2-notifications';
+import { Component } from "@angular/core";
+import { NGXLogger } from "ngx-logger";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class AlertService {
   private readonly deftimeOut = 3000;
 
 
-  constructor(private notify:NotificationsService) { }
+  constructor(private notify:NotificationsService, private logger: NGXLogger) { }
 
   success(msg, title=undefined, position=undefined, timeOut=undefined) {
 
@@ -26,6 +28,7 @@ export class AlertService {
       timeOut=this.deftimeOut;
     }
 
+    this.logger.info(title, msg);
 
     this.notify.success(title,msg, {
       position:position,
@@ -48,6 +51,8 @@ export class AlertService {
     if (timeOut === undefined) {
       timeOut=this.deftimeOut;
     }
+
+    this.logger.error(title, msg);
 
     this.notify.error(title,msg, {
       position:position,
@@ -72,6 +77,8 @@ export class AlertService {
       timeOut=this.deftimeOut;
     }
 
+    // this.logger.info(title, msg);
+
     this.notify.info(title,msg, {
       position:position,
       timeOut:timeOut,
@@ -93,6 +100,8 @@ export class AlertService {
     if (timeOut === undefined) {
       timeOut=this.deftimeOut;
     }
+
+    this.logger.warn(title, msg);
 
     this.notify.warn(title,msg, {
       position:position,

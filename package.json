@@ -27,6 +27,7 @@
         "angular2-notifications": "^9.0.0",
         "chart.js": "^2.9.3",
         "ng2-charts": "^2.2.3",
+        "ngx-logger": "^4.2.2",
         "rxjs": "~6.6.0",
         "tslib": "^2.0.0",
         "zone.js": "~0.10.2"

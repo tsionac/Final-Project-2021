@@ -32,6 +32,9 @@ import { CreateManagerComponent } from './activities/create-manager/create-manag
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
+import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
+// import { HttpClientModule } from "@angular/common/http";
+
 
 @NgModule({
   declarations: [
@@ -65,6 +68,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     FormsModule,
     SimpleNotificationsModule.forRoot(),
     BrowserAnimationsModule,
+    LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: WebRequestInterseptor, multi:true}

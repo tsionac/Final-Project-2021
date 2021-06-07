@@ -4,6 +4,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs-compat';
 import { AlertService } from '../../services/alert.service';
+import { NGXLogger } from "ngx-logger";
 
 
 @Component({
@@ -13,7 +14,7 @@ import { AlertService } from '../../services/alert.service';
 })
 export class ChangePasswordComponent implements OnInit {
 
-  constructor(private authService:AuthenticationService, private alert:AlertService, private router:Router) { }
+  constructor(private authService:AuthenticationService, private alert:AlertService, private router:Router, private logger: NGXLogger) { }
 
 
   ngOnInit(): void {
@@ -37,10 +38,14 @@ export class ChangePasswordComponent implements OnInit {
         this.alert.success('Password changed successfully!');
       }
       else{
-        this.alert.error(res.body);
+        this.alert.error('The system encountered difficulties, please try again later. If this error occurs several times, please contact the admin.');
+        this.logger.error('changePassword encountered error:', res.body)
+
       }
     },(err:HttpErrorResponse) => {
-      this.alert.error(err.error);
+      this.alert.error('The system encountered difficulties, please try again later. If this error occurs several times, please contact the admin.');
+      this.logger.error('changePassword (HttpErrorResponse) encountered error:', err.error)
+
     });
   }
 

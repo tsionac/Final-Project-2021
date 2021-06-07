@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from '../../services/alert.service';
 import { AuthenticationService } from '../../services/authentication.service';
+import { NGXLogger } from "ngx-logger";
 
 @Component({
   selector: 'app-create-manager',
@@ -11,12 +12,13 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class CreateManagerComponent implements OnInit {
 
-  constructor(private authService:AuthenticationService,  private alert:AlertService, private router:Router) { }
+  constructor(private authService:AuthenticationService,  private alert:AlertService, private router:Router, private logger: NGXLogger) { }
 
   ngOnInit(): void {
     if (this.authService.getUserID() != 'Admin') {
+      var username:string = this.authService.getUserID();
       this.authService.logout();
-      this.alert.warn('You are not an admin! If you have the admin login info, please login to admin first.', undefined, undefined,8000)
+      this.alert.warn(username + ', you are not an admin! If you have the admin login info, please login as admin first.', undefined, undefined,8000)
       this.router.navigate(['/Login']);
     }
   }
@@ -26,7 +28,8 @@ export class CreateManagerComponent implements OnInit {
 
     err = this.authService.validatePassword(password);
     if(err != ''){
-      this.alert.error(err);
+      this.alert.error('The system encountered difficulties, please try again later. If this error occurs several times, please contact the admin.');
+      this.logger.error('Create manager (validatePassword) encountered error:', err)
       return;
     }
 
@@ -35,7 +38,8 @@ export class CreateManagerComponent implements OnInit {
       this.router.navigate(['/Home']);
       // this.router.navigate(['/createManager']);
     }, (err:HttpErrorResponse) => {
-      this.alert.error(err.error);
+      this.alert.error('The system encountered difficulties, please try again later. If this error occurs several times, please contact the admin.');
+      this.logger.error('Create manager (HttpErrorResponse) encountered error:', err.error)
     });
   }
 
