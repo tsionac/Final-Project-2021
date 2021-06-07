@@ -52,6 +52,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "allowedCommonJsDependencies": ["chart.js"],
                         "outputPath": "dist/website-example",
                         "index": "projects/website-example/src/index.html",
                         "main": "projects/website-example/src/main.ts",
@@ -166,6 +167,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "allowedCommonJsDependencies": ["chart.js", "rxjs-compat", "lodash"],
                         "outputPath": "dist/project-site",
                         "index": "projects/project-site/src/index.html",
                         "main": "projects/project-site/src/main.ts",
@@ -184,12 +186,10 @@
                     },
                     "configurations": {
                         "production": {
-                            "fileReplacements": [
-                                {
-                                    "replace": "projects/project-site/src/environments/environment.ts",
-                                    "with": "projects/project-site/src/environments/environment.prod.ts"
-                                }
-                            ],
+                            "fileReplacements": [{
+                                "replace": "projects/project-site/src/environments/environment.ts",
+                                "with": "projects/project-site/src/environments/environment.prod.ts"
+                            }],
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
@@ -197,8 +197,7 @@
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true,
-                            "budgets": [
-                                {
+                            "budgets": [{
                                     "type": "initial",
                                     "maximumWarning": "2mb",
                                     "maximumError": "5mb"

@@ -1,0 +1,16 @@
+/* .full-width-table {
+    width: 100%;
+} */
+
+
+/* Structure */
+
+table {
+    width: 100%;
+    overflow-x: scroll !important;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}

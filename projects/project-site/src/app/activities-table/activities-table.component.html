@@ -1,0 +1,52 @@
+<!-- <div>
+    <br>
+    <textarea placeholder="userID" #userFilter></textarea>
+    <br>
+    <textarea placeholder="componentID" #componentFilter></textarea>
+    <br>
+    <textarea placeholder="actionID" #actionFilter></textarea>
+    <br>
+    <input type="datetime-local" placeholder="from date" [ngModel]="filterDateFrom" (ngModelChange)="filterDateFrom = $event">
+    <br>
+    <input type="datetime-local" placeholder="up to date" [ngModel]="filterDateTo" (ngModelChange)="filterDateTo = $event">
+    <br>
+    <button (click)="filter(userFilter.value, componentFilter.value, actionFilter.value)">Filter</button>
+    <br>
+    <br>
+    <br> -->
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!-- UserId Column -->
+    <ng-container matColumnDef="UserID">
+        <th mat-header-cell *matHeaderCellDef> User Id </th>
+        <td mat-cell *matCellDef="let element"> {{element.userID}} </td>
+    </ng-container>
+
+    <!-- ComponentID Column -->
+    <ng-container matColumnDef="ComponentID">
+        <th mat-header-cell *matHeaderCellDef> Component ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.componentID}} </td>
+    </ng-container>
+
+    <!-- Start Date Column -->
+    <ng-container matColumnDef="Start Date">
+        <th mat-header-cell *matHeaderCellDef> Start Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.editStart}} </td>
+    </ng-container>
+
+    <!-- End date Column -->
+    <ng-container matColumnDef="End Date">
+        <th mat-header-cell *matHeaderCellDef> End date </th>
+        <td mat-cell *matCellDef="let element"> {{element.editEnd}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row shown when there is no matching data.
+    <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    </tr> -->
+
+</table>

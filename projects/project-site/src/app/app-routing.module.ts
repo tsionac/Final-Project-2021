@@ -10,7 +10,7 @@ import {NavComponent} from './nav/nav.component'
 import { DashComponent} from './activities/Home/dash/dash.component'
 import { ChangePasswordComponent } from './activities/change-password/change-password.component';
 import { CreateManagerComponent } from './activities/create-manager/create-manager.component';
-
+import { ActivitiesTableComponent } from './activities-table/activities-table.component';
 
 const routes: Routes = [
   {path: ''            , redirectTo: '/Login', pathMatch: 'full'},
@@ -18,7 +18,9 @@ const routes: Routes = [
   {path: 'View Activities', component: ViewActivitiesComponent},
   {path: 'Home', component: DashComponent},
   {path:'Change Password', component: ChangePasswordComponent},
-  {path: 'Create Manager', component: CreateManagerComponent}
+  {path: 'Create Manager', component: CreateManagerComponent},
+  {path: 'tableExample', component: ActivitiesTableComponent},  
+  
 ];
 
 @NgModule({

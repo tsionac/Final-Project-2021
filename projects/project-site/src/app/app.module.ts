@@ -21,7 +21,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { DashActivitiesComponent} from './activities/dash-activities/dash-activities.component';
+// import { DashActivitiesComponent} from './activities/dash-activities/dash-activities.component';
 import { ActivityChartComponent } from './charts/activity-chart/activity-chart.component';
 import { BarActivitiesChartComponent } from './charts/bar-activities-chart/bar-activities-chart.component';
 import { CardComponent } from './card/card.component';
@@ -31,6 +31,10 @@ import { CreateManagerComponent } from './activities/create-manager/create-manag
 
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { ActivitiesTableComponent } from './activities-table/activities-table.component';
 
 
 @NgModule({
@@ -40,12 +44,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ViewActivitiesComponent,
     NavComponent,
     DashComponent,
-    DashActivitiesComponent,
     ActivityChartComponent,
     BarActivitiesChartComponent,
     CardComponent,
     ChangePasswordComponent,
     CreateManagerComponent,
+    ActivitiesTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +69,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     FormsModule,
     SimpleNotificationsModule.forRoot(),
     BrowserAnimationsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: WebRequestInterseptor, multi:true}
