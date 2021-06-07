@@ -15,7 +15,7 @@
             <p class="form-group">
                 <input #usernameInput type="datetime-local" class="form-control" id="exampleDateTo" placeholder="to date" [ngModel]="filterDateTo" (ngModelChange)="filterDateTo = $event">
             </p>
-            <button mat-raised-button color="primary" (click)="filter(userFilter.value, componentFilter.value)">Filter</button>
+            <button mat-raised-button color="primary" (click)="filter(userFilter.value.trim(), componentFilter.value.trim())">Filter</button>
         </div>
     </mat-card-content>
 </mat-card>

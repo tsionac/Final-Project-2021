@@ -27,8 +27,6 @@ import { BarActivitiesChartComponent } from './charts/bar-activities-chart/bar-a
 import { CardComponent } from './card/card.component';
 import { ChangePasswordComponent } from './activities/change-password/change-password.component';
 import { CreateManagerComponent } from './activities/create-manager/create-manager.component';
-
-
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
