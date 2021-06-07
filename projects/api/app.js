@@ -205,6 +205,12 @@ app.post('/records', (req, res, next) => {
     if (editStart === undefined) {
         editStart = editCache.endEdit(companyID, componentID, userID);
 
+        if(editStart === undefined) {
+          //tere is no start date
+          next(ApiError.badRequest('an edit was finished without starting it first.'));
+          return;
+        }
+
         let newRecord = new Record({
             companyID,
             userID,
