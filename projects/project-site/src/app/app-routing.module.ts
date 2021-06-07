@@ -15,11 +15,11 @@ import { ActivitiesTableComponent } from './activities-table/activities-table.co
 const routes: Routes = [
   {path: ''            , redirectTo: '/Login', pathMatch: 'full'},
   {path: 'Login', component: LoginComponent},
-  {path: 'View Activities', component: ViewActivitiesComponent},
+  {path: 'View Activities', component: ActivitiesTableComponent},
   {path: 'Home', component: DashComponent},
   {path:'Change Password', component: ChangePasswordComponent},
   {path: 'Create Manager', component: CreateManagerComponent},
-  {path: 'tableExample', component: ActivitiesTableComponent},  
+    
   
 ];
 
