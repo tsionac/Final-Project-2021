@@ -66,12 +66,20 @@ export class ActivitiesTableComponent {
     })
   }
 
+  checkFilter(filter:string){
+    if (filter !== undefined && filter != ''){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   
   /**
    * filter the recods
    * @param userID an optional user name
    */
-   filter(userID:string, componentID:String) {
+   filter(userID:string, componentID:string) {
 
     //reset previus filteres
     this.saveCopy();
@@ -80,23 +88,23 @@ export class ActivitiesTableComponent {
     this.filteredActivities = this.filteredActivities.filter((activity:Activity) => {
       let ans:Boolean = true;
 
-      if (userID !== undefined && userID != ''){
-        //tere is a requested filter for user
+      if (this.checkFilter(userID)){
+        //there is a requested filter for user
         ans = ans && (activity.userID == userID)
       }
 
-      if (componentID !== undefined && componentID != ''){
-        //tere is a requested filter for componentID
+      if (this.checkFilter(componentID)){
+        //there is a requested filter for componentID
         ans = ans && (activity.componentID == componentID)
       }
 
-      if (this.filterDateFrom !== undefined && this.filterDateFrom != ''){
-        //tere is a requested filter for actionID
+      if (this.checkFilter(this.filterDateFrom)){
+        //there is a requested filter for actionID
         ans = ans && (new Date(this.filterDateFrom).getTime() <= activity.editStart.getTime())
       }
 
-      if (this.filterDateTo !== undefined && this.filterDateTo != ''){
-        //tere is a requested filter for actionID
+      if (this.checkFilter(this.filterDateTo)){
+        //there is a requested filter for actionID
         ans = ans && (new Date(this.filterDateTo).getTime() >= activity.editEnd.getTime())
       }
       return ans;

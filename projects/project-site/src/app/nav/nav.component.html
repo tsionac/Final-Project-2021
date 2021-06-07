@@ -20,7 +20,7 @@
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
-            <span class="ex2">{{this.authService.getUserID()}}</span>
+            <span class="ex2" *ngIf="!this.router.url.includes('/Login')">{{this.authService.getUserID()}} </span>
             <button class="ex1" type="button" mat-icon-button (click)="this.logout()" *ngIf="!this.router.url.includes('/Login')">
               Logout 
             </button>
