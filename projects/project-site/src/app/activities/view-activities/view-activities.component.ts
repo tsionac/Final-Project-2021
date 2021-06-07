@@ -76,27 +76,27 @@ export class ViewActivitiesComponent implements OnInit {
     this.filteredActivities = this.filteredActivities.filter((activity:Activity) => {
       let ans:Boolean = true;
 
-      if (userID !== undefined && userID != ''){
+      if (this.checkFilter(userID)){
         //there is a requested filter for user
         ans = ans && (activity.userID == userID)
       }
 
-      if (componentID !== undefined && componentID != ''){
+      if (this.checkFilter(componentID)){
         //there is a requested filter for componentID
         ans = ans && (activity.componentID == componentID)
       }
 
-      if (actionID !== undefined && actionID != ''){
+      if (this.checkFilter(actionID)){
         //there is a requested filter for actionID
         ans = ans && (activity.actionID.toString() == actionID)
       }
 
-      if (this.filterDateFrom !== undefined && this.filterDateFrom != ''){
+      if (this.checkFilter(this.filterDateFrom)){
         //there is a requested filter for actionID
         ans = ans && (new Date(this.filterDateFrom).getTime() <= activity.editStart.getTime())
       }
 
-      if (this.filterDateTo !== undefined && this.filterDateTo != ''){
+      if (this.checkFilter(this.filterDateTo)){
         //there is a requested filter for actionID
         ans = ans && (new Date(this.filterDateTo).getTime() >= activity.editEnd.getTime())
       }
