@@ -81,13 +81,17 @@ export class ActivitiesTableComponent {
    * filter the recods
    * @param userID an optional user name
    */
-   filter(userID:string, componentID:string) {
+  filter(userID:string, componentID:string) {
 
     //reset previus filteres
     this.saveCopy();
+    this.dofilter(userID, componentID);
 
-    // apply new filters
-    this.filteredActivities = this.filteredActivities.filter((activity:Activity) => {
+   }
+
+  dofilter(userID:string, componentID:string) {
+      // apply new filters
+      this.filteredActivities = this.filteredActivities.filter((activity:Activity) => {
       let ans:Boolean = true;
 
       if (this.checkFilter(userID)){
@@ -111,10 +115,8 @@ export class ActivitiesTableComponent {
       }
       return ans;
 
-    }
-    );
+    });
+
     this.dataSource =  new MatTableDataSource(this.filteredActivities);
   }
-
-
 }
