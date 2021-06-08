@@ -13,14 +13,14 @@ import { CreateManagerComponent } from './activities/create-manager/create-manag
 import { ActivitiesTableComponent } from './activities-table/activities-table.component';
 
 const routes: Routes = [
-  {path: ''            , redirectTo: '/Login', pathMatch: 'full'},
+  {path: ''            , redirectTo: 'Login', pathMatch: 'full'},
   {path: 'Login', component: LoginComponent},
   {path: 'View Activities', component: ActivitiesTableComponent},
   {path: 'Home', component: DashComponent},
   {path:'Change Password', component: ChangePasswordComponent},
   {path: 'Create Manager', component: CreateManagerComponent},
-    
-  
+
+
 ];
 
 @NgModule({

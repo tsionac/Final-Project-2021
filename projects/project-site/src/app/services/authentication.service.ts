@@ -65,6 +65,18 @@ export class AuthenticationService {
     this.removeSession();
   }
 
+  // check of the user is alowed to access this page, if not, return the user to the login lage
+  isAccessAllowed(){
+    let uID = this.getUserID();
+    console.log('sup?', uID);
+
+    if(uID  === undefined || uID === null || uID == ''){
+        //user is not loged in... redirecting back to login page
+        this.alert.warn('please login!');
+        this.router.navigate(['/Login']);
+    }
+  }
+
   /**
    * refresh the access token with the refresh token
    */

@@ -46,6 +46,7 @@ export class DashComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authServics.isAccessAllowed();
     this.username = this.authServics.getUserID();
   }
 
