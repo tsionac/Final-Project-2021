@@ -39,7 +39,7 @@ export class WebRequestInterseptor implements HttpInterceptor {
       catchError((err:HttpErrorResponse) => {
 
         // TODO : do something with the error
-        console.log(err);
+        //console.log(err);
 
         if(err.status === 401){
           // user is unautorised and this rror was not resulted form a failed refresh
@@ -52,7 +52,7 @@ export class WebRequestInterseptor implements HttpInterceptor {
               return next.handle(req);
             }),
             catchError((err2:HttpErrorResponse) => {
-              console.log('permition denied by the server!');
+              //console.log('permition denied by the server!');
               //this.authService.logout();
 
               return throwError(err);
@@ -61,7 +61,7 @@ export class WebRequestInterseptor implements HttpInterceptor {
         }
 
         // any other error
-        console.log('permition denied by the server! (2)');
+        //console.log('permition denied by the server! (2)');
         //this.authService.logout();
         return throwError(err);
       })
@@ -114,7 +114,7 @@ export class WebRequestInterseptor implements HttpInterceptor {
         tap(() => {
           this.refreshingAccessToken = false; // refresh proccess ended successfully.
           this.accessTokenRefreshed.next();
-          console.log('Access token was refreshed!');
+          //console.log('Access token was refreshed!');
         })
       );
     }

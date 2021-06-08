@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   public user_n:string;
 
-  constructor(private authService:AuthenticationService, private router:Router,  private alert:AlertService, private logger: NGXLogger) { 
+  constructor(private authService:AuthenticationService, private router:Router,  private alert:AlertService, private logger: NGXLogger) {
   }
   //constructor() { }
 
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
           this.logger.error('Could not login! error code:', res.status);
         }
       }, (err:HttpErrorResponse) => {
-        this.alert.error('The system encountered difficulties, please try again later. If this error occurs several times, please contact the admin.');
+        this.alert.error(err.error);
         this.logger.error('Could not login! (HttpErrorResponse):', err.error);
 
       });
