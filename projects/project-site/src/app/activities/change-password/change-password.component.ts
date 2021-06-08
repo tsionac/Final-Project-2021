@@ -18,7 +18,9 @@ export class ChangePasswordComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.authService.isAccessAllowed();
   }
+
   changePassword(currPass:string, newPassword:string, repPass:string){
     let err = '';
 

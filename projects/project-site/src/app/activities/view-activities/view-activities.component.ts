@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Activity } from '../../modules/Activity.module';
 import { AlertService } from '../../services/alert.service';
+import { AuthenticationService } from '../../services/authentication.service';
 import { RecordService } from '../../services/record.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class ViewActivitiesComponent implements OnInit {
     filterDateFrom;
     filterDateTo;
 
-  constructor(private recordService:RecordService, private alert:AlertService) { }
+  constructor(private recordService:RecordService, private authService:AuthenticationService, private alert:AlertService) { }
 
   ngOnInit(): void {
     this.getEdits();

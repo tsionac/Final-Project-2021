@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import { Activity } from '../modules/Activity.module';
 import { AlertService } from '../services/alert.service';
+import { AuthenticationService } from '../services/authentication.service';
 import { RecordService } from '../services/record.service';
 
 
@@ -29,18 +30,20 @@ export class ActivitiesTableComponent {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
 
-  constructor(private recordService:RecordService, private alert:AlertService) {
+  constructor(private recordService:RecordService, private authService:AuthenticationService, private alert:AlertService) {
 
-   
+
   }
   ngOnInit(): void {
+    this.authService.isAccessAllowed();
+
     this.displayedColumns = ['UserID', 'ComponentID', 'Start Date', 'End Date'];
     this.filteredActivities = [];
     this.getEdits();
     this.alert.info("Leave the date field 'to' empty, in order to view activites until now!", undefined, undefined, 8000);
   }
 
-  
+
   /**
    * load all the edits to the filtered array
    */
@@ -53,7 +56,6 @@ export class ActivitiesTableComponent {
    * get all the edits in manager's company
    */
    getEdits() {
-     console.log("here")
     //retruve all activities in the manager's company
     this.recordService.getRecords().subscribe((activities: Activity[]) => {
       activities.forEach((activity:Activity) => {
@@ -74,7 +76,7 @@ export class ActivitiesTableComponent {
     }
   }
 
-  
+
   /**
    * filter the recods
    * @param userID an optional user name
@@ -114,5 +116,5 @@ export class ActivitiesTableComponent {
     this.dataSource =  new MatTableDataSource(this.filteredActivities);
   }
 
-  
+
 }
