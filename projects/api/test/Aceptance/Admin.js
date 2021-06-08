@@ -6,8 +6,8 @@ process.env.NODE_ENV = 'test' // tel the enviroment to run in "test mode" (using
 const expect = require('chai').expect;
 const request = require('supertest');
 
-const app = require('../app.js');
-const conn = require('../db/index.js');
+const app = require('../../app.js');
+const conn = require('../../db/index.js');
 
 
 let userID = 'Admin';
