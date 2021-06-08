@@ -25,23 +25,23 @@ export class BarActivitiesChartComponent implements OnInit {
   public barChartOptions: ChartOptions = {
     responsive: true,
   };
-  public barChartLabels: Label[] = Array(31).fill(0).map((_, i) => (i+1).toString());
+  public barChartLabels: Label[];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
   public barChartData: ChartDataSets[] = [ { data: Array(31).fill(0), label:'sessions' } ];
-  // public barChartDataMonthly: ChartDataSets[][] = [12][];
 
 
-  refreshBarChart(act:Activity[], month:number, year:number) {
+  refreshBarChart(act:Activity[], month:number, year:number, data) {
     for(let i = 0; i<act.length;i++){
       var actDate = new Date(act[i].editStart);
       if (actDate.getMonth()+1 != month || actDate.getFullYear() != year){
         continue;
       }
 
-      (<number>this.barChartData[0].data[(new Date(act[i].editStart).getDate())-1])++;
+      (data[(new Date(act[i].editStart).getDate())-1])++;
     }
+
   }
 
 
@@ -53,12 +53,17 @@ export class BarActivitiesChartComponent implements OnInit {
     var daysInMonth = new Date(year, month, 0).getDate();
     // console.log("dt: " + month + " " + String(dt))
 
-    this.barChartData[0] = { data: Array(daysInMonth).fill(0), label:'sessions' };
-    this.barChartLabels = Array(daysInMonth).fill(0).map((_, i) => (i+1).toString());
-    
+    var data = []
+    data.length = daysInMonth;
+    data.fill(0);
+
     this.recordService.getRecords().subscribe((act:Activity[])=>{
-      this.refreshBarChart(act, month, year); 
+      this.refreshBarChart(act, month, year, data); 
+      this.barChartData[0] = { data: data, label:'sessions' };
+      this.barChartLabels = Array(daysInMonth).fill(0).map((_, i) => (i+1).toString());
+
     })
+
   }
 
 }
