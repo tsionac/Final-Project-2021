@@ -8,6 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { DashComponent } from './dash.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NotificationsService, SimpleNotificationsModule } from 'angular2-notifications';
+import { LoggerConfig, LoggerModule, NGXLogger, NGXLoggerHttpService } from 'ngx-logger';
+import { NGXLoggerMock,LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('DashComponent', () => {
   let component: DashComponent;
@@ -24,6 +29,12 @@ describe('DashComponent', () => {
         MatGridListModule,
         MatIconModule,
         MatMenuModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+        SimpleNotificationsModule.forRoot(),
+        LoggerTestingModule,
+      ], providers : [
+
       ]
     }).compileComponents();
   }));

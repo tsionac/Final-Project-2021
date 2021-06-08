@@ -11,6 +11,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { AppRoutingModule } from './app-routing.module';
 import { ManagerLoginComponent } from './manager-login/manager-login.component';
 import { ComapnyLoginSimulatorComponent } from './comapny-login-simulator/comapny-login-simulator.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -31,6 +32,7 @@ import { ComapnyLoginSimulatorComponent } from './comapny-login-simulator/comapn
     MatInputModule,
     MatFormFieldModule,
     AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

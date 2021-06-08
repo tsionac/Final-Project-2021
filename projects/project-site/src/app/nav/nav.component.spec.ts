@@ -8,6 +8,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { NavComponent } from './nav.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SimpleNotificationsModule } from 'angular2-notifications';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -24,7 +30,22 @@ describe('NavComponent', () => {
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
-      ]
+        HttpClientTestingModule,
+        RouterTestingModule,
+        SimpleNotificationsModule.forRoot(),
+        LoggerTestingModule,
+      ],
+      providers: [{
+        provide: ActivatedRoute,
+        useValue: {
+          snapshot: {
+            paramMap: {
+              get: () => 1, // represents the bookId
+            },
+          },
+        },
+      },
+      ],
     }).compileComponents();
   }));
 

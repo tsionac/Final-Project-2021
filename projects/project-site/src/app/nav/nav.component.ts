@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { AuthenticationService } from '../services/authentication.service';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent implements OnInit{
+export class NavComponent implements OnInit, AfterViewInit{
   menuItemsOrg = ['Home','View Activities', 'Create Manager', 'Change Password', 'Contact Us'];
   menuItems = []
   public username:string = '';
@@ -23,7 +23,7 @@ export class NavComponent implements OnInit{
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, public route:ActivatedRoute,public router:Router, public authService:AuthenticationService) {}
+  constructor(private breakpointObserver: BreakpointObserver, public route:ActivatedRoute,public router:Router, public authService:AuthenticationService, private cdr:ChangeDetectorRef) {}
 
   public logout(){
     this.authService.logout();
@@ -42,5 +42,9 @@ export class NavComponent implements OnInit{
   ngOnInit(): void {
     this.menuItems = this.menuItemsOrg;
     this.username = this.authService.getUserID();
+  }
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
   }
 }
