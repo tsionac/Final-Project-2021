@@ -30,15 +30,26 @@ export class BarActivitiesChartComponent implements OnInit {
   public barChartLegend = true;
   public barChartPlugins = [];
   public barChartData: ChartDataSets[] = [ { data: Array(31).fill(0), label:'sessions' } ];
+  // public barChartDataMonthly: ChartDataSets[][] = [12][];
+
 
 
 
    ngOnInit() {
     this.recordService.getRecords().subscribe((act:Activity[])=>{
+      var currMonth = new Date().getMonth();
+      var currYear = new Date().getFullYear();
+
 
       for(let i = 0; i<act.length;i++){
+        var actDate = new Date(act[i].editStart);
+        if (actDate.getMonth() != currMonth || actDate.getFullYear() != currYear){
+          continue;
+        }
+
         (<number>this.barChartData[0].data[(new Date(act[i].editStart).getDate())-1])++;
       }
+      
     })
   }
 
