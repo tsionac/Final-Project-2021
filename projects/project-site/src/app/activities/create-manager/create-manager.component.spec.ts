@@ -1,4 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NotificationsService, SimpleNotificationsModule } from 'angular2-notifications';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 import { CreateManagerComponent } from './create-manager.component';
 
@@ -8,7 +12,14 @@ describe('CreateManagerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateManagerComponent ]
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        SimpleNotificationsModule.forRoot(),
+        LoggerTestingModule,
+      ],
+      declarations: [ CreateManagerComponent ],
+      providers: [],
     })
     .compileComponents();
   });

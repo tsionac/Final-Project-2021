@@ -24,11 +24,9 @@ export class CreateManagerComponent implements OnInit {
   }
 
   createManamager(userID:string, companyID:string, password:string) {
-    let err = '';
-
-    err = this.authService.validatePassword(password);
+    let err = this.authService.validatePassword(password);
     if(err != ''){
-      this.alert.error('The system encountered difficulties, please try again later. If this error occurs several times, please contact the admin.');
+      this.alert.error(err);
       this.logger.error('Create manager (validatePassword) encountered error:', err)
       return;
     }
@@ -38,7 +36,7 @@ export class CreateManagerComponent implements OnInit {
       this.router.navigate(['/Home']);
       // this.router.navigate(['/createManager']);
     }, (err:HttpErrorResponse) => {
-      this.alert.error('The system encountered difficulties, please try again later. If this error occurs several times, please contact the admin.');
+      this.alert.error(err.error);
       this.logger.error('Create manager (HttpErrorResponse) encountered error:', err.error)
     });
   }

@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ShareToolComponent } from './share-tool.component';
@@ -8,6 +9,7 @@ describe('ShareToolComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ HttpClientTestingModule ],
       declarations: [ ShareToolComponent ]
     })
     .compileComponents();

@@ -45,7 +45,7 @@ export class ChangePasswordComponent implements OnInit {
 
       }
     },(err:HttpErrorResponse) => {
-      this.alert.error('The system encountered difficulties, please try again later. If this error occurs several times, please contact the admin.');
+      this.alert.error(err.error);
       this.logger.error('changePassword (HttpErrorResponse) encountered error:', err.error)
 
     });
