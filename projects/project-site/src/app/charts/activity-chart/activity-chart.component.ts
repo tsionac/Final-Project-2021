@@ -13,7 +13,7 @@ import { Activity } from '../../modules/Activity.module';
 export class ActivityChartComponent implements OnInit {
 
   public mapOccUsers: Map<string, number>;//map of occurence of users
-  public lenUsers:number = 0;
+  public lenRecords:number = 0;
 
   public pieChartOptions: ChartOptions = {
     responsive: true,
@@ -28,8 +28,8 @@ export class ActivityChartComponent implements OnInit {
   constructor(private recordService:RecordService) {
     this.mapOccUsers = new Map<string, number>();
     recordService.getRecords().subscribe((act:Activity[])=>{
-      this.lenUsers = act.length;
-      for(let j = 0; j<this.lenUsers;j++){//initiate the map
+      this.lenRecords = act.length;
+      for(let j = 0; j<this.lenRecords;j++){//initiate the map
         this.mapOccUsers.set(act[j].userID, 1)
       }
 
@@ -45,10 +45,19 @@ export class ActivityChartComponent implements OnInit {
   }
 
   ngOnInit() {
+    var dt = new Date();
+    var month = dt.getMonth() +1;
+    var year = dt.getFullYear();
+
     this.recordService.getRecords().subscribe((act:Activity[])=>{
       // var colors = ['rgb(127, 255, 212)', 'rgb(255,127,80)', 'rgb(100,149,237)', 'rgb(0,191,255)', 'rgb(255,192,203)'];
 
-      for(let i = 0; i<this.lenUsers;i++){
+      for(let i = 0; i<this.lenRecords;i++){
+        var actDate = new Date(act[i].editStart);
+        if (actDate.getMonth()+1 != month || actDate.getFullYear() != year){
+          continue;
+        }
+
         if (!(this.pieChartLabels.includes(act[i].userID))){
           this.pieChartLabels.push(act[i].userID.toString());
           // this.chartColors[0].backgroundColor.push(colors[i% colors.length]);
