@@ -33,23 +33,31 @@ export class BarActivitiesChartComponent implements OnInit {
   // public barChartDataMonthly: ChartDataSets[][] = [12][];
 
 
-
-
-   ngOnInit() {
-    this.recordService.getRecords().subscribe((act:Activity[])=>{
-      var currMonth = new Date().getMonth();
-      var currYear = new Date().getFullYear();
-
-
-      for(let i = 0; i<act.length;i++){
-        var actDate = new Date(act[i].editStart);
-        if (actDate.getMonth() != currMonth || actDate.getFullYear() != currYear){
-          continue;
-        }
-
-        (<number>this.barChartData[0].data[(new Date(act[i].editStart).getDate())-1])++;
+  refreshBarChart(act:Activity[], month:number, year:number) {
+    for(let i = 0; i<act.length;i++){
+      var actDate = new Date(act[i].editStart);
+      if (actDate.getMonth()+1 != month || actDate.getFullYear() != year){
+        continue;
       }
-      
+
+      (<number>this.barChartData[0].data[(new Date(act[i].editStart).getDate())-1])++;
+    }
+  }
+
+
+
+  ngOnInit() {
+    var dt = new Date();
+    var month = dt.getMonth() +1;
+    var year = dt.getFullYear();
+    var daysInMonth = new Date(year, month, 0).getDate();
+    // console.log("dt: " + month + " " + String(dt))
+
+    this.barChartData[0] = { data: Array(daysInMonth).fill(0), label:'sessions' };
+    this.barChartLabels = Array(daysInMonth).fill(0).map((_, i) => (i+1).toString());
+    
+    this.recordService.getRecords().subscribe((act:Activity[])=>{
+      this.refreshBarChart(act, month, year); 
     })
   }
 
