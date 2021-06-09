@@ -6,11 +6,11 @@ import { Injectable } from '@angular/core';
 })
 export class WebRequestService {
 
-  readonly ROOT_URL:String = 'http://'+'localhost'+':'+'3000';
+  readonly ROOT_URL: String = 'https://afternoon-harbor-89968.herokuapp.com';
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getAdress(uri:String){
+  getAdress(uri: String) {
     return `${this.ROOT_URL}${uri}`;
   }
 
@@ -18,30 +18,30 @@ export class WebRequestService {
 
 
 
-  get(uri:String){
+  get(uri: String) {
     return this.http.get(this.getAdress(uri));
   }
 
-  get2(uri:String, options:Object){
+  get2(uri: String, options: Object) {
     return this.http.get(this.getAdress(uri), options);
   }
 
-  delete(uri:String){
+  delete(uri: String) {
     return this.http.delete(this.getAdress(uri));
   }
 
-  post(uri:String, payload:Object){
+  post(uri: String, payload: Object) {
     return this.http.post(this.getAdress(uri), payload);
   }
 
-  post3(uri:String, payload:Object, options:Object){
+  post3(uri: String, payload: Object, options: Object) {
     return this.http.post(this.getAdress(uri), payload, options);
   }
 
-  patch(uri:String, payload:Object){
+  patch(uri: String, payload: Object) {
     return this.http.patch(this.getAdress(uri), payload);
   }
-  patch3(uri:String, payload:Object, options:Object){
+  patch3(uri: String, payload: Object, options: Object) {
     return this.http.patch(this.getAdress(uri), payload, options);
   }
 }
