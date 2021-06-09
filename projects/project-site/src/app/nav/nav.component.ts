@@ -14,7 +14,7 @@ import { AlertService } from '../services/alert.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit, AfterViewInit{
-  menuItemsOrg = ['Home','View Activities', 'Create Manager', 'Change Password', 'Contact Us'];
+  menuItemsOrg = ['Home','View Activities', 'Create Manager', 'Change Password','Contact Us'];
   menuItems = []
   public username:string = '';
   isHidden: boolean = true;

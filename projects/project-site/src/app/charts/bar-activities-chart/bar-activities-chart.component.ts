@@ -16,7 +16,9 @@ export class BarActivitiesChartComponent implements OnInit {
 
 
 
-  constructor(private recordService:RecordService) {}
+  constructor(private recordService:RecordService) {
+  }
+  
 
   public activities_date:number[] = []
   // public day_per_month;
@@ -29,8 +31,17 @@ export class BarActivitiesChartComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
-  public barChartData: ChartDataSets[] = [ { data: Array(31).fill(0), label:'sessions' } ];
+  public barChartData: ChartDataSets[] = [ { data: Array(31).fill(0), label:'sessions',  backgroundColor: [] } ];
+  public chartbarColors: any[] = [{ backgroundColor: [] }];
 
+
+  nextNum(){
+    return Math.floor(Math.random() * 150 + 100)
+  }
+
+  nextRgb(){
+    return 'rgb(' + this.nextNum() + ',' + this.nextNum() + ',' + this.nextNum() + ')'
+  }
 
   refreshBarChart(act:Activity[], month:number, year:number, data) {
     for(let i = 0; i<act.length;i++){
@@ -40,8 +51,11 @@ export class BarActivitiesChartComponent implements OnInit {
       }
 
       (data[(new Date(act[i].editStart).getDate())-1])++;
-    }
+      this.chartbarColors[0].backgroundColor.push(this.nextRgb());
 
+      
+
+    }
   }
 
 
@@ -59,7 +73,7 @@ export class BarActivitiesChartComponent implements OnInit {
 
     this.recordService.getRecords().subscribe((act:Activity[])=>{
       this.refreshBarChart(act, month, year, data); 
-      this.barChartData[0] = { data: data, label:'sessions' };
+      this.barChartData[0] = { data: data, label:'sessions per month', backgroundColor: this.chartbarColors[0].backgroundColor};
       this.barChartLabels = Array(daysInMonth).fill(0).map((_, i) => (i+1).toString());
 
     })

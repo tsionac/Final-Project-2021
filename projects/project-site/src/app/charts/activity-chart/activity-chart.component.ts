@@ -50,8 +50,6 @@ export class ActivityChartComponent implements OnInit {
     var year = dt.getFullYear();
 
     this.recordService.getRecords().subscribe((act:Activity[])=>{
-      // var colors = ['rgb(127, 255, 212)', 'rgb(255,127,80)', 'rgb(100,149,237)', 'rgb(0,191,255)', 'rgb(255,192,203)'];
-
       for(let i = 0; i<this.lenRecords;i++){
         var actDate = new Date(act[i].editStart);
         if (actDate.getMonth()+1 != month || actDate.getFullYear() != year){
@@ -60,7 +58,6 @@ export class ActivityChartComponent implements OnInit {
 
         if (!(this.pieChartLabels.includes(act[i].userID))){
           this.pieChartLabels.push(act[i].userID.toString());
-          // this.chartColors[0].backgroundColor.push(colors[i% colors.length]);
           this.chartColors[0].backgroundColor.push(this.nextRgb());
         }
         else{
