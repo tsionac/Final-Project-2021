@@ -9,3 +9,4 @@ export * from './lib/share-tool.module';
 export * from './lib/smart-text-box/smart-text-box.component';
 export * from './lib/edit-share/edit-share.component';
 export * from './lib/smart-button/smart-button.component';
+export * from './lib/smart-single-button/smart-single-button.component';
