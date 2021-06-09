@@ -13,4 +13,8 @@ describe('DateRequestService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('getCurrentTime', () => {
+    expect(service.getCurrentTime()).toEqual(new Date());
+  });
 });

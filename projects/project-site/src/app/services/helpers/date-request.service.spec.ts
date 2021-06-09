@@ -14,7 +14,7 @@ describe('DateRequestService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('returnde curent daye', () => {
+  it('return the curent date', () => {
     expect(service.getCurrentTime()).toEqual(new Date());
   });
 });
