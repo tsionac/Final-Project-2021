@@ -2,7 +2,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ChartsModule } from 'ng2-charts';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './activities/login/login.component';
@@ -20,6 +20,7 @@ import { DashComponent } from './activities/Home/dash/dash.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 // import { DashActivitiesComponent} from './activities/dash-activities/dash-activities.component';
 import { ActivityChartComponent } from './charts/activity-chart/activity-chart.component';
@@ -35,6 +36,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { ActivitiesTableComponent } from './activities-table/activities-table.component';
 
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
+import { ContactUSComponent } from './activities/contact-us/contact-us.component';
 // import { HttpClientModule } from "@angular/common/http";
 
 
@@ -51,6 +53,7 @@ import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
     ChangePasswordComponent,
     CreateManagerComponent,
     ActivitiesTableComponent,
+    ContactUSComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,11 +71,13 @@ import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
     MatCardModule,
     MatMenuModule,
     FormsModule,
+    ReactiveFormsModule,
     SimpleNotificationsModule.forRoot(),
     BrowserAnimationsModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatFormFieldModule,
     LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}),
   ],
   providers: [

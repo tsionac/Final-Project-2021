@@ -1,0 +1,71 @@
+.dashboard-card {
+    margin-right: 25%;
+    margin-left: 17%;
+    /* height: 750px; */
+    display: flex;
+}
+
+.dashboard-card-content {
+    text-align: left;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+.form-control {
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0.4em;
+    padding-right: 0.4em;
+    text-align: left;
+    width: 400px;
+    height: 200px;
+}
+
+input {
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0.4em;
+    padding-right: 0.4em;
+    height: 20px;
+    width: 200px;
+    flex: 0 0 200px;
+}
+
+.demo-3-main-h1 {
+    font-size: 36px;
+    line-height: 40px;
+    margin: 1em 0 .6em 0;
+    font-weight: normal;
+    color: white;
+    font-family: 'Hammersmith One', sans-serif;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    position: sticky;
+    color: rgba(37, 99, 129, 0.787);
+}
+
+.demo-3-main-h2 {
+    font-size: 23px;
+    line-height: 40px;
+    margin: 1em 0 .6em 0;
+    font-weight: normal;
+    color: white;
+    font-family: 'Hammersmith One', sans-serif;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    position: sticky;
+    color: rgba(37, 99, 129, 0.787);
+}
+
+
+/* .container {
+    width: 500px;
+    height: 500px;
+    background: blue;
+} */

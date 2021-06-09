@@ -6,27 +6,27 @@ import { HttpClient } from '@angular/common/http';
 })
 export class WebRequestService {
 
-  readonly ROOT_URL:String = 'http://localhost:3000';
+  readonly ROOT_URL: String = 'https://afternoon-harbor-89968.herokuapp.com';
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getAdress(uri:String){
+  getAdress(uri: String) {
     return `${this.ROOT_URL}${uri}`;
   }
 
-  get(uri:String){
+  get(uri: String) {
     return this.http.get(this.getAdress(uri));
   }
 
-  delete(uri:String){
+  delete(uri: String) {
     return this.http.delete(this.getAdress(uri));
   }
 
-  post(uri:String, payload:Object){
+  post(uri: String, payload: Object) {
     return this.http.post(this.getAdress(uri), payload);
   }
 
-  patch(uri:String, payload:Object){
+  patch(uri: String, payload: Object) {
     return this.http.patch(this.getAdress(uri), payload);
   }
 }
