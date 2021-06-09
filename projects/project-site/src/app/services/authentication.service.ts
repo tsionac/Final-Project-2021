@@ -163,7 +163,7 @@ export class AuthenticationService {
   // ----------------------------------------------------- private methods -----------------------------------------------------
 
   // save authentication token of a user to the local storage
-  private setSession(userNamer:string, user_id:string, accessToken:string, refreshToken:string){
+  setSession(userNamer:string, user_id:string, accessToken:string, refreshToken:string){
     this.setUserID(userNamer);
     this.setID(user_id);
     this.setAccessToken(accessToken);
