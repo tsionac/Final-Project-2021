@@ -308,7 +308,7 @@ app.patch('/managers/changePassword', authenticateNoObj, (req, res, next) => {
 app.get('/managers/me/access-token', verifySession, (req, res, next) => {
     req.managerObj.generateAccessAuthenticationToken().then((accessToken) => {
         res.header(accessheader, accessToken).send({ accessToken }); // return access tokekn to the user
-    }).catch((e) => next(ApiError.badRequest('could not retrive access token', e)));
+    }).catch((e) => next(ApiError.badRequest('could not retrieve access token', e)));
 });
 
 
