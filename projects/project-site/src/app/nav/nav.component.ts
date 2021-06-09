@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { ActivatedRoute, Router } from 'node_modules/@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
+import { AlertService } from '../services/alert.service';
+
 
 
 @Component({
@@ -23,10 +25,11 @@ export class NavComponent implements OnInit, AfterViewInit{
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, public route:ActivatedRoute,public router:Router, public authService:AuthenticationService, private cdr:ChangeDetectorRef) {}
+  constructor(private breakpointObserver: BreakpointObserver, public route:ActivatedRoute,public router:Router, public authService:AuthenticationService, private cdr:ChangeDetectorRef, private alert:AlertService) {}
 
   public logout(){
     this.authService.logout();
+    this.alert.success('Logged out successfully');
     this.router.navigate(['/Login']);
     // router.navigate(['/Home'])
   }
