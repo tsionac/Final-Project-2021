@@ -13,4 +13,16 @@ describe('AppComponentServiceService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('getUser', () => {
+    let user = 'ejkoiperjfp4fjpo';
+    service.username = user;
+    expect(service.getUser()).toEqual(user);
+  });
+
+  it('setUser', () => {
+    let user = 'ejkoiperjfp4fjpo';
+    service.setUser(user);
+    expect(service.getUser()).toEqual(user);
+  });
 });

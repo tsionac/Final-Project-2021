@@ -13,4 +13,20 @@ describe('CurrentEntityService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('setCurrentEntity & getCurrentEntity', () => {
+    let entity = 'entity78';
+    service.setCurrentEntity(entity)
+    expect(service.getCurrentEntity()).toEqual(entity);
+  });
+
+  it('clear', () => {
+    let entity = 'entity78';
+    service.setCurrentEntity(entity)
+    expect(service.getCurrentEntity()).toEqual(entity);
+
+    service.clear();
+    expect(service.getCurrentEntity()).toBeNull();
+  });
+
 });
