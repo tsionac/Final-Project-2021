@@ -298,7 +298,7 @@ app.patch('/managers/changePassword', authenticateNoObj, (req, res, next) => {
     Manager.findOne({ _id: _id }).then((manager) => {
         manager.changePassword(oldPass, newPass)
             .then(() => { res.status(ok).send({ 'message': 'password changed successfully' }); })
-            .catch((e) => { next(ApiError.internal('failed to change the password. is the old passwod provided corect?', e)); });
+            .catch((e) => { next(ApiError.internal('failed to change the password. is the old password provided correct?', e)); });
     })
 });
 
