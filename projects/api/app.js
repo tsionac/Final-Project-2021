@@ -51,7 +51,7 @@ let authenticate = (req, res, next) => {
     jwt.verify(accessToken, Manager.getJWTsecret(), (err, decoded) => {
         if (err) {
             // JWT not valid, user is NOT authenticated!
-            next(ApiError.unAuthorised('you have no permitions to do that! access token failed to verifiy or expired!', err));
+            next(ApiError.unAuthorised('you have no permissions to do that! access token failed to verifiy or expired!', err));
         } else {
             // verified succesfully
             let _id = decoded._id;
@@ -59,7 +59,7 @@ let authenticate = (req, res, next) => {
             Manager.findOne({ '_id': _id }).then((manager) => {
                 if (!manager) {
                     // could not find manager
-                    return Promise.reject({ 'error': 'validation succeded, but the id was not found. HOW???' });
+                    return Promise.reject({ 'error': 'validation succeded, but the id was not found. ERROR' });
                 } else {
                     // save the id and the manager object to the request
                     req.manager_id = _id;

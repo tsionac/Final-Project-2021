@@ -40,7 +40,7 @@ export class ActivitiesTableComponent {
     this.displayedColumns = ['UserID', 'ComponentID', 'Start Date', 'End Date'];
     this.filteredActivities = [];
     this.getEdits();
-    this.alert.info("Leave the date field 'to' empty, in order to view activites until now!", undefined, undefined, 8000);
+    this.alert.info("Leave the date field 'to' empty, in order to view activities until now!", undefined, undefined, 8000);
   }
 
 
