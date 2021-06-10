@@ -260,31 +260,29 @@ app.post('/managers/login', (req, res, next) => {
     let userID = req.body.userID;
     let password = req.body.password;
 
-    Manager.deleteExpiredSessions(userID).then(() => {
-        Manager.findByCredentials(userID, password).then((manager) => {
+    Manager.findByCredentials(userID, password).then((manager) => {
+      Manager.deleteExpiredSessions(userID).then(() => {
+        // save admin's ID for easy admin authentication later on if this is the admin
+        if ((adminID === '') && (userID === 'Admin')){
+         adminID = manager._id;
+        }
 
-            // save admin's ID for easy admin authentication later on if this is the admin
-            if ((adminID === '') && (userID === 'Admin')){
-              adminID = manager._id;
-            }
+       return manager.createSession().then((refreshToken) => {
+           // session was created succesfully, recived refresh token, now need to generate access token
 
-            return manager.createSession().then((refreshToken) => {
-                // session was created succesfully, recived refresh token, now need to generate access token
-
-                return manager.generateAccessAuthenticationToken().then((accessToken) => {
-                    // the access token was crerated succesfully, returning an object containig the two tokens.
-                    return { accessToken, refreshToken };
-                });
-            }).then((authentocationTokens) => {
-                // retun a response to the user
-                res
-                    .header(refreshHeader, authentocationTokens.refreshToken)
-                    .header(accessheader, authentocationTokens.accessToken)
-                    .send(manager);
-            }).catch((e) => { next(ApiError.internal('failed to login.', e)); });
-        }).catch((e) => { next(ApiError.unAuthorised('failed to login. are the userID and password correct?', e)); });
-    })
-
+           return manager.generateAccessAuthenticationToken().then((accessToken) => {
+               // the access token was crerated succesfully, returning an object containig the two tokens.
+               return { accessToken, refreshToken };
+           });
+       }).then((authentocationTokens) => {
+           // retun a response to the user
+           res
+               .header(refreshHeader, authentocationTokens.refreshToken)
+               .header(accessheader, authentocationTokens.accessToken)
+               .send(manager);
+       }).catch((e) => { next(ApiError.internal('failed to login.', e)); });
+     }).catch((e) => { next(ApiError.internal('error accured while login in', e)); });
+  }).catch((e) => { next(ApiError.unAuthorised('failed to login. are the userID and password correct?', e)); });
 });
 
 /**
