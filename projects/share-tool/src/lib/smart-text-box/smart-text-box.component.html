@@ -1,7 +1,6 @@
 <edit-share [componentID]= "componentID" [isVisable]="isEditingVisable"></edit-share>
 <form class="example-form">
     <mat-form-field class="example-full-width">
-        <mat-label>Smart text box</mat-label>
-        <textarea matInput placeholder="Ex. It makes me feel..." (focusin)="smartTextBoxtIn()" (focusout)="smartTextBoxtOut()" [(ngModel)]="input" name="text_of_user"></textarea>
+        <textarea matInput placeholder="enter text" (focusin)="smartTextBoxtIn()" (focusout)="smartTextBoxtOut()" [(ngModel)]="input" name="text_of_user"></textarea>
     </mat-form-field>
 </form>

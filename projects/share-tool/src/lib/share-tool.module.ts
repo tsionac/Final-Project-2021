@@ -10,23 +10,23 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditShareComponent } from './edit-share/edit-share.component';
-import { SmartButtonComponent } from './smart-button/smart-button.component';
 import { SmartSingleButtonComponent } from './smart-single-button/smart-single-button.component';
+import { EditShareModule } from './edit-share/edit-share.module';
 
 
 @NgModule({
-  declarations: [ShareToolComponent, SmartTextBoxComponent, EditShareComponent, SmartButtonComponent, SmartSingleButtonComponent],
+  declarations: [ShareToolComponent],
   imports: [
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     MatSliderModule,
-    // ChartsModule,
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
+    EditShareModule,
   ],
-  exports: [ShareToolComponent, SmartTextBoxComponent, EditShareComponent, SmartButtonComponent, SmartSingleButtonComponent]
+  exports: [ShareToolComponent]
 })
 export class ShareToolModule { }
 
