@@ -27,12 +27,12 @@ export class ChangePasswordComponent implements OnInit {
     err = this.authService.validatePassword(newPassword);
     if(err != ''){
       this.alert.error(err);
-      return;
+      return false;
     }
 
     if (newPassword != repPass){
       this.alert.error('The passwords do not match!');
-      return;
+      return false;
     }
 
     this.authService.changePassword(currPass, newPassword).subscribe((res:HttpResponse<any>)=>{

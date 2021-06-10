@@ -33,4 +33,24 @@ describe('ChangePasswordComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+
+
+
+  it('changePassword missing repeate', () => {
+    expect(component.changePassword('1234567890', 'qwertyuiop', '')).toBeFalse();
+  });
+
+  it('changePassword missing new password', () => {
+    expect(component.changePassword('1234567890', '', 'qwertyuiop')).toBeFalse();
+  });
+
+  it('changePassword new passwird too short', () => {
+    expect(component.changePassword('1234567890', '12', '12')).toBeFalse();
+  });
+
+  it('changePassword paswrd repete do not match', () => {
+    expect(component.changePassword('1234567890', 'qwertyuiop', '1234567890')).toBeFalse();
+  });
+
 });
