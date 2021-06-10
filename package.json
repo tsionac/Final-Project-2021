@@ -26,6 +26,7 @@
         "@angular/platform-browser-dynamic": "~11.2.5",
         "@angular/router": "~11.2.5",
         "@syncfusion/ej2-angular-inputs": "^18.4.43",
+        "@tsionac/share-tool": "0.0.7",
         "angular2-notifications": "^9.0.0",
         "chart.js": "^2.9.3",
         "ng2-charts": "^2.2.3",
