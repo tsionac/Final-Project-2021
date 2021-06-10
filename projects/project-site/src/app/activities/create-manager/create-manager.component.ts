@@ -24,11 +24,18 @@ export class CreateManagerComponent implements OnInit {
   }
 
   createManamager(userID:string, companyID:string, password:string) {
+    if(userID == '' || userID == undefined || companyID == '' || companyID == undefined || password == '' || password == undefined  ) {
+      let err = 'not all requred inputs was given!';
+      this.alert.error(err);
+      this.logger.error('Create manager encountered error:', err);
+      return false;
+    }
+
     let err = this.authService.validatePassword(password);
     if(err != ''){
       this.alert.error(err);
       this.logger.error('Create manager (validatePassword) encountered error:', err)
-      return;
+      return false;
     }
 
     return this.authService.signup(userID, companyID, password).subscribe((res:HttpResponse<any>) => {
