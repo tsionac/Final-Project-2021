@@ -16,6 +16,24 @@ describe('ActivitiesTableComponent', () => {
   let component: ActivitiesTableComponent;
   let fixture: ComponentFixture<ActivitiesTableComponent>;
 
+  let user2filter = 'u1';
+  let component2Filter = 'comp1';
+
+  let from = new Date();
+  from.setSeconds(from.getSeconds() - 1);
+
+  let now = new Date();
+  let now_p1 = new Date();
+  now_p1.setSeconds(now_p1.getSeconds() + 1);
+  let now_m1 = new Date();
+  now_m1.setSeconds(now_m1.getSeconds() - 1);
+
+  let to = new Date();
+  to.setSeconds(to.getSeconds() + 2);
+
+  let beforeFiltering: Activity[] = [];
+
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ActivitiesTableComponent ],
@@ -37,122 +55,6 @@ describe('ActivitiesTableComponent', () => {
     fixture = TestBed.createComponent(ActivitiesTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should compile', () => {
-    expect(component).toBeTruthy();
-  });
-
-
-
-
-  it('Filter by UserID', () => {
-
-    let user2Filter = 'u1';
-
-    //create dummy activites
-    let activity1 = new Activity();
-    let activity2 = new Activity();
-    let activity3 = new Activity();
-    let activity4 = new Activity();
-
-    //populate dummy activites
-    activity1.userID = user2Filter;
-    activity2.userID = user2Filter;
-    activity3.userID = "u3";
-    activity4.userID = "u4";
-
-    activity1.componentID = "comp1";
-    activity2.componentID = "comp2";
-    activity3.componentID = "comp1";
-    activity4.componentID = "comp4";
-
-    activity1.editStart = new Date();
-    activity2.editStart = new Date();
-    activity3.editStart = new Date();
-    activity4.editStart = new Date();
-
-    activity1.editEnd = new Date();
-    activity2.editEnd = new Date();
-    activity3.editEnd = new Date();
-    activity4.editEnd = new Date();
-
-    component.filteredActivities = [activity1, activity2, activity3, activity4];
-    let beforeFiltering: Activity[] = [];
-    component.filteredActivities.forEach((activity:Activity) => beforeFiltering.push(activity) );
-
-    //get an exsisting userName
-    expect(beforeFiltering.length).toBeGreaterThan(0); //there is an elemet to filter
-
-    //filter by the userName
-    component.dofilter(user2Filter, undefined);
-    let afterFiltering = component.filteredActivities;
-
-    //calculate what the resulat should be
-    let shoudBe: Activity[] = [];
-    beforeFiltering.forEach((activity:Activity) => { if(activity.userID==user2Filter){shoudBe.push(activity);} } );
-
-    expect(shoudBe.length).toBeLessThan(beforeFiltering.length);              // filtered some items
-    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
-  });
-
-
-
-  it('Filter by componentID', () => {
-
-    let component2Filter = 'comp1';
-
-    //create dummy activites
-    let activity1 = new Activity();
-    let activity2 = new Activity();
-    let activity3 = new Activity();
-    let activity4 = new Activity();
-
-    //populate dummy activites
-    activity1.userID = "u1";
-    activity2.userID = "u1";
-    activity3.userID = "u3";
-    activity4.userID = "u4";
-
-    activity1.componentID = component2Filter;
-    activity2.componentID = "comp2";
-    activity3.componentID = component2Filter;
-    activity4.componentID = "comp4";
-
-    activity1.editStart = new Date();
-    activity2.editStart = new Date();
-    activity3.editStart = new Date();
-    activity4.editStart = new Date();
-
-    activity1.editEnd = new Date();
-    activity2.editEnd = new Date();
-    activity3.editEnd = new Date();
-    activity4.editEnd = new Date();
-
-    component.filteredActivities = [activity1, activity2, activity3, activity4];
-    let beforeFiltering: Activity[] = [];
-    component.filteredActivities.forEach((activity:Activity) => beforeFiltering.push(activity) );
-
-    //get an exsisting userName
-    expect(beforeFiltering.length).toBeGreaterThan(0); //there is an elemet to filter
-
-    //filter by the userName
-    component.dofilter(undefined, component2Filter);
-    let afterFiltering = component.filteredActivities;
-
-    //calculate what the resulat should be
-    let shoudBe: Activity[] = [];
-    beforeFiltering.forEach((activity:Activity) => { if(activity.componentID==component2Filter){shoudBe.push(activity);} } );
-
-    expect(shoudBe.length).toBeLessThan(beforeFiltering.length);              // filtered some items
-    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
-  });
-
-
-  it('Filter by and userID componentID', () => {
-
-    let user2filter = 'u1';
-    let component2Filter = 'comp1';
 
     //create dummy activites
     let activity1 = new Activity();
@@ -171,32 +73,194 @@ describe('ActivitiesTableComponent', () => {
     activity3.componentID = component2Filter;
     activity4.componentID = "comp4";
 
-    activity1.editStart = new Date();
-    activity2.editStart = new Date();
-    activity3.editStart = new Date();
-    activity4.editStart = new Date();
+    activity1.editStart = now;
+    activity2.editStart = now;
+    activity3.editStart = now_m1;
+    activity4.editStart = now_m1;
 
-    activity1.editEnd = new Date();
-    activity2.editEnd = new Date();
-    activity3.editEnd = new Date();
-    activity4.editEnd = new Date();
+    activity1.editEnd = now;
+    activity2.editEnd = now_p1;
+    activity3.editEnd = now_p1;
+    activity4.editEnd = to;
 
     component.filteredActivities = [activity1, activity2, activity3, activity4];
-    let beforeFiltering: Activity[] = [];
+    beforeFiltering = [];
     component.filteredActivities.forEach((activity:Activity) => beforeFiltering.push(activity) );
+    expect(beforeFiltering.length).toEqual(4);
+  });
 
-    //get an exsisting userName
-    expect(beforeFiltering.length).toBeGreaterThan(0); //there is an elemet to filter
+  it('should compile', () => {
+    expect(component).toBeTruthy();
+  });
+
+
+
+
+
+
+  it('Filter by UserID', () => {
+    //filter by the userName
+    component.dofilter(user2filter, undefined);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if(activity.userID==user2filter){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+
+
+  it('Filter by componentID', () => {
 
     //filter by the userName
+    component.dofilter(undefined, component2Filter);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if(activity.componentID==component2Filter){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+
+  it('Filter by  from date', () => {
+
+    //filter by the userName
+    component.filterDateTo  = undefined;
+    component.filterDateFrom  = from;
+    component.dofilter(undefined, undefined);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if(from.getTime() <= activity.editStart.getTime()){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+  it('Filter by  to date', () => {
+
+    //filter by the userName
+    component.filterDateTo  = to;
+    component.filterDateFrom  = undefined;
+    component.dofilter(undefined, undefined);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if(to.getTime() >= activity.editStart.getTime()){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+  it('Filter by date range', () => {
+
+    //filter by the userName
+    component.filterDateTo = to;
+    component.filterDateFrom  = from;
+    component.dofilter(undefined, undefined);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if((to.getTime() >= activity.editStart.getTime()) && (from.getTime() <= activity.editStart.getTime())){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+  it('Filter by from date and userID', () => {
+
+    //filter by the userName
+    component.filterDateTo = undefined;
+    component.filterDateFrom  = from;
+    component.dofilter(user2filter, undefined);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if((activity.userID==user2filter) && (from.getTime() <= activity.editStart.getTime())){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+  it('Filter by to date and userID', () => {
+
+    //filter by the userName
+    component.filterDateTo = to;
+    component.filterDateFrom  = undefined;
+    component.dofilter(user2filter, undefined);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if((to.getTime() >= activity.editStart.getTime()) && (activity.userID==user2filter)){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+  it('Filter by from date and componetID', () => {
+
+    //filter by the userName
+    component.filterDateTo = undefined;
+    component.filterDateFrom  = from;
+    component.dofilter(undefined, component2Filter);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if((activity.componentID==component2Filter) && (from.getTime() <= activity.editStart.getTime())){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+  it('Filter by to date and componetID', () => {
+
+    //filter by the userName
+    component.filterDateTo = to;
+    component.filterDateFrom  = undefined;
+    component.dofilter(undefined, component2Filter);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if((to.getTime() >= activity.editStart.getTime()) && (activity.componentID==component2Filter)){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+  it('Filter by from date and userID and componetID', () => {
+
+    //filter by the userName
+    component.filterDateTo = undefined;
+    component.filterDateFrom  = from;
     component.dofilter(user2filter, component2Filter);
     let afterFiltering = component.filteredActivities;
 
     //calculate what the resulat should be
     let shoudBe: Activity[] = [];
-    beforeFiltering.forEach((activity:Activity) => { if((activity.componentID==component2Filter) &&  (activity.userID==user2filter)){shoudBe.push(activity);} } );
+    beforeFiltering.forEach((activity:Activity) => { if((activity.userID==user2filter) && (activity.componentID==component2Filter) && (from.getTime() <= activity.editStart.getTime())){shoudBe.push(activity);} } );
 
-    expect(shoudBe.length).toBeLessThan(beforeFiltering.length);              // filtered some items
     expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
   });
+
+  it('Filter by to date and userID and componetID', () => {
+
+    //filter by the userName
+    component.filterDateTo = to;
+    component.filterDateFrom  = undefined;
+    component.dofilter(user2filter, component2Filter);
+    let afterFiltering = component.filteredActivities;
+
+    //calculate what the resulat should be
+    let shoudBe: Activity[] = [];
+    beforeFiltering.forEach((activity:Activity) => { if((activity.userID==user2filter) &&(to.getTime() >= activity.editStart.getTime()) && (activity.componentID==component2Filter)){shoudBe.push(activity);} } );
+
+    expect(shoudBe).toEqual(jasmine.arrayWithExactContents(afterFiltering));  // the returned array should be the same as the expected one
+  });
+
+
+
 });

@@ -13,13 +13,13 @@ import { CreateManagerComponent } from './activities/create-manager/create-manag
 import { ActivitiesTableComponent } from './activities-table/activities-table.component';
 import { ContactUSComponent } from './activities/contact-us/contact-us.component';
 const routes: Routes = [
-  {path: ''            , redirectTo: 'Login', pathMatch: 'full'},
-  {path: 'Login', component: LoginComponent},
+  {path: 'Login'          , component: LoginComponent},
   {path: 'View Activities', component: ActivitiesTableComponent},
-  {path: 'Home', component: DashComponent},
-  {path:'Change Password', component: ChangePasswordComponent},
-  {path: 'Create Manager', component: CreateManagerComponent},
-  {path: 'Contact Us', component:ContactUSComponent},
+  {path: 'Home'           , component: DashComponent},
+  {path:'Change Password' , component: ChangePasswordComponent},
+  {path: 'Create Manager' , component: CreateManagerComponent},
+  {path: 'Contact Us'     , component:ContactUSComponent},
+  {path: ''               , redirectTo: 'Login', pathMatch: 'full'},
 
 
 ];
